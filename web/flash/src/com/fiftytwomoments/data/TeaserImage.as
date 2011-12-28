@@ -1,0 +1,1 @@
+﻿package com.fiftytwomoments.data{	import flash.display.BitmapData;	/**	 * ...	 * @author Boon Chew	 */	public class TeaserImage extends BitmapData	{			}}
