@@ -17,7 +17,7 @@ package
 		
 		public function Main() 
 		{
-			//addChild(new SystemUsage());
+			addChild(new SystemUsage());
 			StageReference.setStage(this.stage);
 			
 			new DisplayManager(this);

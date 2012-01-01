@@ -8,6 +8,7 @@ package com.fiftytwomoments
 	import com.greensock.TweenMax;
 	import com.nanaimostudio.utils.TraceUtility;
 	import flash.display.InteractiveObject;
+	import flash.display.Sprite;
 	import flash.geom.Point;
 	import org.casalib.display.CasaSprite;
 	import flash.events.Event;
@@ -29,10 +30,11 @@ package com.fiftytwomoments
 		
 		public var leftArrow:LeftArrow;
 		public var rightArrow:RightArrow;
-		public var thumbGrid:ThumbGrid;
 		
-		private var contentsContainer:CasaSprite;
-		private var contents:Vector.<PhotoContent>;
+		private var rootContainer:CasaSprite;
+		
+		//private var contentsContainer:CasaSprite;
+		//private var contents:Vector.<PhotoContent>;
 		
 		// week in the center of the screen
 		private var weekInView:int;
@@ -42,9 +44,17 @@ package com.fiftytwomoments
 		
 		[Embed(source="/../assets/teaser.jpg")]
 		private var TeaserImage:Class;
-		private var isScrolling:Boolean;
 		
-		private var viewState:String;
+		[Embed(source="/../assets/info.jpg")]
+		private var InfoImage:Class;
+		
+		private var isScrolling:Boolean;
+		private var isTransitioning:Boolean;
+		
+		private var viewStateInfoList:Array;
+		
+		private var currentViewState:String;
+		private var previousViewState:String;
 		
 		private var VIEWSTATE_LANDING:String = "ViewState.Landing";
 		private var VIEWSTATE_DETAILS:String = "ViewState.Details";
@@ -56,27 +66,53 @@ package com.fiftytwomoments
 		
 		private function init():void 
 		{
-			viewState = VIEWSTATE_LANDING;
-			currentWeek = weekInView = 1;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			rootContainer = new CasaSprite();
+			addChildAt(rootContainer, 0);
+			
+			viewStateInfoList = new Array();
+			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
+			viewStateInfoList[VIEWSTATE_LANDING].image = new TeaserImage();
+			
+			viewStateInfoList[VIEWSTATE_DETAILS] = new ViewStateInfo();
+			viewStateInfoList[VIEWSTATE_DETAILS].image = new InfoImage();
+			
+			currentWeek = weekInView = 1;
+			setCurrentViewState(VIEWSTATE_LANDING);
 		}
 		
 		private function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			initLandingView();
+			initCurrentView();
+			rootContainer.addChildAt(contentsContainer, 0);
+			rootContainer.addChildAt(thumbGrid, 1);
 		}
 		
-		private function initLandingView():void 
+		private function getCurrentViewState():String
+		{
+			return currentViewState;
+		}
+		
+		private function setCurrentViewState(value:String):void
+		{
+			previousViewState = currentViewState;
+			currentViewState = value;
+		}
+		
+		private function initCurrentView():void 
 		{
 			contentsContainer = new CasaSprite();
 			contentsContainer.name = "contentsContainer";
-			addChildAt(contentsContainer, 0);
-			
 			initContents();
+			
+			thumbGrid = new ThumbGrid();
+			thumbGrid.name = "thumbGrid";
+			thumbGrid.y = 346;
+			
 			leftArrow.buttonMode = true;
 			rightArrow.buttonMode = true;
-			
 			leftArrow.addEventListener(MouseEvent.CLICK, onLeftClick);
 			rightArrow.addEventListener(MouseEvent.CLICK, onRightClick);
 		}
@@ -85,7 +121,8 @@ package com.fiftytwomoments
 		{
 			contents = new Vector.<PhotoContent>();
 			var dummyContent:PhotoContent = new PhotoContent();
-			stage.stageWidth - dummyContent.width  - (MAX_CONTENTS - 1) * CONTENT_GAP
+			stage.stageWidth - dummyContent.width  - (MAX_CONTENTS - 1) * CONTENT_GAP;
+			dummyContent = null;
 			
 			// Total five photos for optimal scrolling (and minimum memory usage)
 			// Current week is always the third photo in the vector
@@ -104,7 +141,7 @@ package com.fiftytwomoments
 				// In the beginning, the current view (at index 0) is the current week so it always has a photo
 				if (weekIndex == weekInView)
 				{
-					var t:BitmapAsset = new TeaserImage();
+					var t:BitmapAsset = getViewStateImage();
 					t.x = -t.width * 0.5;
 					t.y = -t.height * 0.5;
 					content.setPhoto(t);
@@ -114,6 +151,11 @@ package com.fiftytwomoments
 				contentsContainer.addChild(content);
 				contents.push(content);
 			}
+		}
+		
+		private function getViewStateImage():BitmapAsset 
+		{
+			return viewStateInfoList[currentViewState].image;
 		}
 		
 		private function createPhotoContent():PhotoContent 
@@ -128,28 +170,91 @@ package com.fiftytwomoments
 		{
 			if (isScrolling) return;
 			
-			viewState = VIEWSTATE_DETAILS;
+			isTransitioning = true;
+			var thumbGridFadeOutTime:Number = 0.2;
+			var thumbGridFadeInTime:Number = 0.3;
+			var waitForThumbGridFadeOutDelay:int = thumbGridFadeInTime + 0.6;
+			var thumbGridFadeInDelay:Number = 0.76;
+			var contentsScrollTime:Number = 0.5;
 			
-			TweenMax.to(contentsContainer, 0.5, { y: -600, ease:Quad.easeOut } );
-			TweenMax.to(thumbGrid, 0.5, { y: -1000, ease:Quad.easeOut } );
+			if (getCurrentViewState() == VIEWSTATE_LANDING)
+			{
+				// Landing going out of view
+				TraceUtility.debug(this, "contentsContainer: " + contentsContainer);
+				TweenMax.to(thumbGrid, thumbGridFadeOutTime, { autoAlpha: 0 } );
+				TweenMax.to(contentsContainer, contentsScrollTime, { y: -height, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				//TweenMax.to(contentsContainer, 0.4, { alpha:0, ease:Quad.easeOut } );
+				
+				// Details coming into view
+				setCurrentViewState(VIEWSTATE_DETAILS);
+				initCurrentView();
+				rootContainer.addChildAt(contentsContainer, 0);
+				rootContainer.addChildAt(thumbGrid, 1);
+				contentsContainer.y = stage.stageHeight;
+				
+				thumbGrid.visible = false;
+				thumbGrid.alpha = 0;
+				
+				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: stage.stageHeight }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				TweenMax.to(thumbGrid, thumbGridFadeInTime, { autoAlpha: 1, ease:Sine.easeInOut, delay: thumbGridFadeInDelay } );
+			}
+			else
+			{
+				// Details going out of view
+				TraceUtility.debug(this, "contentsContainer: " + contentsContainer);
+				TweenMax.to(thumbGrid, thumbGridFadeOutTime, { autoAlpha: 0 } );
+				TweenMax.to(contentsContainer, contentsScrollTime, { y: stage.stageHeight, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				
+				// Landing coming into view
+				setCurrentViewState(VIEWSTATE_LANDING);
+				initCurrentView();
+				rootContainer.addChildAt(contentsContainer, 0);
+				rootContainer.addChildAt(thumbGrid, 1);
+				
+				thumbGrid.visible = false;
+				thumbGrid.alpha = 0;
+				
+				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: -contentsContainer.height }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				TweenMax.to(thumbGrid, thumbGridFadeInTime, { autoAlpha: 1, ease:Sine.easeInOut, delay: thumbGridFadeInDelay } );
+			}
 			
-			//TweenMax.to(thumbGrid, 0.3, { autoAlpha: 0 } );
+			TweenMax.delayedCall(1.2, onTransitionComplete);
+		}
+		
+		private function onTransitionComplete():void 
+		{
+			isTransitioning = false;
+			
+			// Clean everything up that's no on stage
+			// Currently only two objects are on stage - contentsContainer and thumbGrid
+			if (rootContainer.numChildren > 2)
+			{
+				var childIndex:int = 2;
+				while (childIndex < rootContainer.numChildren)
+				{
+					var child:CasaSprite = rootContainer.getChildAt(childIndex) as CasaSprite;
+					child.destroy();
+					rootContainer.removeChildAt(childIndex);
+				}
+			}
 		}
 		
 		private function onLeftClick(e:MouseEvent):void 
 		{
+			if (isTransitioning) return;
+			if (isScrolling) return;
 			scroll(+1);
 		}
 		
 		private function onRightClick(e:MouseEvent):void 
 		{
+			if (isTransitioning) return;
+			if (isScrolling) return;
 			scroll(-1);
 		}
 		
 		private function scroll(direction:int):void
 		{
-			if (isScrolling) return;
-			
 			isScrolling = true;
 			for (var index:int = 0; index < contents.length; index++)
 			{
@@ -224,8 +329,53 @@ package com.fiftytwomoments
 			{
 				return value;
 			}
+		}	
+		
+		public function get contentsContainer():CasaSprite 
+		{
+			return viewStateInfoList[currentViewState].contentsContainer;
 		}
 		
+		public function set contentsContainer(value:CasaSprite):void
+		{
+			viewStateInfoList[currentViewState].contentsContainer = value;
+		}
+		
+		public function get thumbGrid():CasaSprite 
+		{
+			return viewStateInfoList[currentViewState].thumbGrid;
+		}
+		
+		public function set thumbGrid(value:CasaSprite):void
+		{
+			viewStateInfoList[currentViewState].thumbGrid = value;
+		}
+		
+		public function get contents():Vector.<PhotoContent> 
+		{
+			return viewStateInfoList[currentViewState].contents;
+		}
+		
+		public function set contents(value:Vector.<PhotoContent>):void
+		{
+			viewStateInfoList[currentViewState].contents = value;
+		}
 	}
+}
 
+import com.fiftytwomoments.ui.PhotoContent;
+import org.casalib.display.CasaSprite;
+import mx.core.BitmapAsset;
+
+class ViewStateInfo
+{
+	public var contentsContainer:CasaSprite;
+	public var contents:Vector.<PhotoContent>;
+	public var thumbGrid:CasaSprite;
+	public var image:BitmapAsset;
+	
+	public function ViewStateInfo()
+	{
+		
+	}
 }
