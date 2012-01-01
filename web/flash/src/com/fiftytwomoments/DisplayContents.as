@@ -4,7 +4,10 @@ package com.fiftytwomoments
 	import com.fiftytwomoments.ui.LeftArrow;
 	import com.fiftytwomoments.ui.PhotoContent;
 	import com.fiftytwomoments.ui.RightArrow;
+	import com.fiftytwomoments.ui.ThumbGrid;
 	import com.greensock.TweenMax;
+	import com.nanaimostudio.utils.TraceUtility;
+	import flash.display.InteractiveObject;
 	import flash.geom.Point;
 	import org.casalib.display.CasaSprite;
 	import flash.events.Event;
@@ -22,11 +25,13 @@ package com.fiftytwomoments
 	{
 		private static const MAX_CONTENTS:int = 3;
 		private static const CONTENT_GAP:int = 110;
+		private static const WEEKS_PER_YEAR:int = 52;
 		
 		public var leftArrow:LeftArrow;
 		public var rightArrow:RightArrow;
+		public var thumbGrid:ThumbGrid;
 		
-		private var contentContainer:CasaSprite;
+		private var contentsContainer:CasaSprite;
 		private var contents:Vector.<PhotoContent>;
 		
 		// week in the center of the screen
@@ -39,6 +44,11 @@ package com.fiftytwomoments
 		private var TeaserImage:Class;
 		private var isScrolling:Boolean;
 		
+		private var viewState:String;
+		
+		private var VIEWSTATE_LANDING:String = "ViewState.Landing";
+		private var VIEWSTATE_DETAILS:String = "ViewState.Details";
+		
 		public function DisplayContents() 
 		{
 			init();
@@ -46,6 +56,7 @@ package com.fiftytwomoments
 		
 		private function init():void 
 		{
+			viewState = VIEWSTATE_LANDING;
 			currentWeek = weekInView = 1;
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -53,11 +64,25 @@ package com.fiftytwomoments
 		private function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			initLandingView();
+		}
+		
+		private function initLandingView():void 
+		{
+			contentsContainer = new CasaSprite();
+			contentsContainer.name = "contentsContainer";
+			addChildAt(contentsContainer, 0);
 			
-			contentContainer = new CasaSprite();
-			contentContainer.name = "contentContainer";
-			addChildAt(contentContainer, 0);
+			initContents();
+			leftArrow.buttonMode = true;
+			rightArrow.buttonMode = true;
 			
+			leftArrow.addEventListener(MouseEvent.CLICK, onLeftClick);
+			rightArrow.addEventListener(MouseEvent.CLICK, onRightClick);
+		}
+		
+		private function initContents():void 
+		{
 			contents = new Vector.<PhotoContent>();
 			var dummyContent:PhotoContent = new PhotoContent();
 			stage.stageWidth - dummyContent.width  - (MAX_CONTENTS - 1) * CONTENT_GAP
@@ -66,10 +91,10 @@ package com.fiftytwomoments
 			// Current week is always the third photo in the vector
 			for (var index:int = -2; index <= 2; index++)
 			{
-				var content:PhotoContent = new PhotoContent();
+				var content:PhotoContent = createPhotoContent();
 				var weekIndex:int = normalizeWeek(weekInView + index);
 				
-				trace("Week index: " + weekIndex);
+				//trace("Week index: " + weekIndex);
 				content.week = weekIndex;
 				content.name = "content" + weekIndex;
 				
@@ -83,27 +108,42 @@ package com.fiftytwomoments
 					t.x = -t.width * 0.5;
 					t.y = -t.height * 0.5;
 					content.setPhoto(t);
+					content.interactionEnabled = true;
 				}
 				
-				contentContainer.addChild(content);
+				contentsContainer.addChild(content);
 				contents.push(content);
 			}
+		}
+		
+		private function createPhotoContent():PhotoContent 
+		{
+			var photoContent:PhotoContent = new PhotoContent();
+			photoContent.interactionDelegate = this;
+			return photoContent;
+		}
+		
+		// PhotoContent Interaction Delegate Method
+		public function onPhotoContentClicked(e:PhotoContent):void
+		{
+			if (isScrolling) return;
 			
-			leftArrow.buttonMode = true;
-			rightArrow.buttonMode = true;
+			viewState = VIEWSTATE_DETAILS;
 			
-			leftArrow.addEventListener(MouseEvent.CLICK, onLeftClick);
-			rightArrow.addEventListener(MouseEvent.CLICK, onRightClick);
+			TweenMax.to(contentsContainer, 0.5, { y: -600, ease:Quad.easeOut } );
+			TweenMax.to(thumbGrid, 0.5, { y: -1000, ease:Quad.easeOut } );
+			
+			//TweenMax.to(thumbGrid, 0.3, { autoAlpha: 0 } );
 		}
 		
 		private function onLeftClick(e:MouseEvent):void 
 		{
-			scroll(-1);
+			scroll(+1);
 		}
 		
 		private function onRightClick(e:MouseEvent):void 
 		{
-			scroll(+1);
+			scroll(-1);
 		}
 		
 		private function scroll(direction:int):void
@@ -114,7 +154,10 @@ package com.fiftytwomoments
 			for (var index:int = 0; index < contents.length; index++)
 			{
 				//com.greensock.easing.
-				TweenMax.to(contents[index], 0.6, { x: contents[index].x + 765 * direction, ease:Quad.easeInOut });
+				TweenMax.to(contents[index], 0.6, { x: contents[index].x + 765 * direction, ease:Quad.easeInOut } );
+				
+				// Make the contents that's going to be come into view clickable
+				contents[index].interactionEnabled = (index == (2 - direction));
 			}
 			
 			weekInView -= direction;
@@ -144,9 +187,10 @@ package com.fiftytwomoments
 				contents.unshift(content);
 			}
 			
-			trace("current week: " + currentWeek + " " + content.week);
+			//trace("current week: " + currentWeek + " " + content.week);
 			if (content.week == currentWeek)
 			{
+				//TODO: Right now only current week has photo, this will change when server-side integration is done
 				if (!content.hasPhoto())
 				{
 					var t:BitmapAsset = new TeaserImage();
@@ -168,13 +212,13 @@ package com.fiftytwomoments
 		
 		private function normalizeWeek(value:int):int 
 		{
-			if (value > 52)
+			if (value > WEEKS_PER_YEAR)
 			{
-				return value % 52;
+				return value % WEEKS_PER_YEAR;
 			}
 			else if (value <= 0)
 			{
-				return 52 + value;
+				return WEEKS_PER_YEAR + value;
 			}
 			else
 			{

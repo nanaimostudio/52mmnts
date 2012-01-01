@@ -13,8 +13,8 @@ package com.fiftytwomoments
 		{
 			contents = new DisplayContents();
 			contents.x = root.stage.stageWidth * 0.5;
-			contents.y = root.stage.stageHeight * 0.5;
-			root.addChild(contents);
+			contents.y = root.stage.stageHeight * 0.5 - 30;
+			root.addChildAt(contents, 0);
 		}
 	}
 

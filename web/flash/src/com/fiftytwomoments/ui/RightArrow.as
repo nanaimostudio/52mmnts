@@ -5,7 +5,7 @@ package com.fiftytwomoments.ui
 	 * ...
 	 * @author Boon Chew
 	 */
-	public class RightArrow extends MovieClip
+	public class RightArrow extends GenericArrowButton
 	{
 		
 		public function RightArrow() 
