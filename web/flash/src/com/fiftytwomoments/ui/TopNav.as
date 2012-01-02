@@ -27,14 +27,55 @@ package com.fiftytwomoments.ui
 			getInvolved.addEventListener(MouseEvent.CLICK, onGetInvolvedClick);
 		}
 		
+		public function setGetInvolvedState(value:Boolean):void
+		{
+			getInvolved.alpha = value ? 1.0 : 0.5;
+		}
+		
+		public function reset():void
+		{
+			about.alpha = 0.5;
+			getInvolved.alpha = 0.5;
+		}
+		
 		private function onAboutClick(e:MouseEvent):void 
 		{
+			if (isAboutSelected) return;
 			
+			if (about.alpha < 0.8)
+			{
+				about.alpha = 1.0;
+				getInvolved.alpha = 0.5;
+			}
+			else
+			{
+				about.alpha = 0.5;
+			}
 		}
 		
 		private function onGetInvolvedClick(e:MouseEvent):void 
 		{
+			if (isGetInvolvedSelected) return;
 			
+			if (getInvolved.alpha < 0.8)
+			{
+				getInvolved.alpha = 1.0;
+				about.alpha = 0.5;
+			}
+			else
+			{
+				getInvolved.alpha = 0.5;
+			}
+		}
+	
+		public function get isAboutSelected():Boolean
+		{
+			return about.alpha > 0.5;
+		}
+		
+		public function get isGetInvolvedSelected():Boolean
+		{
+			return getInvolved.alpha > 0.5;
 		}
 	}
 }

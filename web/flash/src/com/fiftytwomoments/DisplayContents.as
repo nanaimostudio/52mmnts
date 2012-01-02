@@ -1,6 +1,9 @@
 package com.fiftytwomoments 
 {
 	import com.fiftytwomoments.data.TeaserImage;
+	import com.fiftytwomoments.type.AppConstants;
+	import com.fiftytwomoments.ui.About;
+	import com.fiftytwomoments.ui.AboutPage;
 	import com.fiftytwomoments.ui.LeftArrow;
 	import com.fiftytwomoments.ui.PhotoContent;
 	import com.fiftytwomoments.ui.RightArrow;
@@ -58,11 +61,14 @@ package com.fiftytwomoments
 		private var currentViewState:String;
 		private var previousViewState:String;
 		
+		private var aboutPage:AboutPage;
+		
 		private var VIEWSTATE_LANDING:String = "ViewState.Landing";
 		private var VIEWSTATE_DETAILS:String = "ViewState.Details";
 		
 		// five pages, the middle page is 2
 		private var MIDDLE_SCROLL_PAGE_INDEX:int = int((5 - 1)/ 2);
+		
 		
 		public function DisplayContents() 
 		{
@@ -75,6 +81,11 @@ package com.fiftytwomoments
 			
 			rootContainer = new CasaSprite();
 			addChildAt(rootContainer, 0);
+			
+			aboutPage = new AboutPage();
+			aboutPage.alpha = 0;
+			aboutPage.visible = false;
+			addChild(aboutPage);
 			
 			viewStateInfoList = new Array();
 			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
@@ -92,7 +103,67 @@ package com.fiftytwomoments
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			initCurrentView();
 			rootContainer.addChildAt(contentsContainer, 0);
-			rootContainer.addChildAt(thumbGrid, 1);
+			//rootContainer.addChildAt(thumbGrid, 1);
+		}
+		
+		public function showAbout():void
+		{
+			if (isTransitioning) return;
+			if (isScrolling) return;
+			
+			if (this.rootContainer.visible)
+			{
+				TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+				TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
+			}
+		}
+		
+		public function showGetInvolved():void
+		{
+			if (isTransitioning) return;
+			if (isScrolling) return;
+			
+			if (this.aboutPage.visible)
+			{
+				TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+				TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
+				
+				if (currentViewState == VIEWSTATE_LANDING)
+				{
+					TweenMax.delayedCall(0.6, toggleLandingDetailView);
+				}
+			}
+			else
+			{
+				if (currentViewState == VIEWSTATE_LANDING)
+				{
+					toggleLandingDetailView();
+				}
+			}
+		}
+		
+		public function showLanding():void
+		{
+			if (!this.rootContainer.visible)
+			{
+				TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
+				if (currentViewState == VIEWSTATE_DETAILS)
+				{
+					TweenMax.delayedCall(0.6, toggleLandingDetailView);
+				}
+				
+				if (this.aboutPage.visible)
+				{
+					TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+				}
+			}
+			else
+			{
+				if (currentViewState == VIEWSTATE_DETAILS)
+				{
+					toggleLandingDetailView();
+				}
+			}
 		}
 		
 		private function getCurrentViewState():String
@@ -109,21 +180,30 @@ package com.fiftytwomoments
 		private function initCurrentView():void 
 		{
 			trace("init current view");
-			contentsContainer = new CasaSprite();
-			contentsContainer.name = "contentsContainer";
-			initContents();
-			
 			thumbGrid = new ThumbGrid();
 			thumbGrid.name = "thumbGrid";
 			thumbGrid.interactionDelegate = this;
 			
 			thumbGrid.x = -thumbGrid.width * 0.5;
-			thumbGrid.y = 290;
+			thumbGrid.y = 260;
+			
+			thumbGrid.week = weekInView;
+		
+			contentsContainer = new CasaSprite();
+			contentsContainer.name = "contentsContainer";
+			initContents();
 			
 			leftArrow.buttonMode = true;
 			rightArrow.buttonMode = true;
 			leftArrow.addEventListener(MouseEvent.CLICK, onLeftClick);
 			rightArrow.addEventListener(MouseEvent.CLICK, onRightClick);
+			
+			setWeekInView(weekInView);
+			
+			//TODO: Remove when we get more contents
+			leftArrow.visible = false;
+			rightArrow.visible = false;
+			thumbGrid.visible = false;
 		}
 		
 		private function initContents():void 
@@ -138,6 +218,7 @@ package com.fiftytwomoments
 			for (var index:int = -MIDDLE_SCROLL_PAGE_INDEX; index <= MIDDLE_SCROLL_PAGE_INDEX; index++)
 			{
 				var content:PhotoContent = createPhotoContent();
+				content.useDefaultText = (currentViewState == VIEWSTATE_LANDING);
 				var weekIndex:int = normalizeWeek(weekInView + index);
 				
 				//trace("Week index: " + weekIndex);
@@ -154,7 +235,11 @@ package com.fiftytwomoments
 					content.interactionEnabled = true;
 				}
 				
-				contentsContainer.addChild(content);
+				//TODO: Remove this when we implement fluid layout
+				if (index == 0)
+				{
+					contentsContainer.addChild(content);
+				}
 				contents.push(content);
 			}
 		}
@@ -171,7 +256,7 @@ package com.fiftytwomoments
 			{
 				trace("currentViewState: " + VIEWSTATE_DETAILS);
 				//TODO: on details page, show info image all the time until server-integration is done
-				return true;
+				return weekIndex == currentWeek;
 			}
 			else
 			{
@@ -220,7 +305,7 @@ package com.fiftytwomoments
 		private function updateWeekInfo(newWeek:int):void 
 		{
 			trace("updateWeekInfo " + contents.length);
-			weekInView = newWeek;
+			setWeekInView(newWeek);
 			
 			for (var index:int = 0; index < contents.length; index++)
 			{
@@ -237,12 +322,19 @@ package com.fiftytwomoments
 		}
 		
 		// PhotoContent Interaction Delegate Method
-		public function onPhotoContentClicked(photoContent:PhotoContent):void
+		public function onPhotoContentClicked(photoContent:PhotoContent = null):void
+		{
+			toggleLandingDetailView();
+			dispatchEvent(new Event(AppConstants.PHOTOCONTENT_CLICKED));
+		}
+		
+		public function toggleLandingDetailView():void
 		{
 			if (isScrolling) return;
 			if (isTransitioning) return;
 			
 			isTransitioning = true;
+			
 			var thumbGridFadeOutTime:Number = 0.2;
 			var thumbGridFadeInTime:Number = 0.25;
 			var waitForThumbGridFadeOutDelay:int = thumbGridFadeInTime + 0.6;
@@ -253,7 +345,7 @@ package com.fiftytwomoments
 			{
 				// Landing going out of view
 				TweenMax.to(thumbGrid, thumbGridFadeOutTime, { autoAlpha: 0 } );
-				TweenMax.to(contentsContainer, contentsScrollTime, { y: -height, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				TweenMax.to(contentsContainer, contentsScrollTime, { y: -height * 1.5, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
 				//TweenMax.to(contentsContainer, 0.4, { alpha:0, ease:Quad.easeOut } );
 				
 				// Details coming into view
@@ -262,7 +354,7 @@ package com.fiftytwomoments
 				
 				contentsContainer.y = stage.stageHeight;
 				rootContainer.addChildAt(contentsContainer, 0);
-				rootContainer.addChildAt(thumbGrid, 1);
+				//rootContainer.addChildAt(thumbGrid, 1);
 				thumbGrid.visible = false;
 				thumbGrid.alpha = 0;
 				
@@ -279,16 +371,17 @@ package com.fiftytwomoments
 				setCurrentViewState(VIEWSTATE_LANDING);
 				initCurrentView();
 				rootContainer.addChildAt(contentsContainer, 0);
-				rootContainer.addChildAt(thumbGrid, 1);
+				//rootContainer.addChildAt(thumbGrid, 1);
 				
 				thumbGrid.visible = false;
 				thumbGrid.alpha = 0;
 				
-				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: -height }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: -height * 1.5 }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
 				TweenMax.to(thumbGrid, thumbGridFadeInTime, { autoAlpha: 1, ease:Sine.easeInOut, delay: thumbGridFadeInDelay } );
 			}
 			
-			TweenMax.delayedCall(thumbGridFadeInDelay + thumbGridFadeInTime, onSwitchViewComplete);
+			//TweenMax.delayedCall(thumbGridFadeInDelay + thumbGridFadeInTime, onSwitchViewComplete);
+			TweenMax.delayedCall(contentsScrollTime + 0.1, onSwitchViewComplete);
 		}
 		
 		// Done going from landing to details or vice versa
@@ -340,9 +433,19 @@ package com.fiftytwomoments
 			}
 			
 			weekInView -= direction;
-			weekInView = normalizeWeek(weekInView);
+			setWeekInView(normalizeWeek(weekInView));
 			
 			TweenMax.delayedCall(scrollTime + 0.1, onScrollComplete, [ direction ]);
+		}
+		
+		private function setWeekInView(value:int):void
+		{
+			weekInView = value;
+			
+			if (thumbGrid)
+			{
+				thumbGrid.week = weekInView;
+			}
 		}
 		
 		private function onScrollComplete(direction:int):void

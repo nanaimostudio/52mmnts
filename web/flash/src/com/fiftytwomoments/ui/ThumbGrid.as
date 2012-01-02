@@ -14,6 +14,8 @@ package com.fiftytwomoments.ui
 		private static const THUMBNAILS_PER_ROW:int = 18;
 		private static const THUMBNAIL_GAP:int = 6;
 		
+		private var _week:int = 1;
+		
 		public function ThumbGrid() 
 		{
 			thumbnailContainer = new CasaSprite();
@@ -27,7 +29,7 @@ package com.fiftytwomoments.ui
 				thumbnail.mouseEnabled = true;
 				thumbnail.mouseChildren = false;
 				thumbnail.name = String(index + 1);
-					
+				
 				if (index < 52)
 				{
 					thumbnail.title.text = String(index + 1);
@@ -35,7 +37,7 @@ package com.fiftytwomoments.ui
 				else
 				{
 					thumbnail.title.text = "";
-					thumbnail.alpha = 0.4;
+					thumbnail.box.alpha = 0.2;
 				}
 				
 				thumbnail.addEventListener(MouseEvent.CLICK, onClick);
@@ -61,15 +63,35 @@ package com.fiftytwomoments.ui
 					var weekValue:int = parseInt(Thumbnail(e.target).name);
 					if (weekValue > 0 && weekValue < 53)
 					{
+						updateToNewWeek(weekValue);
 						_interactionDelegate.onThumbGridClicked(parseInt(e.target.name));
 					}
 				}
 			}
 		}
 		
+		private function updateToNewWeek(value:int):void 
+		{
+			if (thumbnailContainer != null)
+			{
+				var oldThumbnail:Thumbnail = thumbnailContainer.getChildByName(String(_week)) as Thumbnail;
+				if (oldThumbnail) oldThumbnail.box.alpha = 1.0;
+				
+				var newThumbnail:Thumbnail = thumbnailContainer.getChildByName(String(value)) as Thumbnail;
+				if (newThumbnail) newThumbnail.box.alpha = 0.6;
+			}
+			
+			_week = value;
+		}
+		
 		public function set interactionDelegate(value:Object):void 
 		{
 			_interactionDelegate = value;
+		}
+		
+		public function set week(value:int):void 
+		{
+			updateToNewWeek(value);
 		}
 	}
 }
