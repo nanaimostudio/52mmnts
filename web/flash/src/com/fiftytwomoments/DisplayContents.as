@@ -5,6 +5,8 @@ package com.fiftytwomoments
 	import com.fiftytwomoments.ui.PhotoContent;
 	import com.fiftytwomoments.ui.RightArrow;
 	import com.fiftytwomoments.ui.ThumbGrid;
+	import com.greensock.TimelineLite;
+	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.nanaimostudio.utils.TraceUtility;
 	import flash.display.InteractiveObject;
@@ -59,6 +61,9 @@ package com.fiftytwomoments
 		private var VIEWSTATE_LANDING:String = "ViewState.Landing";
 		private var VIEWSTATE_DETAILS:String = "ViewState.Details";
 		
+		// five pages, the middle page is 2
+		private var MIDDLE_SCROLL_PAGE_INDEX:int = int((5 - 1)/ 2);
+		
 		public function DisplayContents() 
 		{
 			init();
@@ -103,13 +108,17 @@ package com.fiftytwomoments
 		
 		private function initCurrentView():void 
 		{
+			trace("init current view");
 			contentsContainer = new CasaSprite();
 			contentsContainer.name = "contentsContainer";
 			initContents();
 			
 			thumbGrid = new ThumbGrid();
 			thumbGrid.name = "thumbGrid";
-			thumbGrid.y = 346;
+			thumbGrid.interactionDelegate = this;
+			
+			thumbGrid.x = -thumbGrid.width * 0.5;
+			thumbGrid.y = 290;
 			
 			leftArrow.buttonMode = true;
 			rightArrow.buttonMode = true;
@@ -126,7 +135,7 @@ package com.fiftytwomoments
 			
 			// Total five photos for optimal scrolling (and minimum memory usage)
 			// Current week is always the third photo in the vector
-			for (var index:int = -2; index <= 2; index++)
+			for (var index:int = -MIDDLE_SCROLL_PAGE_INDEX; index <= MIDDLE_SCROLL_PAGE_INDEX; index++)
 			{
 				var content:PhotoContent = createPhotoContent();
 				var weekIndex:int = normalizeWeek(weekInView + index);
@@ -134,22 +143,40 @@ package com.fiftytwomoments
 				//trace("Week index: " + weekIndex);
 				content.week = weekIndex;
 				content.name = "content" + weekIndex;
-				
 				content.x = 765 * index;
 				
 				//TODO: From server-side
 				// In the beginning, the current view (at index 0) is the current week so it always has a photo
+				updatePhotoContentForWeek(content, weekIndex);
+			
 				if (weekIndex == weekInView)
 				{
-					var t:BitmapAsset = getViewStateImage();
-					t.x = -t.width * 0.5;
-					t.y = -t.height * 0.5;
-					content.setPhoto(t);
 					content.interactionEnabled = true;
 				}
 				
 				contentsContainer.addChild(content);
 				contents.push(content);
+			}
+		}
+		
+		private function checkShowImageForWeek(weekIndex:int):Boolean 
+		{
+			// on landing page, only shows image if you are in the current week
+			if (currentViewState == VIEWSTATE_LANDING)
+			{
+				trace("currentWeek: " + currentWeek + " weekIndex: " + weekIndex);
+				return weekIndex == currentWeek;
+			}
+			else if (currentViewState == VIEWSTATE_DETAILS)
+			{
+				trace("currentViewState: " + VIEWSTATE_DETAILS);
+				//TODO: on details page, show info image all the time until server-integration is done
+				return true;
+			}
+			else
+			{
+				trace("catch all");
+				return false;
 			}
 		}
 		
@@ -162,17 +189,62 @@ package com.fiftytwomoments
 		{
 			var photoContent:PhotoContent = new PhotoContent();
 			photoContent.interactionDelegate = this;
+			
 			return photoContent;
 		}
 		
-		// PhotoContent Interaction Delegate Method
-		public function onPhotoContentClicked(e:PhotoContent):void
+		// ThumbGrid Interaction Delegate Method
+		public function onThumbGridClicked(week:int):void
 		{
 			if (isScrolling) return;
+			if (isTransitioning) return;
+			
+			isTransitioning = true;
+			
+			var photoContents:Array = new Array();
+			for each (var pc:PhotoContent in contents)
+			{
+				photoContents.push(pc);
+			}
+
+			//for (var index:int = 0; index < contents.length; index++)
+			//{
+				//com.greensock.easing.
+				var timeline:TimelineMax = new TimelineMax({ onComplete: onUpdateWeekInfoComplete });
+				timeline.appendMultiple(TweenMax.allTo(photoContents, 0.5, { alpha: 0, ease:Sine.easeInOut } ));
+				timeline.addCallback(updateWeekInfo, 0.6, [ week ]);
+				timeline.appendMultiple(TweenMax.allTo(photoContents, 0.5, { alpha: 1, ease:Sine.easeInOut } ));
+			//}
+		}
+		
+		private function updateWeekInfo(newWeek:int):void 
+		{
+			trace("updateWeekInfo " + contents.length);
+			weekInView = newWeek;
+			
+			for (var index:int = 0; index < contents.length; index++)
+			{
+				var week:int = normalizeWeek(weekInView + index - MIDDLE_SCROLL_PAGE_INDEX);
+				contents[index].week = week;
+				updatePhotoContentForWeek(contents[index], week);
+			}
+		}
+		
+		private function onUpdateWeekInfoComplete():void 
+		{
+			trace("onUpdateWeekInfoComplete");
+			isTransitioning = false;
+		}
+		
+		// PhotoContent Interaction Delegate Method
+		public function onPhotoContentClicked(photoContent:PhotoContent):void
+		{
+			if (isScrolling) return;
+			if (isTransitioning) return;
 			
 			isTransitioning = true;
 			var thumbGridFadeOutTime:Number = 0.2;
-			var thumbGridFadeInTime:Number = 0.3;
+			var thumbGridFadeInTime:Number = 0.25;
 			var waitForThumbGridFadeOutDelay:int = thumbGridFadeInTime + 0.6;
 			var thumbGridFadeInDelay:Number = 0.76;
 			var contentsScrollTime:Number = 0.5;
@@ -180,7 +252,6 @@ package com.fiftytwomoments
 			if (getCurrentViewState() == VIEWSTATE_LANDING)
 			{
 				// Landing going out of view
-				TraceUtility.debug(this, "contentsContainer: " + contentsContainer);
 				TweenMax.to(thumbGrid, thumbGridFadeOutTime, { autoAlpha: 0 } );
 				TweenMax.to(contentsContainer, contentsScrollTime, { y: -height, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
 				//TweenMax.to(contentsContainer, 0.4, { alpha:0, ease:Quad.easeOut } );
@@ -188,10 +259,10 @@ package com.fiftytwomoments
 				// Details coming into view
 				setCurrentViewState(VIEWSTATE_DETAILS);
 				initCurrentView();
+				
+				contentsContainer.y = stage.stageHeight;
 				rootContainer.addChildAt(contentsContainer, 0);
 				rootContainer.addChildAt(thumbGrid, 1);
-				contentsContainer.y = stage.stageHeight;
-				
 				thumbGrid.visible = false;
 				thumbGrid.alpha = 0;
 				
@@ -201,7 +272,6 @@ package com.fiftytwomoments
 			else
 			{
 				// Details going out of view
-				TraceUtility.debug(this, "contentsContainer: " + contentsContainer);
 				TweenMax.to(thumbGrid, thumbGridFadeOutTime, { autoAlpha: 0 } );
 				TweenMax.to(contentsContainer, contentsScrollTime, { y: stage.stageHeight, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
 				
@@ -214,27 +284,28 @@ package com.fiftytwomoments
 				thumbGrid.visible = false;
 				thumbGrid.alpha = 0;
 				
-				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: -contentsContainer.height }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
+				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: -height }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
 				TweenMax.to(thumbGrid, thumbGridFadeInTime, { autoAlpha: 1, ease:Sine.easeInOut, delay: thumbGridFadeInDelay } );
 			}
 			
-			TweenMax.delayedCall(1.2, onTransitionComplete);
+			TweenMax.delayedCall(thumbGridFadeInDelay + thumbGridFadeInTime, onSwitchViewComplete);
 		}
 		
-		private function onTransitionComplete():void 
+		// Done going from landing to details or vice versa
+		private function onSwitchViewComplete():void 
 		{
 			isTransitioning = false;
 			
 			// Clean everything up that's no on stage
 			// Currently only two objects are on stage - contentsContainer and thumbGrid
-			if (rootContainer.numChildren > 2)
+			if (rootContainer.numChildren > ViewStateInfo.SPRITE_COUNT)
 			{
-				var childIndex:int = 2;
-				while (childIndex < rootContainer.numChildren)
+				while (rootContainer.numChildren > ViewStateInfo.SPRITE_COUNT)
 				{
+					var childIndex = rootContainer.numChildren - 1;
 					var child:CasaSprite = rootContainer.getChildAt(childIndex) as CasaSprite;
-					child.destroy();
-					rootContainer.removeChildAt(childIndex);
+					if (child == null) continue;
+					child.removeAllChildrenAndDestroy(true, true);
 				}
 			}
 		}
@@ -255,20 +326,23 @@ package com.fiftytwomoments
 		
 		private function scroll(direction:int):void
 		{
+			var scrollTime:Number = 0.5;
+			
 			isScrolling = true;
 			for (var index:int = 0; index < contents.length; index++)
 			{
 				//com.greensock.easing.
-				TweenMax.to(contents[index], 0.6, { x: contents[index].x + 765 * direction, ease:Quad.easeInOut } );
+				TweenMax.to(contents[index], scrollTime, { x: contents[index].x + 765 * direction, ease:Sine.easeInOut } );
 				
 				// Make the contents that's going to be come into view clickable
-				contents[index].interactionEnabled = (index == (2 - direction));
+				// We have five images, so the middle image is index 2.
+				contents[index].interactionEnabled = (index == (MIDDLE_SCROLL_PAGE_INDEX - direction));
 			}
 			
 			weekInView -= direction;
 			weekInView = normalizeWeek(weekInView);
 			
-			TweenMax.delayedCall(0.6, onScrollComplete, [ direction ]);
+			TweenMax.delayedCall(scrollTime + 0.1, onScrollComplete, [ direction ]);
 		}
 		
 		private function onScrollComplete(direction:int):void
@@ -278,7 +352,7 @@ package com.fiftytwomoments
 			if (direction == -1)
 			{
 				content = contents.shift();
-				content.week = normalizeWeek(weekInView + 2);
+				content.week = normalizeWeek(weekInView + MIDDLE_SCROLL_PAGE_INDEX);
 				// +2 offset from the middle photo
 				content.x = 765 * 2;
 				contents.push(content);
@@ -286,23 +360,24 @@ package com.fiftytwomoments
 			else
 			{
 				content = contents.pop();
-				content.week = normalizeWeek(weekInView - 2);
+				content.week = normalizeWeek(weekInView - MIDDLE_SCROLL_PAGE_INDEX);
 				// -2 offset from the middle photo
-				content.x = 765 * -2;
+				content.x = 765 * -MIDDLE_SCROLL_PAGE_INDEX;
 				contents.unshift(content);
 			}
 			
+			updatePhotoContentForWeek(content, content.week);
+			
 			//trace("current week: " + currentWeek + " " + content.week);
-			if (content.week == currentWeek)
+			isScrolling = false;
+		}
+		
+		private function updatePhotoContentForWeek(content:PhotoContent, week:int):void 
+		{
+			if (checkShowImageForWeek(week))
 			{
-				//TODO: Right now only current week has photo, this will change when server-side integration is done
-				if (!content.hasPhoto())
-				{
-					var t:BitmapAsset = new TeaserImage();
-					t.x = -t.width * 0.5;
-					t.y = -t.height * 0.5;
-					content.setPhoto(t);
-				}
+				trace("content: " + content.name + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+				content.setPhoto(getViewStateImage());
 			}
 			else
 			{
@@ -311,8 +386,6 @@ package com.fiftytwomoments
 					content.removePhoto();
 				}
 			}
-			
-			isScrolling = false;
 		}
 		
 		private function normalizeWeek(value:int):int 
@@ -341,12 +414,12 @@ package com.fiftytwomoments
 			viewStateInfoList[currentViewState].contentsContainer = value;
 		}
 		
-		public function get thumbGrid():CasaSprite 
+		public function get thumbGrid():ThumbGrid 
 		{
 			return viewStateInfoList[currentViewState].thumbGrid;
 		}
 		
-		public function set thumbGrid(value:CasaSprite):void
+		public function set thumbGrid(value:ThumbGrid):void
 		{
 			viewStateInfoList[currentViewState].thumbGrid = value;
 		}
@@ -364,14 +437,16 @@ package com.fiftytwomoments
 }
 
 import com.fiftytwomoments.ui.PhotoContent;
+import com.fiftytwomoments.ui.ThumbGrid;
 import org.casalib.display.CasaSprite;
 import mx.core.BitmapAsset;
 
 class ViewStateInfo
 {
+	public static var SPRITE_COUNT:int = 2;
 	public var contentsContainer:CasaSprite;
+	public var thumbGrid:ThumbGrid;
 	public var contents:Vector.<PhotoContent>;
-	public var thumbGrid:CasaSprite;
 	public var image:BitmapAsset;
 	
 	public function ViewStateInfo()
