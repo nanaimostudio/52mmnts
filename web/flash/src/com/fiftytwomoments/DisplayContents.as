@@ -4,6 +4,7 @@ package com.fiftytwomoments
 	import com.fiftytwomoments.type.AppConstants;
 	import com.fiftytwomoments.ui.About;
 	import com.fiftytwomoments.ui.AboutPage;
+	import com.fiftytwomoments.ui.GetInvolvedPage;
 	import com.fiftytwomoments.ui.LeftArrow;
 	import com.fiftytwomoments.ui.PhotoContent;
 	import com.fiftytwomoments.ui.RightArrow;
@@ -13,6 +14,7 @@ package com.fiftytwomoments
 	import com.greensock.TweenMax;
 	import com.nanaimostudio.utils.TraceUtility;
 	import flash.display.InteractiveObject;
+	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	import org.casalib.display.CasaSprite;
@@ -42,10 +44,10 @@ package com.fiftytwomoments
 		//private var contents:Vector.<PhotoContent>;
 		
 		// week in the center of the screen
-		private var weekInView:int;
+		private var _weekInView:int;
 		
 		// current project week
-		private var currentWeek:int;
+		private var _currentWeek:int;
 		
 		[Embed(source="/../assets/teaser.jpg")]
 		private var TeaserImage:Class;
@@ -62,6 +64,7 @@ package com.fiftytwomoments
 		private var previousViewState:String;
 		
 		private var aboutPage:AboutPage;
+		private var getInvolvedPage:GetInvolvedPage;
 		
 		private var VIEWSTATE_LANDING:String = "ViewState.Landing";
 		private var VIEWSTATE_DETAILS:String = "ViewState.Details";
@@ -87,6 +90,11 @@ package com.fiftytwomoments
 			aboutPage.visible = false;
 			addChild(aboutPage);
 			
+			getInvolvedPage = new GetInvolvedPage();
+			getInvolvedPage.alpha = 0;
+			getInvolvedPage.visible = false;
+			addChild(getInvolvedPage);
+			
 			viewStateInfoList = new Array();
 			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
 			viewStateInfoList[VIEWSTATE_LANDING].image = new TeaserImage();
@@ -111,9 +119,19 @@ package com.fiftytwomoments
 			if (isTransitioning) return;
 			if (isScrolling) return;
 			
+			showArrowNav(false);
+			
 			if (this.rootContainer.visible)
 			{
 				TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+			}
+			else if (this.getInvolvedPage.visible)
+			{
+				TweenMax.to(this.getInvolvedPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+			}
+			
+			if (!this.aboutPage.visible)
+			{
 				TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
 			}
 		}
@@ -123,23 +141,40 @@ package com.fiftytwomoments
 			if (isTransitioning) return;
 			if (isScrolling) return;
 			
+			showArrowNav(false);
+			
+			if (this.rootContainer.visible)
+			{
+				TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+			}
+			
 			if (this.aboutPage.visible)
 			{
 				TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
-				TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
-				
-				if (currentViewState == VIEWSTATE_LANDING)
-				{
-					TweenMax.delayedCall(0.6, toggleLandingDetailView);
-				}
 			}
-			else
+			
+			if (!this.getInvolvedPage.visible)
 			{
-				if (currentViewState == VIEWSTATE_LANDING)
-				{
-					toggleLandingDetailView();
-				}
+				TweenMax.to(this.getInvolvedPage, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
 			}
+			
+			//if (this.aboutPage.visible)
+			//{
+				//TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+				//TweenMax.to(this.rootContainer, 0.5, { autoAlpha: 1, ease:Sine.easeInOut } );
+				//
+				//if (currentViewState == VIEWSTATE_LANDING)
+				//{
+					//TweenMax.delayedCall(0.6, toggleLandingDetailView);
+				//}
+			//}
+			//else
+			//{
+				//if (currentViewState == VIEWSTATE_LANDING)
+				//{
+					//toggleLandingDetailView();
+				//}
+			//}
 		}
 		
 		public function showLanding():void
@@ -156,6 +191,10 @@ package com.fiftytwomoments
 				{
 					TweenMax.to(this.aboutPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
 				}
+				else if (this.getInvolvedPage.visible)
+				{
+					TweenMax.to(this.getInvolvedPage, 0.5, { autoAlpha: 0, ease:Sine.easeInOut } );
+				}
 			}
 			else
 			{
@@ -164,6 +203,8 @@ package com.fiftytwomoments
 					toggleLandingDetailView();
 				}
 			}
+			
+			showArrowNav(true);
 		}
 		
 		private function getCurrentViewState():String
@@ -201,9 +242,15 @@ package com.fiftytwomoments
 			setWeekInView(weekInView);
 			
 			//TODO: Remove when we get more contents
-			leftArrow.visible = false;
-			rightArrow.visible = false;
+			leftArrow.visible = true;
+			rightArrow.visible = true;
 			thumbGrid.visible = false;
+		}
+		
+		private function showArrowNav(value:Boolean):void
+		{
+			leftArrow.visible = value;
+			rightArrow.visible = value;
 		}
 		
 		private function initContents():void 
@@ -236,10 +283,10 @@ package com.fiftytwomoments
 				}
 				
 				//TODO: Remove this when we implement fluid layout
-				if (index == 0)
-				{
+				//if (index == 0)
+				//{
 					contentsContainer.addChild(content);
-				}
+				//}
 				contents.push(content);
 			}
 		}
@@ -407,6 +454,8 @@ package com.fiftytwomoments
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
+			if (weekInView == 1) return;
+			
 			scroll(+1);
 		}
 		
@@ -414,7 +463,9 @@ package com.fiftytwomoments
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
-			scroll(-1);
+			if (weekInView == 1) return;
+			
+			scroll( -1);
 		}
 		
 		private function scroll(direction:int):void
@@ -535,6 +586,26 @@ package com.fiftytwomoments
 		public function set contents(value:Vector.<PhotoContent>):void
 		{
 			viewStateInfoList[currentViewState].contents = value;
+		}
+		
+		public function get currentWeek():int 
+		{
+			return _currentWeek;
+		}
+		
+		public function set currentWeek(value:int):void 
+		{
+			_currentWeek = value;
+		}
+		
+		public function get weekInView():int 
+		{
+			return _weekInView;
+		}
+		
+		public function set weekInView(value:int):void 
+		{
+			_weekInView = value;
 		}
 	}
 }

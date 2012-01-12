@@ -3,20 +3,24 @@
 	<head>
 		<title></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- 		<style type="text/css" media="screen">
-                        body { margin:0; text-align:center; }
-                        div#content { text-align:left; }
-					 object { outline:none; -moz-outline-style: none; }
-                        object#content { display:block; margin:0 auto; }
-         </style>
+ 		
 		<script type="text/javascript" src="swfobject.js"></script>
 		<script type="text/javascript">
 			var flashvars = {};
 			var params = {};
+			params.quality = "high";
+			params.bgcolor = "#ffffff";
+			params.play = "true";
+			params.loop = "true";
+			params.wmode = "window";
 			params.scale = "showall";
+			params.menu = "true";
+			params.devicefont = "false";
+			params.salign = "";
+			params.allowscriptaccess = "sameDomain";
 			var attributes = {};
 			attributes.id = "flashContent";
-			swfobject.embedSWF("preloader.swf", "content", "1024", "768", "10.0.0", "expressInstall.swf", flashvars, params, attributes);
+			swfobject.embedSWF("preloader.swf", "content", "100%", "100%", "10.0.0", "expressInstall.swf", flashvars, params, attributes);
 		</script>
 	</head>
 	<body>
