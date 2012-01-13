@@ -1,6 +1,8 @@
 package  
 {
 	import com.fiftytwomoments.data.AppData;
+	import com.fiftytwomoments.services.MomentsData;
+	import com.fiftytwomoments.services.MomentsDataService;
 	import com.fiftytwomoments.type.AppConstants;
 	import com.fiftytwomoments.ui.About;
 	import com.fiftytwomoments.ui.Contacts;
@@ -8,9 +10,11 @@ package
 	import com.fiftytwomoments.ui.GetInvolved;
 	import com.fiftytwomoments.ui.SiteTitle;
 	import com.fiftytwomoments.ui.TopNav;
+	import com.greensock.loading.LoaderMax;
 	import com.greensock.TweenMax;
 	import com.nanaimostudio.utils.fluidLayout.FluidObject;
 	import com.nanaimostudio.utils.fluidLayout.SimpleFluidObject;
+	import com.nanaimostudio.utils.Sequencer;
 	import com.nanaimostudio.utils.TraceUtility;
 	import flash.display.Sprite;
 	import com.nanaimostudio.utils.SystemUsage;
@@ -20,6 +24,7 @@ package
 	import flash.display.StageScaleMode;
 	import flash.events.MouseEvent;
 	import org.casalib.display.CasaSprite;
+	import org.casalib.util.FlashVarUtil;
 	import org.casalib.util.StageReference;
 	import flash.events.Event;
 	
@@ -55,19 +60,11 @@ package
 			FluidObject.minStageWidth = stage.stageWidth * 0.8;
 			FluidObject.minStageHeight = stage.stageHeight * 0.85;
 			
-			// Parse flashvars
-			var currentWeek:int = 1;
-			if (this.loaderInfo.parameters != null && this.loaderInfo.parameters["currentWeek"] != null)
-			{
-				currentWeek = this.loaderInfo.parameters["currentWeek"];
-			}
-			
-			displayManager = new DisplayManager();
-			var appData:AppData = new AppData();
-			appData.currentWeek = currentWeek;
-			displayManager.data = appData;
-			displayManager.root = this;
-			displayManager.init();
+			var momentsDataService:MomentsDataService = new MomentsDataService();
+			var dataSequencer:Sequencer = new Sequencer();
+			dataSequencer.addEvent(momentsDataService.getAllMoments, null, momentsDataService, Event.COMPLETE);
+			dataSequencer.addEvent(onDataLoaded, [ momentsDataService ]);
+			dataSequencer.play();
 			
 			footerNav = new FooterNav();
 			footerNav.name = "footerNav";
@@ -97,12 +94,36 @@ package
 			
 			siteTitle.addEventListener(MouseEvent.CLICK, onSiteTitleClick);
 			topNav.addEventListener(MouseEvent.CLICK, onTopNavClicked);
-			displayManager.addEventListener(AppConstants.PHOTOCONTENT_CLICKED, onPhotoContentsClicked);
 			
 			new FluidObject(siteTitle, { x: 0, y: 0, offsetX: siteTitle.x, offsetY: 55 } );
 			new FluidObject(topNav, { x: 1, y: 0, offsetX: topNav.x - stage.stageWidth, offsetY:59 } ); 
 			new FluidObject(contacts, { x: 1, y: 1, offsetX: -contacts.width * 0.5 - 40, offsetY:contacts.y - stage.stageHeight } ); 
 			new FluidObject(footerNav, { x: 0, y: 1, offsetX:footerNav.x, offsetY: footerNav.y - stage.stageHeight } ); 
+		}
+		
+		private function onDataLoaded(momentsDataService:MomentsDataService):void 
+		{
+			TraceUtility.debug(this, "onDataLoaded");
+			
+			// Parse flashvars
+			var currentWeek:int = 1;
+			if (FlashVarUtil.hasKey("currentWeek"))
+			{
+				currentWeek = int(FlashVarUtil.getValue("currentWeek"));
+			}
+			
+			displayManager = new DisplayManager();
+			displayManager.addEventListener(AppConstants.PHOTOCONTENT_CLICKED, onPhotoContentsClicked);
+			
+			var appData:AppData = new AppData();
+			appData.momentsData = momentsDataService.returnData;
+			TraceUtility.debug(this, "momentsData: " + appData.momentsData);
+			appData.currentWeek = currentWeek;
+			displayManager.data = appData;
+			displayManager.root = this;
+			displayManager.init();
+			
+			TraceUtility.debug(this, "appData: "  + appData.getTotalNumberOfMoments());
 		}
 		
 		private function onTopNavClicked(e:MouseEvent):void 

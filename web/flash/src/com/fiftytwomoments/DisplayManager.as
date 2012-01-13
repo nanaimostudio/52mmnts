@@ -2,6 +2,8 @@ package com.fiftytwomoments
 {
 	import com.fiftytwomoments.data.AppData;
 	import com.fiftytwomoments.type.AppConstants;
+	import com.greensock.easing.Sine;
+	import com.greensock.TweenMax;
 	import com.nanaimostudio.utils.fluidLayout.FluidObject;
 	import com.nanaimostudio.utils.TraceUtility;
 	import flash.display.DisplayObjectContainer;
@@ -32,16 +34,27 @@ package com.fiftytwomoments
 				
 				contents.x = _root.stage.stageWidth * 0.5;
 				contents.y = _root.stage.stageHeight * 0.5 - 30;
+				contents.alpha = 0;
+				contents.visible = false;
 				_root.addChildAt(contents, 0);
 				
 				//TODO: Refactor event constant
 				contents.addEventListener(AppConstants.PHOTOCONTENT_CLICKED, onPhotoContentClicked);
 				
-				new FluidObject(contents, { x: 0.5, y: 0.5, offsetX: 0, offsetY:-30 });
+				if (_data != null)
+				{
+					contents.data = _data;
+				}
+				
+				contents.init();
+				
+				new FluidObject(contents, { x: 0.5, y: 0.5, offsetX: 0, offsetY: -30 } );
+				
+				TweenMax.to(contents, 1.0, { autoAlpha: 1, ease:Sine.easeInOut } );
 			}
 			catch (error:Error)
 			{
-				TraceUtility.debug(this, "init error: " + error.message);
+				TraceUtility.debug(this, "init error: " + error.message + " " + _data);
 			}
 		}
 		

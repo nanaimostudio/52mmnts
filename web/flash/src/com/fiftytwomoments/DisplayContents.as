@@ -1,6 +1,6 @@
 package com.fiftytwomoments 
 {
-	import com.fiftytwomoments.data.TeaserImage;
+	import com.fiftytwomoments.data.AppData;
 	import com.fiftytwomoments.type.AppConstants;
 	import com.fiftytwomoments.ui.About;
 	import com.fiftytwomoments.ui.AboutPage;
@@ -49,11 +49,11 @@ package com.fiftytwomoments
 		// current project week
 		private var _currentWeek:int;
 		
-		[Embed(source="/../assets/teaser.jpg")]
-		private var TeaserImage:Class;
-		
-		[Embed(source="/../assets/info.jpg")]
-		private var InfoImage:Class;
+		//[Embed(source="/../assets/teaser.jpg")]
+		//private var TeaserImage:Class;
+		//
+		//[Embed(source="/../assets/info.jpg")]
+		//private var InfoImage:Class;
 		
 		private var isScrolling:Boolean;
 		private var isTransitioning:Boolean;
@@ -72,13 +72,19 @@ package com.fiftytwomoments
 		// five pages, the middle page is 2
 		private var MIDDLE_SCROLL_PAGE_INDEX:int = int((5 - 1)/ 2);
 		
+		private var _data:AppData;
 		
 		public function DisplayContents() 
 		{
-			init();
+			
 		}
 		
-		private function init():void 
+		public function set data(value:AppData):void
+		{
+			_data = value;
+		}
+		
+		public function init():void 
 		{
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
@@ -95,22 +101,33 @@ package com.fiftytwomoments
 			getInvolvedPage.visible = false;
 			addChild(getInvolvedPage);
 			
+			var currentMomentPhoto:String = "http://52mmnts.me/static/web/html/" + _data.getMostCurrentMoment().photo;
+			getInvolvedPage.photoMoment.setPhoto(currentMomentPhoto, _data.currentWeek);
+			
 			viewStateInfoList = new Array();
 			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
-			viewStateInfoList[VIEWSTATE_LANDING].image = new TeaserImage();
+			viewStateInfoList[VIEWSTATE_LANDING].image = currentMomentPhoto;
 			
 			viewStateInfoList[VIEWSTATE_DETAILS] = new ViewStateInfo();
-			viewStateInfoList[VIEWSTATE_DETAILS].image = new InfoImage();
 			
-			currentWeek = weekInView = 1;
+			var paths:Array = _data.getMostCurrentMoment().photo.split("/");
+			var folder:String = paths[0];
+			var filename:String = "detail_" + paths[1];
+			viewStateInfoList[VIEWSTATE_DETAILS].image = "http://52mmnts.me/static/web/html/" + folder + "/" + filename;
+			
+			TraceUtility.debug(this, viewStateInfoList[VIEWSTATE_LANDING].image);
+			currentWeek = weekInView = _data.currentWeek;
 			setCurrentViewState(VIEWSTATE_LANDING);
+			
+			initCurrentView();
+			rootContainer.addChildAt(contentsContainer, 0);
+			
+			TraceUtility.debug(this, "init");
 		}
 		
 		private function onAddedToStage(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			initCurrentView();
-			rootContainer.addChildAt(contentsContainer, 0);
 			//rootContainer.addChildAt(thumbGrid, 1);
 		}
 		
@@ -312,9 +329,9 @@ package com.fiftytwomoments
 			}
 		}
 		
-		private function getViewStateImage():BitmapAsset 
+		private function getViewStateImage():String 
 		{
-			return viewStateInfoList[currentViewState].image;
+			return currentViewStateInfo.image;
 		}
 		
 		private function createPhotoContent():PhotoContent 
@@ -531,7 +548,7 @@ package com.fiftytwomoments
 			if (checkShowImageForWeek(week))
 			{
 				trace("content: " + content.name + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
-				content.setPhoto(getViewStateImage());
+				content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
 			}
 			else
 			{
@@ -558,29 +575,34 @@ package com.fiftytwomoments
 			}
 		}	
 		
+		public function get currentViewStateInfo():ViewStateInfo
+		{
+			return viewStateInfoList[currentViewState];
+		}
+		
 		public function get contentsContainer():CasaSprite 
 		{
-			return viewStateInfoList[currentViewState].contentsContainer;
+			return currentViewStateInfo.contentsContainer;
 		}
 		
 		public function set contentsContainer(value:CasaSprite):void
 		{
-			viewStateInfoList[currentViewState].contentsContainer = value;
+			currentViewStateInfo.contentsContainer = value;
 		}
 		
 		public function get thumbGrid():ThumbGrid 
 		{
-			return viewStateInfoList[currentViewState].thumbGrid;
+			return currentViewStateInfo.thumbGrid;
 		}
 		
 		public function set thumbGrid(value:ThumbGrid):void
 		{
-			viewStateInfoList[currentViewState].thumbGrid = value;
+			currentViewStateInfo.thumbGrid = value;
 		}
 		
 		public function get contents():Vector.<PhotoContent> 
 		{
-			return viewStateInfoList[currentViewState].contents;
+			return currentViewStateInfo.contents;
 		}
 		
 		public function set contents(value:Vector.<PhotoContent>):void
@@ -621,7 +643,7 @@ class ViewStateInfo
 	public var contentsContainer:CasaSprite;
 	public var thumbGrid:ThumbGrid;
 	public var contents:Vector.<PhotoContent>;
-	public var image:BitmapAsset;
+	public var image:String;
 	
 	public function ViewStateInfo()
 	{
