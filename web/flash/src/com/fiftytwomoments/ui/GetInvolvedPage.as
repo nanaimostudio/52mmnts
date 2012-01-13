@@ -1,5 +1,7 @@
 package com.fiftytwomoments.ui 
 {
+	import com.nanaimostudio.utils.TraceUtility;
+	import com.nanaimostudio.utils.URLNavigator;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -20,9 +22,8 @@ package com.fiftytwomoments.ui
 		
 		private function onSubmitClick(e:MouseEvent):void 
 		{
-			
+			TraceUtility.debug(this, "onSubmitClick");
+			URLNavigator.goto("http://52mmnts.me/submit/moment1", "_blank");
 		}
-		
 	}
-
 }

@@ -29,6 +29,9 @@ package com.fiftytwomoments
 			try
 			{
 				contents = new DisplayContents();
+				contents.name = "displayContents";
+				contents.mouseEnabled = false;
+				
 				contents.currentWeek = _data.currentWeek;
 				contents.weekInView = _data.currentWeek;
 				
@@ -50,7 +53,7 @@ package com.fiftytwomoments
 				
 				new FluidObject(contents, { x: 0.5, y: 0.5, offsetX: 0, offsetY: -30 } );
 				
-				TweenMax.to(contents, 1.0, { autoAlpha: 1, ease:Sine.easeInOut } );
+				TweenMax.to(contents, 2.0, { autoAlpha: 1, ease:Sine.easeInOut } );
 			}
 			catch (error:Error)
 			{

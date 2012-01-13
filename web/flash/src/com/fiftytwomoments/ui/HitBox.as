@@ -1,18 +1,1 @@
-package com.fiftytwomoments.ui 
-{
-	import flash.display.Sprite;
-	/**
-	 * ...
-	 * @author Boon Chew
-	 */
-	public class HitBox extends Sprite
-	{
-		public function HitBox() 
-		{
-			this.visible = true;
-			this.buttonMode = true;
-		}
-		
-	}
-
-}
+﻿package com.fiftytwomoments.ui {	import flash.display.Sprite;	import flash.display.InteractiveObject;		/**	 * ...	 * @author Boon Chew	 */	public class HitBox extends Sprite	{		public function HitBox() 		{			this.visible = true;			this.buttonMode = true;						if (this.parent is Sprite)			{				Sprite(this.parent).hitArea = this;			}			this.alpha = 0;		}			}}

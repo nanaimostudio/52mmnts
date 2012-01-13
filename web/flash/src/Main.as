@@ -53,12 +53,14 @@ package
 			
 			StageReference.setStage(this.stage);
 			
+			stage.addEventListener(MouseEvent.CLICK, onStageClick);
+			
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.dispatchEvent(new Event(Event.RESIZE));
 			
-			FluidObject.minStageWidth = stage.stageWidth * 0.8;
-			FluidObject.minStageHeight = stage.stageHeight * 0.85;
+			FluidObject.minStageWidth = 1024;
+			FluidObject.minStageHeight = 768;
 			
 			var momentsDataService:MomentsDataService = new MomentsDataService();
 			var dataSequencer:Sequencer = new Sequencer();
@@ -96,9 +98,14 @@ package
 			topNav.addEventListener(MouseEvent.CLICK, onTopNavClicked);
 			
 			new FluidObject(siteTitle, { x: 0, y: 0, offsetX: siteTitle.x, offsetY: 55 } );
-			new FluidObject(topNav, { x: 1, y: 0, offsetX: topNav.x - stage.stageWidth, offsetY:59 } ); 
-			new FluidObject(contacts, { x: 1, y: 1, offsetX: -contacts.width * 0.5 - 40, offsetY:contacts.y - stage.stageHeight } ); 
-			new FluidObject(footerNav, { x: 0, y: 1, offsetX:footerNav.x, offsetY: footerNav.y - stage.stageHeight } ); 
+			new FluidObject(topNav, { x: 1, y: 0, offsetX: -100, offsetY:59 } ); 
+			new FluidObject(contacts, { x: 1, y: 1, offsetX: -contacts.width * 0.5 - 40, offsetY: -20 } ); 
+			new FluidObject(footerNav, { x: 0, y: 1, offsetX: footerNav.x, offsetY: -20 } ); 
+		}
+		
+		private function onStageClick(e:MouseEvent):void 
+		{
+			TraceUtility.debug(this, "stage click: " + e.target + " " + e.target.name);
 		}
 		
 		private function onDataLoaded(momentsDataService:MomentsDataService):void 

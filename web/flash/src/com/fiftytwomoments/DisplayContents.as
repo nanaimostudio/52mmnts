@@ -4,6 +4,7 @@ package com.fiftytwomoments
 	import com.fiftytwomoments.type.AppConstants;
 	import com.fiftytwomoments.ui.About;
 	import com.fiftytwomoments.ui.AboutPage;
+	import com.fiftytwomoments.ui.BackToMain;
 	import com.fiftytwomoments.ui.GetInvolvedPage;
 	import com.fiftytwomoments.ui.LeftArrow;
 	import com.fiftytwomoments.ui.PhotoContent;
@@ -13,6 +14,7 @@ package com.fiftytwomoments
 	import com.greensock.TimelineMax;
 	import com.greensock.TweenMax;
 	import com.nanaimostudio.utils.TraceUtility;
+	import com.nanaimostudio.utils.URLNavigator;
 	import flash.display.InteractiveObject;
 	import flash.display.LoaderInfo;
 	import flash.display.Sprite;
@@ -89,6 +91,8 @@ package com.fiftytwomoments
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			rootContainer = new CasaSprite();
+			rootContainer.name = "rootContainer";
+			rootContainer.mouseEnabled = false;
 			addChildAt(rootContainer, 0);
 			
 			aboutPage = new AboutPage();
@@ -101,22 +105,24 @@ package com.fiftytwomoments
 			getInvolvedPage.visible = false;
 			addChild(getInvolvedPage);
 			
+			currentWeek = weekInView = _data.currentWeek;
+			
 			var currentMomentPhoto:String = "http://52mmnts.me/static/web/html/" + _data.getMostCurrentMoment().photo;
-			getInvolvedPage.photoMoment.setPhoto(currentMomentPhoto, _data.currentWeek);
+			getInvolvedPage.photoMoment.setPhoto(currentMomentPhoto, currentWeek);
 			
 			viewStateInfoList = new Array();
 			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
 			viewStateInfoList[VIEWSTATE_LANDING].image = currentMomentPhoto;
 			
-			viewStateInfoList[VIEWSTATE_DETAILS] = new ViewStateInfo();
-			
 			var paths:Array = _data.getMostCurrentMoment().photo.split("/");
 			var folder:String = paths[0];
 			var filename:String = "detail_" + paths[1];
+			
+			viewStateInfoList[VIEWSTATE_DETAILS] = new ViewStateInfo();
 			viewStateInfoList[VIEWSTATE_DETAILS].image = "http://52mmnts.me/static/web/html/" + folder + "/" + filename;
 			
 			TraceUtility.debug(this, viewStateInfoList[VIEWSTATE_LANDING].image);
-			currentWeek = weekInView = _data.currentWeek;
+			
 			setCurrentViewState(VIEWSTATE_LANDING);
 			
 			initCurrentView();
@@ -249,6 +255,7 @@ package com.fiftytwomoments
 		
 			contentsContainer = new CasaSprite();
 			contentsContainer.name = "contentsContainer";
+			contentsContainer.mouseEnabled = false;
 			initContents();
 			
 			leftArrow.buttonMode = true;
@@ -275,6 +282,24 @@ package com.fiftytwomoments
 			contents = new Vector.<PhotoContent>();
 			var dummyContent:PhotoContent = new PhotoContent();
 			stage.stageWidth - dummyContent.width  - (MAX_CONTENTS - 1) * CONTENT_GAP;
+			
+			// Add back to main if it is in detail view
+			if (currentViewState == VIEWSTATE_DETAILS)
+			{
+				var backToMain:BackToMain = new BackToMain();
+				backToMain.name = "backToMain";
+				backToMain.buttonMode = true;
+				backToMain.mouseEnabled = true;
+				backToMain.alpha = 0;
+				backToMain.visible = false;
+				backToMain.addEventListener(MouseEvent.CLICK, onBackToMainClick);
+				backToMain.x = -dummyContent.width * 0.5 + 10;
+				backToMain.y = -dummyContent.height * 0.5 + 90;
+				addChild(backToMain);
+				
+				TweenMax.to(backToMain, 0.4, { autoAlpha: 1, delay: 0.6, ease:Sine.easeInOut } );
+			}
+				
 			dummyContent = null;
 			
 			// Total five photos for optimal scrolling (and minimum memory usage)
@@ -308,19 +333,32 @@ package com.fiftytwomoments
 			}
 		}
 		
+		private function onBackToMainClick(e:MouseEvent):void 
+		{
+			TraceUtility.debug(this, "onBackToMainClick " + e.target);
+			TweenMax.to(e.target, 0.2, { autoAlpha: 0, onComplete: onBackToMainFadeOut, onCompleteParams: [ e.target ] } );
+			toggleLandingDetailView();
+		}
+		
+		private function onBackToMainFadeOut(backToMain:BackToMain):void 
+		{
+			backToMain.parent.removeChild(backToMain);
+			backToMain = null;
+		}
+		
 		private function checkShowImageForWeek(weekIndex:int):Boolean 
 		{
 			// on landing page, only shows image if you are in the current week
 			if (currentViewState == VIEWSTATE_LANDING)
 			{
 				trace("currentWeek: " + currentWeek + " weekIndex: " + weekIndex);
-				return weekIndex == currentWeek;
+				return weekIndex == currentWeek || weekIndex == currentWeek + 1;
 			}
 			else if (currentViewState == VIEWSTATE_DETAILS)
 			{
 				trace("currentViewState: " + VIEWSTATE_DETAILS);
 				//TODO: on details page, show info image all the time until server-integration is done
-				return weekIndex == currentWeek;
+				return weekIndex == currentWeek || weekIndex == currentWeek + 1;
 			}
 			else
 			{
@@ -388,7 +426,16 @@ package com.fiftytwomoments
 		// PhotoContent Interaction Delegate Method
 		public function onPhotoContentClicked(photoContent:PhotoContent = null):void
 		{
-			toggleLandingDetailView();
+			TraceUtility.debug(this, "onPhotoContentClicked");
+			if (currentViewState == VIEWSTATE_LANDING)
+			{
+				toggleLandingDetailView();
+			}
+			else
+			{
+				//Goto submit page
+				URLNavigator.goto("http://52mmnts.me/submit/moment1", "_blank");
+			}
 			dispatchEvent(new Event(AppConstants.PHOTOCONTENT_CLICKED));
 		}
 		
@@ -480,7 +527,7 @@ package com.fiftytwomoments
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
-			if (weekInView == 1) return;
+			if (weekInView == currentWeek + 1) return;
 			
 			scroll( -1);
 		}
@@ -547,8 +594,16 @@ package com.fiftytwomoments
 		{
 			if (checkShowImageForWeek(week))
 			{
-				trace("content: " + content.name + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
-				content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
+				if (week == currentWeek)
+				{
+					trace("content: " + content.name + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+					content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
+				}
+				else
+				{
+					//TODO: Make it server-side driven
+					content.setPhoto("http://52mmnts.me/static/web/html/featured_photos/moment2.jpg", weekInView, "", false);
+				}
 			}
 			else
 			{
