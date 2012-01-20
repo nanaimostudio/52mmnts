@@ -137,9 +137,7 @@ package com.fiftytwomoments
 			
 			// The detail photo for the current week accepting submissions is assumed to have a prefix of detail_
 			viewStateInfoList[VIEWSTATE_DETAILS] = new ViewStateInfo();
-			viewStateInfoList[VIEWSTATE_DETAILS].image = "http://52mmnts.me/static/web/html/" + folder + "/" + filename;
-			
-			TraceUtility.debug(this, viewStateInfoList[VIEWSTATE_LANDING].image);
+			viewStateInfoList[VIEWSTATE_DETAILS].image = folder + "/" + filename;
 			
 			setCurrentViewState(VIEWSTATE_LANDING);
 			
@@ -180,6 +178,7 @@ package com.fiftytwomoments
 		
 		public function showGetInvolved():void
 		{
+			TraceUtility.debug(this, "showGetInvolved");
 			if (isTransitioning) return;
 			if (isScrolling) return;
 			if (isInitInProgress) return;
@@ -288,9 +287,22 @@ package com.fiftytwomoments
 			setWeekInView(weekInView);
 			
 			//TODO: Remove when we get more contents
-			leftArrow.visible = true;
-			rightArrow.visible = true;
-			thumbGrid.visible = false;
+			//leftArrow.visible = true;
+			//rightArrow.visible = true;
+			//thumbGrid.visible = false;
+			
+			//if (weekInView >= currentWeek && currentViewState == VIEWSTATE_DETAILS)
+			//{
+				//leftArrow.visible = false;
+				//rightArrow.visible = false;
+				//thumbGrid.visible = false;
+			//}
+			//else
+			{
+				leftArrow.visible = true;
+				rightArrow.visible = true;
+				thumbGrid.visible = false;
+			}
 		}
 		
 		private function showArrowNav(value:Boolean, hideBackButton:Boolean = false):void
@@ -353,20 +365,24 @@ package com.fiftytwomoments
 				}
 				else
 				{
+					// If it is the most current moment, only show submit and nothing else
+					if (weekInView >= currentWeek && index != 0) continue;
+					
 					var photoIndex:int = normalizePhotoIndex(photoInView + index);
 					TraceUtility.debug(this, "photoIndex: " + photoIndex + " index: " + index + " photoInView: " + photoInView);
 					content.name = "submitted" + photoIndex;
 					content.submittedIndex = photoIndex;
+					TraceUtility.debug(this, "updateSubmittedPhotoContentForWeek " + content.name);
 					updateSubmittedPhotoContentForWeek(content, weekIndex, photoIndex);
 					
-					if (photoIndex < 0)
-					{
-						content.visible = false;
-					}
-					else if (photoIndex > numberOfPhotosForWeek(weekInView) - 1)
-					{
-						content.visible = false;
-					}
+					//if (photoIndex < 0)
+					//{
+						//content.visible = false;
+					//}
+					//else if (photoIndex > numberOfPhotosForWeek(weekInView) - 1)
+					//{
+						//content.visible = false;
+					//}
 					
 					if (photoIndex == photoInView)
 					{
@@ -523,8 +539,14 @@ package com.fiftytwomoments
 			{
 				//Goto get involved
 				//URLNavigator.goto("http://52mmnts.me/submit/moment1", "_blank");
-				//showGetInvolved();
-				photoContent.toggleDetails();
+				if (weekInView < currentWeek)
+				{
+					photoContent.toggleDetails();
+				}
+				else
+				{
+					showGetInvolved();
+				}
 			}
 			dispatchEvent(new Event(AppConstants.PHOTOCONTENT_CLICKED));
 		}
@@ -628,6 +650,7 @@ package com.fiftytwomoments
 			}
 			else
 			{
+				if (weekInView >= currentWeek) return;
 				scrollSubmittedMoments(+1);
 			}
 		}
@@ -643,6 +666,7 @@ package com.fiftytwomoments
 			}
 			else
 			{
+				if (weekInView >= currentWeek) return;
 				scrollSubmittedMoments(-1);
 			}
 		}
@@ -800,7 +824,7 @@ package com.fiftytwomoments
 						if (featuredMoment != null)
 						{
 							trace("setFeaturedPhoto: " + featuredMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
-							content.setFeaturedPhoto(featuredMoment.photo, weekInView, featuredMoment.description);
+							content.setFeaturedPhoto(featuredMoment.photo, week, featuredMoment.description);
 						}
 					}
 				}
@@ -816,17 +840,26 @@ package com.fiftytwomoments
 		
 		private function updateSubmittedPhotoContentForWeek(content:PhotoContent, week:int, photoIndex:int):void 
 		{
-			TraceUtility.debug(this, "updateSubmittedPhotoContentForWeek: " + week + " photoIndex: " + photoIndex);
+			TraceUtility.debug(this, "updateSubmittedPhotoContentForWeek: " + week + " photoIndex: " + photoIndex + " - weekInView: " + weekInView + " currentWeek: " + currentWeek);
 			if (currentViewState == VIEWSTATE_DETAILS)
 			{
-				if (photoIndex >= 0 && photoIndex < numberOfPhotosForWeek(weekInView))
+				var submittedMoment:SubmittedMoment;
+				if (weekInView >= currentWeek)
+				{
+					// Current moment - show instructions
+					TraceUtility.debug(this, "set submit photo " + content);
+					submittedMoment = new SubmittedMoment();
+					submittedMoment.photoThumbnail = viewStateInfoList[VIEWSTATE_DETAILS].image;
+					content.setSubmittedPhoto(submittedMoment, weekInView, true);
+				}
+				else if (photoIndex >= 0 && photoIndex < numberOfPhotosForWeek(weekInView))
 				{
 					//content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
 					TraceUtility.debug(this, "photoIndex: " + photoIndex);
 					var submittedMomentDataList:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(weekInView - 1);
 					if (submittedMomentDataList == null) return;
 					
-					var submittedMoment:SubmittedMoment = submittedMomentDataList[photoIndex];
+					submittedMoment = submittedMomentDataList[photoIndex];
 					TraceUtility.debug(this, "submitted: " + submittedMoment);
 					if (submittedMoment != null)
 					{
