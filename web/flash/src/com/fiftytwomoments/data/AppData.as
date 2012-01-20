@@ -22,7 +22,7 @@ package com.fiftytwomoments.data
 		
 		public function getTotalNumberOfMoments():int
 		{
-			return (momentsData && momentsData is Array) ? (momentsData as Array).length : 1;
+			return _momentsData != null ? _momentsData.length : 0;
 		}
 		
 		public function getMomentsDataForWeek(week:int):FeaturedMoment
@@ -35,6 +35,9 @@ package com.fiftytwomoments.data
 		
 		public function getMostCurrentMoment():FeaturedMoment
 		{
+			TraceUtility.debug(this, "getMostCurrentMoment: " + getTotalNumberOfMoments());
+			if (getTotalNumberOfMoments() == 0) return null;
+			
 			return momentsData[getTotalNumberOfMoments() - 1];
 		}
 		

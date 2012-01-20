@@ -122,8 +122,10 @@ package com.fiftytwomoments
 			// always start at photo #1 when in VIEWSTATE_DETAILED
 			photoInView = 0;
 			
-			var currentMomentPhoto:String = _data.getMostCurrentMoment().photo;
-			getInvolvedPage.photoMoment.setFeaturedPhoto(currentMomentPhoto, currentWeek);
+			var featuredMoment:FeaturedMoment = _data.getMostCurrentMoment();
+			var currentMomentPhoto:String = featuredMoment.photo;
+			getInvolvedPage.photoMoment.setFeaturedPhoto(currentMomentPhoto, currentWeek, featuredMoment.description);
+			getInvolvedPage.setCurrentWeek(currentWeek);
 			
 			viewStateInfoList = new Array();
 			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
@@ -671,9 +673,9 @@ package com.fiftytwomoments
 		
 		private function scrollSubmittedMoments(direction:int):void
 		{
-			TraceUtility.debug(this, "scrollSubmittedMoments");
-			if (photoInView <= 0) return;
-			if (photoInView >= numberOfPhotosForWeek(weekInView)) return;
+			TraceUtility.debug(this, "scrollSubmittedMoments: numberOfPhotosForWeek: " + numberOfPhotosForWeek(weekInView) + " photoInView: " + photoInView);
+			//if (photoInView < 0) return;
+			//if (photoInView >= numberOfPhotosForWeek(weekInView)) return;
 			
 			var scrollTime:Number = 0.5;
 			
@@ -824,12 +826,12 @@ package com.fiftytwomoments
 					var submittedMomentDataList:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(weekInView - 1);
 					if (submittedMomentDataList == null) return;
 					
-					var submitted:SubmittedMoment = submittedMomentDataList[photoIndex];
-					TraceUtility.debug(this, "submitted: " + submitted);
-					if (submitted != null)
+					var submittedMoment:SubmittedMoment = submittedMomentDataList[photoIndex];
+					TraceUtility.debug(this, "submitted: " + submittedMoment);
+					if (submittedMoment != null)
 					{
-						trace("setSubmittedPhoto: " + submitted.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
-						content.setFeaturedPhoto(submitted.photoThumbnail, weekInView, "", false);
+						trace("setSubmittedPhoto: " + submittedMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+						content.setSubmittedPhoto(submittedMoment, weekInView);
 					}
 				}
 				else

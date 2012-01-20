@@ -12,6 +12,7 @@ package com.fiftytwomoments.ui
 		public var author:TextField;
 		public var location:TextField;
 		public var description:TextField;
+		public var photoThumb:Sprite;
 		
 		public function PhotoDetails()
 		{
