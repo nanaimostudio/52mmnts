@@ -13,9 +13,11 @@ package com.fiftytwomoments.ui
 	{
 		public var photoMoment:PhotoContent;
 		public var submitButton:Sprite;
+		public var currentWeek:int;
 		
 		public function GetInvolvedPage() 
 		{
+			currentWeek = 1;
 			submitButton.buttonMode = true;
 			submitButton.addEventListener(MouseEvent.CLICK, onSubmitClick);
 		}
@@ -23,7 +25,7 @@ package com.fiftytwomoments.ui
 		private function onSubmitClick(e:MouseEvent):void 
 		{
 			TraceUtility.debug(this, "onSubmitClick");
-			URLNavigator.goto("http://52mmnts.me/submit/moment1", "_blank");
+			URLNavigator.goto("http://52mmnts.me/submit/moment" + String(currentWeek), "_blank");
 		}
 	}
 }

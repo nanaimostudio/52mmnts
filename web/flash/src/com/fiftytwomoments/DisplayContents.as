@@ -1,6 +1,8 @@
 package com.fiftytwomoments 
 {
 	import com.fiftytwomoments.data.AppData;
+	import com.fiftytwomoments.data.FeaturedMoment;
+	import com.fiftytwomoments.data.SubmittedMoment;
 	import com.fiftytwomoments.type.AppConstants;
 	import com.fiftytwomoments.ui.About;
 	import com.fiftytwomoments.ui.AboutPage;
@@ -75,6 +77,9 @@ package com.fiftytwomoments
 		private var MIDDLE_SCROLL_PAGE_INDEX:int = int((5 - 1)/ 2);
 		
 		private var _data:AppData;
+		private var hasTransitionedToDetails:Boolean;
+		private var backToMain:BackToMain;
+		private var isInitInProgress:Boolean;
 		
 		public function DisplayContents() 
 		{
@@ -96,18 +101,23 @@ package com.fiftytwomoments
 			addChildAt(rootContainer, 0);
 			
 			aboutPage = new AboutPage();
+			aboutPage.y += 50;
 			aboutPage.alpha = 0;
 			aboutPage.visible = false;
 			addChild(aboutPage);
 			
 			getInvolvedPage = new GetInvolvedPage();
+			getInvolvedPage.currentWeek = _data.currentWeek;
+			
+			getInvolvedPage.y += 50;
+			//getInvolvedPage.scaleX = aboutPage.scaleY = 0.9;
 			getInvolvedPage.alpha = 0;
 			getInvolvedPage.visible = false;
 			addChild(getInvolvedPage);
 			
 			currentWeek = weekInView = _data.currentWeek;
 			
-			var currentMomentPhoto:String = "http://52mmnts.me/static/web/html/" + _data.getMostCurrentMoment().photo;
+			var currentMomentPhoto:String = _data.getMostCurrentMoment().photo;
 			getInvolvedPage.photoMoment.setPhoto(currentMomentPhoto, currentWeek);
 			
 			viewStateInfoList = new Array();
@@ -118,6 +128,7 @@ package com.fiftytwomoments
 			var folder:String = paths[0];
 			var filename:String = "detail_" + paths[1];
 			
+			// The detail photo for the current week accepting submissions is assumed to have a prefix of detail_
 			viewStateInfoList[VIEWSTATE_DETAILS] = new ViewStateInfo();
 			viewStateInfoList[VIEWSTATE_DETAILS].image = "http://52mmnts.me/static/web/html/" + folder + "/" + filename;
 			
@@ -141,6 +152,7 @@ package com.fiftytwomoments
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
+			if (isInitInProgress) return;
 			
 			showArrowNav(false);
 			
@@ -163,6 +175,7 @@ package com.fiftytwomoments
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
+			if (isInitInProgress) return;
 			
 			showArrowNav(false);
 			
@@ -227,7 +240,7 @@ package com.fiftytwomoments
 				}
 			}
 			
-			showArrowNav(true);
+			showArrowNav(true, true);
 		}
 		
 		private function getCurrentViewState():String
@@ -244,6 +257,8 @@ package com.fiftytwomoments
 		private function initCurrentView():void 
 		{
 			trace("init current view");
+			isInitInProgress = true;
+			
 			thumbGrid = new ThumbGrid();
 			thumbGrid.name = "thumbGrid";
 			thumbGrid.interactionDelegate = this;
@@ -271,10 +286,29 @@ package com.fiftytwomoments
 			thumbGrid.visible = false;
 		}
 		
-		private function showArrowNav(value:Boolean):void
+		private function showArrowNav(value:Boolean, hideBackButton:Boolean = false):void
 		{
+			TraceUtility.debug(this, "showArrowNav: " + value + " currentViewState: " + currentViewState);
 			leftArrow.visible = value;
 			rightArrow.visible = value;
+			
+			if (backToMain)
+			{
+				if (value && currentViewState == VIEWSTATE_DETAILS)
+				{
+					if (!hideBackButton && !backToMain.visible)
+					{
+						TweenMax.to(backToMain, 0.4, { autoAlpha: 1, delay: 0.6, ease:Sine.easeInOut } );
+					}
+				}
+				else
+				{
+					if (backToMain.visible)
+					{
+						backToMain.visible = false;
+					}
+				}
+			}
 		}
 		
 		private function initContents():void 
@@ -282,25 +316,6 @@ package com.fiftytwomoments
 			contents = new Vector.<PhotoContent>();
 			var dummyContent:PhotoContent = new PhotoContent();
 			stage.stageWidth - dummyContent.width  - (MAX_CONTENTS - 1) * CONTENT_GAP;
-			
-			// Add back to main if it is in detail view
-			if (currentViewState == VIEWSTATE_DETAILS)
-			{
-				var backToMain:BackToMain = new BackToMain();
-				backToMain.name = "backToMain";
-				backToMain.buttonMode = true;
-				backToMain.mouseEnabled = true;
-				backToMain.alpha = 0;
-				backToMain.visible = false;
-				backToMain.addEventListener(MouseEvent.CLICK, onBackToMainClick);
-				backToMain.x = -dummyContent.width * 0.5 + 10;
-				backToMain.y = -dummyContent.height * 0.5 + 90;
-				addChild(backToMain);
-				
-				TweenMax.to(backToMain, 0.4, { autoAlpha: 1, delay: 0.6, ease:Sine.easeInOut } );
-			}
-				
-			dummyContent = null;
 			
 			// Total five photos for optimal scrolling (and minimum memory usage)
 			// Current week is always the third photo in the vector
@@ -314,6 +329,7 @@ package com.fiftytwomoments
 				content.week = weekIndex;
 				content.name = "content" + weekIndex;
 				content.x = 765 * index;
+				content.y += 30;
 				
 				//TODO: From server-side
 				// In the beginning, the current view (at index 0) is the current week so it always has a photo
@@ -331,19 +347,57 @@ package com.fiftytwomoments
 				//}
 				contents.push(content);
 			}
+			
+			
+			// Add back to main if it is in detail view
+			if (currentViewState == VIEWSTATE_DETAILS)
+			{
+				if (!backToMain)
+				{
+					backToMain = new BackToMain();
+				
+					backToMain.name = "backToMain";
+					backToMain.buttonMode = true;
+					backToMain.mouseEnabled = true;
+					backToMain.alpha = 0;
+					backToMain.visible = false;
+					backToMain.addEventListener(MouseEvent.CLICK, onBackToMainClick);
+					backToMain.x = -dummyContent.width * 0.5 + 10;
+					backToMain.y = -dummyContent.height * 0.5 + 70;
+					addChild(backToMain);
+				}
+				
+				TweenMax.to(backToMain, 0.4, { autoAlpha: 1, delay: 0.6, ease:Sine.easeInOut, onComplete:initContentsDone } );
+			}
+			else
+			{
+				isInitInProgress = false;
+			}
+			
+			dummyContent = null;
+		}
+		
+		private function initContentsDone():void 
+		{
+			isInitInProgress = false;
 		}
 		
 		private function onBackToMainClick(e:MouseEvent):void 
 		{
 			TraceUtility.debug(this, "onBackToMainClick " + e.target);
-			TweenMax.to(e.target, 0.2, { autoAlpha: 0, onComplete: onBackToMainFadeOut, onCompleteParams: [ e.target ] } );
+			//TweenMax.to(e.target, 0.2, { autoAlpha: 0, onComplete: onBackToMainFadeOut, onCompleteParams: [ e.target ] } );
 			toggleLandingDetailView();
 		}
 		
 		private function onBackToMainFadeOut(backToMain:BackToMain):void 
 		{
-			backToMain.parent.removeChild(backToMain);
-			backToMain = null;
+			//backToMain.parent.removeChild(backToMain);
+			//if (backToMain.parent != null)
+			//{
+				//backToMain.parent.removeChild(backToMain);
+			//}
+			//
+			//backToMain = null;
 		}
 		
 		private function checkShowImageForWeek(weekIndex:int):Boolean 
@@ -352,7 +406,7 @@ package com.fiftytwomoments
 			if (currentViewState == VIEWSTATE_LANDING)
 			{
 				trace("currentWeek: " + currentWeek + " weekIndex: " + weekIndex);
-				return weekIndex == currentWeek || weekIndex == currentWeek + 1;
+				return weekIndex <= currentWeek || weekIndex == currentWeek + 1;
 			}
 			else if (currentViewState == VIEWSTATE_DETAILS)
 			{
@@ -433,8 +487,10 @@ package com.fiftytwomoments
 			}
 			else
 			{
-				//Goto submit page
-				URLNavigator.goto("http://52mmnts.me/submit/moment1", "_blank");
+				//Goto get involved
+				//URLNavigator.goto("http://52mmnts.me/submit/moment1", "_blank");
+				//showGetInvolved();
+				photoContent.toggleDetails();
 			}
 			dispatchEvent(new Event(AppConstants.PHOTOCONTENT_CLICKED));
 		}
@@ -443,6 +499,7 @@ package com.fiftytwomoments
 		{
 			if (isScrolling) return;
 			if (isTransitioning) return;
+			if (isInitInProgress) return;
 			
 			isTransitioning = true;
 			
@@ -462,6 +519,13 @@ package com.fiftytwomoments
 				// Details coming into view
 				setCurrentViewState(VIEWSTATE_DETAILS);
 				initCurrentView();
+				
+				//TODO: Quick hack to let the 2nd level image load if it is loaded for the first time
+				if (!hasTransitionedToDetails)
+				{
+					hasTransitionedToDetails = true;
+					waitForThumbGridFadeOutDelay += 1.0;
+				}
 				
 				contentsContainer.y = stage.stageHeight;
 				rootContainer.addChildAt(contentsContainer, 0);
@@ -489,6 +553,11 @@ package com.fiftytwomoments
 				
 				TweenMax.fromTo(contentsContainer, contentsScrollTime, { y: -height * 1.5 }, { y: 0, ease:Sine.easeInOut, delay: waitForThumbGridFadeOutDelay } );
 				TweenMax.to(thumbGrid, thumbGridFadeInTime, { autoAlpha: 1, ease:Sine.easeInOut, delay: thumbGridFadeInDelay } );
+				
+				if (backToMain.visible)
+				{
+					TweenMax.to(backToMain, 0.2, { autoAlpha: 0, ease:Sine.easeInOut } );
+				}
 			}
 			
 			//TweenMax.delayedCall(thumbGridFadeInDelay + thumbGridFadeInTime, onSwitchViewComplete);
@@ -592,18 +661,43 @@ package com.fiftytwomoments
 		
 		private function updatePhotoContentForWeek(content:PhotoContent, week:int):void 
 		{
+			TraceUtility.debug(this, "updatePhotoContentForWeek " + checkShowImageForWeek(week));
 			if (checkShowImageForWeek(week))
 			{
-				if (week == currentWeek)
+				// show coming soon message
+				if (week == currentWeek + 1)
 				{
-					trace("content: " + content.name + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
-					content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
+					var weekValue:String = "";
+					if (week < 10)
+					{
+						weekValue += "0";
+					}
+					
+					weekValue += String(week);
+					content.setText("moment " + weekValue + " is coming " + _data.comingSoonDate);
 				}
 				else
 				{
-					//TODO: Make it server-side driven
-					content.setPhoto("http://52mmnts.me/static/web/html/featured_photos/moment2.jpg", weekInView, "", false);
+					//content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
+					TraceUtility.debug(this, "getMomentsDataForWeek " + week + " - " +  _data.getMomentsDataForWeek(week));
+					var featuredMoment:FeaturedMoment = _data.getMomentsDataForWeek(week);
+					if (featuredMoment != null)
+					{
+						trace("setPhoto: " + featuredMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+						content.setPhoto(featuredMoment.photo, weekInView, featuredMoment.description);
+					}
 				}
+				//else
+				//{
+					//TODO: Make it server-side driven
+					//var submittedMomentList:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(weekInView);
+					//if (submittedMomentList != null)
+					//{
+						//content.setPhoto(submittedMomentList[0].photo, weekInView);
+					//}
+					//
+					//content.setPhoto("http://52mmnts.me/static/web/html/featured_photos/moment2.jpg", weekInView, "", false);
+				//}
 			}
 			else
 			{

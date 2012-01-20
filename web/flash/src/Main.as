@@ -40,6 +40,7 @@ package
 		private var topNavRightPadding:int;
 		private var footerNav:FooterNav;
 		private var contacts:Contacts;
+		private var appData:AppData;
 		
 		public function Main() 
 		{
@@ -61,13 +62,7 @@ package
 			
 			FluidObject.minStageWidth = 1024;
 			FluidObject.minStageHeight = 768;
-			
-			var momentsDataService:MomentsDataService = new MomentsDataService();
-			var dataSequencer:Sequencer = new Sequencer();
-			dataSequencer.addEvent(momentsDataService.getAllMoments, null, momentsDataService, Event.COMPLETE);
-			dataSequencer.addEvent(onDataLoaded, [ momentsDataService ]);
-			dataSequencer.play();
-			
+
 			footerNav = new FooterNav();
 			footerNav.name = "footerNav";
 			footerNav.x = 280;
@@ -82,25 +77,52 @@ package
 			contacts.alpha = 0.25;
 			addChild(contacts);
 			
+			var siteNavYOffset:int = 55 - 20;
 			siteTitle = new SiteTitle();
 			siteTitle.name = "siteTitle";
 			siteTitle.x = 131;
-			siteTitle.y = 55;
+			siteTitle.y = siteNavYOffset;
 			addChild(siteTitle);
 			
+			var topNavYOffset:int = 59 - 20;
 			topNav = new TopNav();
 			topNav.name = "topNav";
 			topNav.x = 926;
-			topNav.y = 59;
+			topNav.y = topNavYOffset;
 			addChild(topNav);
 			
 			siteTitle.addEventListener(MouseEvent.CLICK, onSiteTitleClick);
 			topNav.addEventListener(MouseEvent.CLICK, onTopNavClicked);
 			
-			new FluidObject(siteTitle, { x: 0, y: 0, offsetX: siteTitle.x, offsetY: 55 } );
-			new FluidObject(topNav, { x: 1, y: 0, offsetX: -100, offsetY:59 } ); 
+			new FluidObject(siteTitle, { x: 0, y: 0, offsetX: siteTitle.x, offsetY: siteNavYOffset } );
+			new FluidObject(topNav, { x: 1, y: 0, offsetX: -100, offsetY:topNavYOffset } ); 
 			new FluidObject(contacts, { x: 1, y: 1, offsetX: -contacts.width * 0.5 - 40, offsetY: -20 } ); 
-			new FluidObject(footerNav, { x: 0, y: 1, offsetX: footerNav.x, offsetY: -20 } ); 
+			new FluidObject(footerNav, { x: 0, y: 1, offsetX: footerNav.x, offsetY: -20 } );
+			
+			appData = new AppData();
+			
+			// Parse flashvars
+			// for testing
+			appData.currentWeek = 2;
+			appData.comingSoonDate = "Jan 27";
+			if (FlashVarUtil.hasKey("currentWeek"))
+			{
+				appData.currentWeek = int(FlashVarUtil.getValue("currentWeek"));
+			}
+			
+			if (FlashVarUtil.hasKey("comingSoonDate"))
+			{
+				appData.comingSoonDate = String(FlashVarUtil.getValue("comingSoonDate"));
+			}
+			
+			var momentsDataService:MomentsDataService = new MomentsDataService();
+			var dataSequencer:Sequencer = new Sequencer();
+			dataSequencer.addEvent(momentsDataService.getAllMoments, null, momentsDataService, Event.COMPLETE);
+			dataSequencer.addEvent(onAllMomentsLoaded, [ momentsDataService ], this, Event.COMPLETE);
+			dataSequencer.addEvent(momentsDataService.getAllSubmittedMoments, [ appData.currentWeek ], momentsDataService, "AllSubmittedDataComplete");
+			dataSequencer.addEvent(onAllSubmittedLoaded, [ momentsDataService ], this, Event.COMPLETE);
+			dataSequencer.addEvent(run);
+			dataSequencer.play();
 		}
 		
 		private function onStageClick(e:MouseEvent):void 
@@ -108,24 +130,27 @@ package
 			TraceUtility.debug(this, "stage click: " + e.target + " " + e.target.name);
 		}
 		
-		private function onDataLoaded(momentsDataService:MomentsDataService):void 
+		private function onAllMomentsLoaded(momentsDataService:MomentsDataService):void 
 		{
-			TraceUtility.debug(this, "onDataLoaded");
-			
-			// Parse flashvars
-			var currentWeek:int = 1;
-			if (FlashVarUtil.hasKey("currentWeek"))
-			{
-				currentWeek = int(FlashVarUtil.getValue("currentWeek"));
-			}
-			
+			TraceUtility.debug(this, "onAllMomentsLoaded");
+			appData.momentsData = momentsDataService.momentsData;
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		private function onAllSubmittedLoaded(momentsDataService:MomentsDataService):void 
+		{
+			TraceUtility.debug(this, "onAllSubmittedLoaded");
+			//appData.submittedMomentsData = momentsDataService.returnData;
+			appData.submittedMomentDataList = momentsDataService.submittedMomentsDataList;
+			dispatchEvent(new Event(Event.COMPLETE));
+		}
+		
+		private function run():void 
+		{
 			displayManager = new DisplayManager();
 			displayManager.addEventListener(AppConstants.PHOTOCONTENT_CLICKED, onPhotoContentsClicked);
 			
-			var appData:AppData = new AppData();
-			appData.momentsData = momentsDataService.returnData;
 			TraceUtility.debug(this, "momentsData: " + appData.momentsData);
-			appData.currentWeek = currentWeek;
 			displayManager.data = appData;
 			displayManager.root = this;
 			displayManager.init();
@@ -135,6 +160,8 @@ package
 		
 		private function onTopNavClicked(e:MouseEvent):void 
 		{
+			if (displayManager == null) return;
+			
 			if (e.target is About)
 			{
 				//trace("isAboutSelected: " + topNav.isAboutSelected);

@@ -50,10 +50,9 @@ package com.fiftytwomoments
 				}
 				
 				contents.init();
-				
 				new FluidObject(contents, { x: 0.5, y: 0.5, offsetX: 0, offsetY: -30 } );
 				
-				TweenMax.to(contents, 2.0, { autoAlpha: 1, ease:Sine.easeInOut } );
+				TweenMax.to(contents, 2.5, { autoAlpha: 1, ease:Sine.easeInOut } );
 			}
 			catch (error:Error)
 			{

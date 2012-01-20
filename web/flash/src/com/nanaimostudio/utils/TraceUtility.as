@@ -1,12 +1,13 @@
 package com.nanaimostudio.utils
 {
 	import com.demonsters.debugger.MonsterDebugger;
+	import com.nanaimostudio.utils.debug.Debug;
 	import org.casalib.util.StageReference;
 
 	public class TraceUtility
 	{
 		private static var userName : String = "";
-		public static var enabled : Boolean = true;
+		public static var enabled : Boolean = false;
 
 		public static const WARNING_COLOR : uint = 0xeab740;
 		public static const ERROR_COLOR : uint = 0xd94100;
@@ -20,7 +21,15 @@ package com.nanaimostudio.utils
 			if (isInitialized) return;
 			
 			isInitialized = true;
-			MonsterDebugger.initialize(StageReference.getStage());
+			
+			if (StageReference.getStage() != null)
+			{
+				MonsterDebugger.initialize(StageReference.getStage());
+			}
+			else
+			{
+				isInitialized = false;
+			}
 		}
 		
 		public static function debug(sender: Object, msg: Object, label: String = ""): void
@@ -29,6 +38,7 @@ package com.nanaimostudio.utils
 			
 			label = label == "" ? "DEBUG" : label;
 			trace(sender + ": " + msg);
+			Debug.log(sender + ": " + msg);
 			if (enabled) {
 				MonsterDebugger.trace(sender, msg, userName, label, DEBUG_COLOR);
 			}
@@ -40,6 +50,7 @@ package com.nanaimostudio.utils
 			
 			label = label == "" ? "MESSAGE" : label;
 			trace(sender + ": " + msg);
+			Debug.log(sender + ": " + msg);
 			if (enabled) {
 				MonsterDebugger.trace(sender, msg, userName,label);
 			}
@@ -51,6 +62,7 @@ package com.nanaimostudio.utils
 			
 			label = label == "" ? "WARNING" : label;
 			trace(sender + ": " + msg);
+			Debug.log(sender + ": " + msg);
 			if (enabled) {
 				MonsterDebugger.trace(sender, msg, userName, label, WARNING_COLOR);
 			}
@@ -62,6 +74,7 @@ package com.nanaimostudio.utils
 			
 			label = label == "" ? "ERROR" : label;
 			trace(sender + ": " + msg);
+			Debug.log(sender + ": " + msg);
 			if (enabled) {
 				MonsterDebugger.trace(sender, msg, userName, label, ERROR_COLOR);
 			}
