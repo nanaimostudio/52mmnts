@@ -1,47 +1,65 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 	<head>
-		<title></title>
+		<title>52mmnts</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- 		<style type="text/css" media="screen">
-                        body { margin:0; text-align:center; }
-                        div#content { text-align:left; }
-					 object { outline:none; -moz-outline-style: none; }
-                        object#content { display:block; margin:0 auto; }
-         </style>
 		<script type="text/javascript" src="/static/web/html/swfobject.js"></script>
 		<script type="text/javascript">
+			<!-- Adobe recommends that developers use SWFObject2 for Flash Player detection. -->
+			<!-- For more information see the SWFObject page at Google code (http://code.google.com/p/swfobject/). -->
+			<!-- Information is also available on the Adobe Developer Connection Under "Detecting Flash Player versions and embedding SWF files with SWFObject 2" -->
+			<!-- Set to minimum required Flash Player version or 0 for no version detection -->
+			var swfVersionStr = "10.1.52";
+			<!-- xiSwfUrlStr can be used to define an express installer SWF. -->
+			var xiSwfUrlStr = "";
 			var flashvars = {};
 			var params = {};
-            params.base = "/static/web/html/";
+			params.quality = "high";
+			params.bgcolor = "#ffffff";
+			params.play = "true";
+			params.loop = "true";
+			params.wmode = "window";
 			params.scale = "showall";
+			params.menu = "true";
+			params.devicefont = "false";
+			params.salign = "";
+			params.base = "/static/web/html/";
+			params.flashvars = "swf=app.swf&currentWeek=1";
+			params.allowscriptaccess = "always";
 			var attributes = {};
-			attributes.id = "flashContent";
-			swfobject.embedSWF("/static/web/html/preloader.swf", "content", "1024", "768", "10.0.0", "/static/web/html/expressInstall.swf", flashvars, params, attributes);
+			attributes.id = "52mmnts";
+			attributes.name = "52mmnts";
+			attributes.align = "middle";
+			swfobject.createCSS("html", "height:100%; background-color: #ffffff;");
+			swfobject.createCSS("body", "margin:0; padding:0; overflow:hidden; height:100%;");
+			swfobject.embedSWF(
+				"/static/web/html/main.swf", "flashContent",
+				"100%", "100%",
+				swfVersionStr, xiSwfUrlStr,
+				flashvars, params, attributes);
 		</script>
-		
-		
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-27815015-1']);
-  _gaq.push(['_setDomainName', '52mmnts.me']);
-  _gaq.push(['_setAllowLinker', true]);
-  _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+		<script type="text/javascript">
+  			var _gaq = _gaq || [];
+  			_gaq.push(['_setAccount', 'UA-27815015-1']);
+ 			_gaq.push(['_setDomainName', '52mmnts.me']);
+  			_gaq.push(['_setAllowLinker', true]);
+  			_gaq.push(['_trackPageview']);
 
-</script>
-
+  			(function() {
+    			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  			})();
+		</script>
 	</head>
 	<body>
-		<div id="content">
-			<a href="http://www.adobe.com/go/getflashplayer">
+		<!-- SWFObject's dynamic embed method replaces this alternative HTML content for Flash content when enough JavaScript and Flash plug-in support is available. -->
+		<div id="flashContent">
+			<a href="http://www.adobe.com/go/getflash">
 				<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" />
 			</a>
+			<p>This page requires Flash Player version 10.1.52 or higher.</p>
 		</div>
 	</body>
 </html>

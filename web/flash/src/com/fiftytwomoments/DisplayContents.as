@@ -1,5 +1,6 @@
 package com.fiftytwomoments 
 {
+	import adobe.utils.CustomActions;
 	import com.fiftytwomoments.data.AppData;
 	import com.fiftytwomoments.data.FeaturedMoment;
 	import com.fiftytwomoments.data.SubmittedMoment;
@@ -49,6 +50,7 @@ package com.fiftytwomoments
 		
 		// week in the center of the screen
 		private var _weekInView:int;
+		private var _photoInView:int;
 		
 		// current project week
 		private var _currentWeek:int;
@@ -117,8 +119,11 @@ package com.fiftytwomoments
 			
 			currentWeek = weekInView = _data.currentWeek;
 			
+			// always start at photo #1 when in VIEWSTATE_DETAILED
+			photoInView = 0;
+			
 			var currentMomentPhoto:String = _data.getMostCurrentMoment().photo;
-			getInvolvedPage.photoMoment.setPhoto(currentMomentPhoto, currentWeek);
+			getInvolvedPage.photoMoment.setFeaturedPhoto(currentMomentPhoto, currentWeek);
 			
 			viewStateInfoList = new Array();
 			viewStateInfoList[VIEWSTATE_LANDING] = new ViewStateInfo();
@@ -313,6 +318,7 @@ package com.fiftytwomoments
 		
 		private function initContents():void 
 		{
+			TraceUtility.debug(this, "initContents");
 			contents = new Vector.<PhotoContent>();
 			var dummyContent:PhotoContent = new PhotoContent();
 			stage.stageWidth - dummyContent.width  - (MAX_CONTENTS - 1) * CONTENT_GAP;
@@ -322,24 +328,50 @@ package com.fiftytwomoments
 			for (var index:int = -MIDDLE_SCROLL_PAGE_INDEX; index <= MIDDLE_SCROLL_PAGE_INDEX; index++)
 			{
 				var content:PhotoContent = createPhotoContent();
-				content.useDefaultText = (currentViewState == VIEWSTATE_LANDING);
-				var weekIndex:int = normalizeWeek(weekInView + index);
 				
-				//trace("Week index: " + weekIndex);
+				// landing page uses default text if no photo is present
+				content.useDefaultText = (currentViewState == VIEWSTATE_LANDING);
+				
+				var weekIndex:int = normalizeWeek(weekInView + index);
 				content.week = weekIndex;
-				content.name = "content" + weekIndex;
 				content.x = 765 * index;
 				content.y += 30;
-				
+					
 				//TODO: From server-side
 				// In the beginning, the current view (at index 0) is the current week so it always has a photo
-				updatePhotoContentForWeek(content, weekIndex);
-			
-				if (weekIndex == weekInView)
+				if (currentViewState == VIEWSTATE_LANDING)
 				{
-					content.interactionEnabled = true;
+					content.name = "featured" + weekIndex;
+					updateFeaturedPhotoContentForWeek(content, weekIndex);
+					
+					if (weekIndex == weekInView)
+					{
+						content.interactionEnabled = true;
+					}
 				}
-				
+				else
+				{
+					var photoIndex:int = normalizePhotoIndex(photoInView + index);
+					TraceUtility.debug(this, "photoIndex: " + photoIndex + " index: " + index + " photoInView: " + photoInView);
+					content.name = "submitted" + photoIndex;
+					content.submittedIndex = photoIndex;
+					updateSubmittedPhotoContentForWeek(content, weekIndex, photoIndex);
+					
+					if (photoIndex < 0)
+					{
+						content.visible = false;
+					}
+					else if (photoIndex > numberOfPhotosForWeek(weekInView) - 1)
+					{
+						content.visible = false;
+					}
+					
+					if (photoIndex == photoInView)
+					{
+						content.interactionEnabled = true;
+					}
+				}
+			
 				//TODO: Remove this when we implement fluid layout
 				//if (index == 0)
 				//{
@@ -467,7 +499,7 @@ package com.fiftytwomoments
 			{
 				var week:int = normalizeWeek(weekInView + index - MIDDLE_SCROLL_PAGE_INDEX);
 				contents[index].week = week;
-				updatePhotoContentForWeek(contents[index], week);
+				updateFeaturedPhotoContentForWeek(contents[index], week);
 			}
 		}
 		
@@ -587,22 +619,37 @@ package com.fiftytwomoments
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
-			if (weekInView == 1) return;
 			
-			scroll(+1);
+			if (currentViewState == VIEWSTATE_LANDING)
+			{
+				scrollFeaturedMoments(+1);
+			}
+			else
+			{
+				scrollSubmittedMoments(+1);
+			}
 		}
 		
 		private function onRightClick(e:MouseEvent):void 
 		{
 			if (isTransitioning) return;
 			if (isScrolling) return;
-			if (weekInView == currentWeek + 1) return;
 			
-			scroll( -1);
+			if (currentViewState == VIEWSTATE_LANDING)
+			{
+				scrollFeaturedMoments(-1);
+			}
+			else
+			{
+				scrollSubmittedMoments(-1);
+			}
 		}
 		
-		private function scroll(direction:int):void
+		private function scrollFeaturedMoments(direction:int):void
 		{
+			if (direction == 1 && weekInView == 1) return;
+			if (direction == -1 && weekInView == currentWeek + 1) return;
+			
 			var scrollTime:Number = 0.5;
 			
 			isScrolling = true;
@@ -619,20 +666,40 @@ package com.fiftytwomoments
 			weekInView -= direction;
 			setWeekInView(normalizeWeek(weekInView));
 			
-			TweenMax.delayedCall(scrollTime + 0.1, onScrollComplete, [ direction ]);
+			TweenMax.delayedCall(scrollTime + 0.1, onFeatureMomentsScrollComplete, [ direction ]);
 		}
 		
-		private function setWeekInView(value:int):void
+		private function scrollSubmittedMoments(direction:int):void
 		{
-			weekInView = value;
+			TraceUtility.debug(this, "scrollSubmittedMoments");
+			if (photoInView <= 0) return;
+			if (photoInView >= numberOfPhotosForWeek(weekInView)) return;
 			
-			if (thumbGrid)
+			var scrollTime:Number = 0.5;
+			
+			isScrolling = true;
+			for (var index:int = 0; index < contents.length; index++)
 			{
-				thumbGrid.week = weekInView;
+				//com.greensock.easing.
+				TweenMax.to(contents[index], scrollTime, { x: contents[index].x + 765 * direction, ease:Sine.easeInOut } );
+				
+				// Make the contents that's going to be come into view clickable
+				// We have five images, so the middle image is index 2.
+				contents[index].interactionEnabled = (index == (MIDDLE_SCROLL_PAGE_INDEX - direction));
 			}
+			
+			photoInView -= direction;
+			setPhotoInView(normalizePhotoIndex(photoInView));
+			
+			TweenMax.delayedCall(scrollTime + 0.1, onSubmittedMomentsScrollComplete, [ direction ]);
 		}
 		
 		private function onScrollComplete(direction:int):void
+		{
+			
+		}
+		
+		private function onFeatureMomentsScrollComplete(direction:int):void 
 		{
 			// Reuse photos for different weeks to create a carousel effect
 			var content:PhotoContent;
@@ -653,57 +720,124 @@ package com.fiftytwomoments
 				contents.unshift(content);
 			}
 			
-			updatePhotoContentForWeek(content, content.week);
+			updateFeaturedPhotoContentForWeek(content, content.week);
 			
 			//trace("current week: " + currentWeek + " " + content.week);
 			isScrolling = false;
 		}
 		
-		private function updatePhotoContentForWeek(content:PhotoContent, week:int):void 
+		private function onSubmittedMomentsScrollComplete(direction:int):void 
 		{
-			TraceUtility.debug(this, "updatePhotoContentForWeek " + checkShowImageForWeek(week));
-			if (checkShowImageForWeek(week))
+			// Reuse photos for different weeks to create a carousel effect
+			var content:PhotoContent;
+			if (direction == -1)
 			{
-				// show coming soon message
-				if (week == currentWeek + 1)
-				{
-					var weekValue:String = "";
-					if (week < 10)
-					{
-						weekValue += "0";
-					}
-					
-					weekValue += String(week);
-					content.setText("moment " + weekValue + " is coming " + _data.comingSoonDate);
-				}
-				else
-				{
-					//content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
-					TraceUtility.debug(this, "getMomentsDataForWeek " + week + " - " +  _data.getMomentsDataForWeek(week));
-					var featuredMoment:FeaturedMoment = _data.getMomentsDataForWeek(week);
-					if (featuredMoment != null)
-					{
-						trace("setPhoto: " + featuredMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
-						content.setPhoto(featuredMoment.photo, weekInView, featuredMoment.description);
-					}
-				}
-				//else
-				//{
-					//TODO: Make it server-side driven
-					//var submittedMomentList:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(weekInView);
-					//if (submittedMomentList != null)
-					//{
-						//content.setPhoto(submittedMomentList[0].photo, weekInView);
-					//}
-					//
-					//content.setPhoto("http://52mmnts.me/static/web/html/featured_photos/moment2.jpg", weekInView, "", false);
-				//}
+				content = contents.shift();
+				content.submittedIndex = normalizePhotoIndex(photoInView + MIDDLE_SCROLL_PAGE_INDEX);
+				// +2 offset from the middle photo
+				content.x = 765 * 2;
+				contents.push(content);
 			}
 			else
 			{
-				if (content.hasPhoto())
+				content = contents.pop();
+				content.submittedIndex = normalizePhotoIndex(photoInView - MIDDLE_SCROLL_PAGE_INDEX);
+				// -2 offset from the middle photo
+				content.x = 765 * -MIDDLE_SCROLL_PAGE_INDEX;
+				contents.unshift(content);
+			}
+			
+			//updatePhotoContentForWeek(content, content.week);
+			updateSubmittedPhotoContentForWeek(content, weekInView, content.submittedIndex);
+			
+			//trace("current week: " + currentWeek + " " + content.week);
+			isScrolling = false;
+		}
+		
+		
+		private function setWeekInView(value:int):void
+		{
+			weekInView = value;
+			
+			if (thumbGrid)
+			{
+				thumbGrid.week = weekInView;
+			}
+		}
+		
+		private function setPhotoInView(value:int):void
+		{
+			photoInView = value;
+			// update thumbnail grid
+		}
+		
+		private function updateFeaturedPhotoContentForWeek(content:PhotoContent, week:int):void 
+		{
+			TraceUtility.debug(this, "updateFeaturedPhotoContentForWeek " + checkShowImageForWeek(week));
+			if (currentViewState == VIEWSTATE_LANDING)
+			{
+				if (checkShowImageForWeek(week))
 				{
-					content.removePhoto();
+					// show coming soon message
+					if (week == currentWeek + 1)
+					{
+						var weekValue:String = "";
+						if (week < 10)
+						{
+							weekValue += "0";
+						}
+						
+						weekValue += String(week);
+						content.setText("moment " + weekValue + " is coming " + _data.comingSoonDate);
+					}
+					else
+					{
+						//content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
+						TraceUtility.debug(this, "getMomentsDataForWeek " + week + " - " +  _data.getMomentsDataForWeek(week));
+						var featuredMoment:FeaturedMoment = _data.getMomentsDataForWeek(week);
+						if (featuredMoment != null)
+						{
+							trace("setFeaturedPhoto: " + featuredMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+							content.setFeaturedPhoto(featuredMoment.photo, weekInView, featuredMoment.description);
+						}
+					}
+				}
+				else
+				{
+					if (content.hasPhoto())
+					{
+						content.removePhoto();
+					}
+				}
+			}
+		}
+		
+		private function updateSubmittedPhotoContentForWeek(content:PhotoContent, week:int, photoIndex:int):void 
+		{
+			TraceUtility.debug(this, "updateSubmittedPhotoContentForWeek: " + week + " photoIndex: " + photoIndex);
+			if (currentViewState == VIEWSTATE_DETAILS)
+			{
+				if (photoIndex >= 0 && photoIndex < numberOfPhotosForWeek(weekInView))
+				{
+					//content.setPhoto(viewStateInfoList[currentViewState].image, weekInView);
+					TraceUtility.debug(this, "photoIndex: " + photoIndex);
+					var submittedMomentDataList:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(weekInView - 1);
+					if (submittedMomentDataList == null) return;
+					
+					var submitted:SubmittedMoment = submittedMomentDataList[photoIndex];
+					TraceUtility.debug(this, "submitted: " + submitted);
+					if (submitted != null)
+					{
+						trace("setSubmittedPhoto: " + submitted.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+						content.setFeaturedPhoto(submitted.photoThumbnail, weekInView, "", false);
+					}
+				}
+				else
+				{
+					if (content.hasPhoto())
+					{
+						content.removePhoto();
+					}
 				}
 			}
 		}
@@ -722,7 +856,62 @@ package com.fiftytwomoments
 			{
 				return value;
 			}
-		}	
+			
+			//return normalizeValue(value, WEEKS_PER_YEAR);
+		}
+		
+		private function normalizePhotoIndex(value:int):int
+		{
+			var totalNumberOfPhotos:int = numberOfPhotosForWeek(weekInView);
+			//var norm:int = normalizeValue(value, totalNumberOfPhotos);
+			
+			if (value < 0)
+			{
+				return totalNumberOfPhotos + value;
+			}
+			else if (value > totalNumberOfPhotos - 1)
+			{
+				return value % totalNumberOfPhotos;
+			}
+			else
+			{
+				return value;
+			}
+			
+			TraceUtility.debug(this, "value: " + value + " normalized photo index: " + norm + " totalNumberOfPhotos: " + totalNumberOfPhotos);
+			return norm;
+		}
+		
+		private function numberOfPhotosForWeek(value:int):int
+		{
+			TraceUtility.debug(this, "numberOfPhotosForWeek: " + value);
+			var submittedMoments:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(value - 1);
+			TraceUtility.debug(this, "submittedMoments: " + submittedMoments);
+			if (submittedMoments != null)
+			{
+				return submittedMoments.length;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		
+		private function normalizeValue(value:int, max:int):int 
+		{
+			if (value > max)
+			{
+				return value % max;
+			}
+			else if (value <= 0)
+			{
+				return max + value;
+			}
+			else
+			{
+				return value;
+			}
+		}
 		
 		public function get currentViewStateInfo():ViewStateInfo
 		{
@@ -777,6 +966,17 @@ package com.fiftytwomoments
 		public function set weekInView(value:int):void 
 		{
 			_weekInView = value;
+		}
+		
+		public function get photoInView():int 
+		{
+			return _photoInView;
+		}
+		
+		public function set photoInView(value:int):void 
+		{
+			TraceUtility.debug(this, "setting photoInView to: " + value);
+			_photoInView = value;
 		}
 	}
 }
