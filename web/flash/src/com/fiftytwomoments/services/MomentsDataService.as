@@ -153,6 +153,10 @@ package com.fiftytwomoments.services
 				submittedMoment.photoThumbnail	= response[i]["photo_thumb"];
 				submittedMoment.author			= response[i]["author"];
 				submittedMoment.location		= response[i]["location"];
+				submittedMoment.city			= response[i]["city"];
+				submittedMoment.state			= response[i]["state"];
+				submittedMoment.country			= response[i]["country"];
+				submittedMoment.title			= response[i]["title"];
 				
 				submittedMoments.push(submittedMoment);
 			}

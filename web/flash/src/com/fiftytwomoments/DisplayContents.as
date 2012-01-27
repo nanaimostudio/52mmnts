@@ -366,14 +366,19 @@ package com.fiftytwomoments
 				else
 				{
 					// If it is the most current moment, only show submit and nothing else
-					if (weekInView >= currentWeek && index != 0) continue;
+					//if (weekInView >= currentWeek && index != 0) continue;
 					
 					var photoIndex:int = normalizePhotoIndex(photoInView + index);
 					TraceUtility.debug(this, "photoIndex: " + photoIndex + " index: " + index + " photoInView: " + photoInView);
 					content.name = "submitted" + photoIndex;
 					content.submittedIndex = photoIndex;
 					TraceUtility.debug(this, "updateSubmittedPhotoContentForWeek " + content.name);
-					updateSubmittedPhotoContentForWeek(content, weekIndex, photoIndex);
+					
+					// show submitted photo for week if this is not the submission week.  If it is the submission week, show photo for the photo currently in view only
+					if (!isShowingSubmissionWeek() || index == 0)
+					{
+						updateSubmittedPhotoContentForWeek(content, weekIndex, photoIndex);
+					}
 					
 					//if (photoIndex < 0)
 					//{
@@ -650,7 +655,7 @@ package com.fiftytwomoments
 			}
 			else
 			{
-				if (weekInView >= currentWeek) return;
+				if (isShowingSubmissionWeek()) return;
 				scrollSubmittedMoments(+1);
 			}
 		}
@@ -674,7 +679,10 @@ package com.fiftytwomoments
 		private function scrollFeaturedMoments(direction:int):void
 		{
 			if (direction == 1 && weekInView == 1) return;
-			if (direction == -1 && weekInView == currentWeek + 1) return;
+			if (direction == -1 && weekInView == currentWeek + 1)
+			{
+				return;
+			}
 			
 			var scrollTime:Number = 0.5;
 			
@@ -686,7 +694,15 @@ package com.fiftytwomoments
 				
 				// Make the contents that's going to be come into view clickable
 				// We have five images, so the middle image is index 2.
-				contents[index].interactionEnabled = (index == (MIDDLE_SCROLL_PAGE_INDEX - direction));
+				// Except for coming soon, which should not be clickable
+				if (direction == -1 && weekInView == currentWeek)
+				{
+					contents[index].interactionEnabled = false;
+				}
+				else
+				{
+					contents[index].interactionEnabled = (index == (MIDDLE_SCROLL_PAGE_INDEX - direction));
+				}
 			}
 			
 			weekInView -= direction;
@@ -712,6 +728,12 @@ package com.fiftytwomoments
 				// Make the contents that's going to be come into view clickable
 				// We have five images, so the middle image is index 2.
 				contents[index].interactionEnabled = (index == (MIDDLE_SCROLL_PAGE_INDEX - direction));
+				
+				// flip photo to front
+				if (index == 0 || index == contents.length - 1)
+				{
+					contents[index].resetToFront();
+				}
 			}
 			
 			photoInView -= direction;
@@ -838,13 +860,18 @@ package com.fiftytwomoments
 			}
 		}
 		
+		private function isShowingSubmissionWeek():Boolean
+		{
+			return weekInView >= currentWeek;
+		}
+		
 		private function updateSubmittedPhotoContentForWeek(content:PhotoContent, week:int, photoIndex:int):void 
 		{
 			TraceUtility.debug(this, "updateSubmittedPhotoContentForWeek: " + week + " photoIndex: " + photoIndex + " - weekInView: " + weekInView + " currentWeek: " + currentWeek);
 			if (currentViewState == VIEWSTATE_DETAILS)
 			{
 				var submittedMoment:SubmittedMoment;
-				if (weekInView >= currentWeek)
+				if (isShowingSubmissionWeek())
 				{
 					// Current moment - show instructions
 					TraceUtility.debug(this, "set submit photo " + content);
@@ -913,15 +940,15 @@ package com.fiftytwomoments
 				return value;
 			}
 			
-			TraceUtility.debug(this, "value: " + value + " normalized photo index: " + norm + " totalNumberOfPhotos: " + totalNumberOfPhotos);
+			//TraceUtility.debug(this, "value: " + value + " normalized photo index: " + norm + " totalNumberOfPhotos: " + totalNumberOfPhotos);
 			return norm;
 		}
 		
 		private function numberOfPhotosForWeek(value:int):int
 		{
-			TraceUtility.debug(this, "numberOfPhotosForWeek: " + value);
+			//TraceUtility.debug(this, "numberOfPhotosForWeek: " + value);
 			var submittedMoments:Vector.<SubmittedMoment> = _data.getSubmittedMomentDataForWeek(value - 1);
-			TraceUtility.debug(this, "submittedMoments: " + submittedMoments);
+			//TraceUtility.debug(this, "submittedMoments: " + submittedMoments);
 			if (submittedMoments != null)
 			{
 				return submittedMoments.length;
