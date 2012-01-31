@@ -6,13 +6,13 @@ package away3d.graphs.bsp
 	import away3d.core.traverse.*;
 	import away3d.events.*;
 	import away3d.graphs.*;
-	
+
 	import flash.events.*;
 	import flash.geom.*;
 	import flash.utils.*;
-	
+
 	use namespace arcane;
-	
+
 	/**
 	 * BSPNode is a single node in a BSPTree
 	 */
@@ -26,30 +26,30 @@ package away3d.graphs.bsp
 
 		// indicates whether this node is a leaf or not, leaves contain triangles
 		arcane var _isLeaf : Boolean;
-		
+
 		// flag used when processing vislist
 		arcane var _culled : Boolean;
-		
+
 		// a reference to the parent node
 		arcane var _parent : BSPNode;
-		
+
 		// non-leaf only
 		arcane var _partitionPlane : Plane3D;		// the plane that divides the node in half
 		arcane var _positiveNode : BSPNode;		// node on the positive side of the division plane
 		arcane var _negativeNode : BSPNode;		// node on the negative side of the division plane
-		
+
 		arcane var _bevelPlanes : Vector.<Plane3D>;
-		
+
 		// leaf only
 		arcane var _ngons : Vector.<NGon>;
 		arcane var _mesh : Mesh;				// contains the model for this face
 		arcane var _visList : Vector.<int>;		// indices of leafs visible from this leaf
-		
+
 		// used for correct z-order traversing
 		arcane var _lastIterationPositive : Boolean;
-		
+
 		arcane var _bounds : Array;
-		
+
 		// bounds
 		arcane var _minX : Number;
 		arcane var _minY : Number;
@@ -57,7 +57,7 @@ package away3d.graphs.bsp
 		arcane var _maxX: Number;
 		arcane var _maxY: Number;
 		arcane var _maxZ: Number;
-		
+
 		arcane var _children : Array;
 		arcane var _meshes : Array;
 		arcane var _colliders : Array;
@@ -65,13 +65,13 @@ package away3d.graphs.bsp
 
 		/**
 		 * Creates a new BSPNode object.
-		 * 
+		 *
 		 * @param parent A reference to the parent BSPNode. Pass null if this is the root node.
 		 */
 		public function BSPNode(parent : BSPNode)
 		{
 			_parent = parent;
-		}        
+		}
 
 		public function get leftChild() : ITreeNode
 		{
@@ -115,7 +115,7 @@ package away3d.graphs.bsp
 
 		/**
 		 * Sends a traverser down the dynamic children
-		 * 
+		 *
 		 * @private
 		 */
 		public function traverseChildren(traverser : Traverser) : void
@@ -123,10 +123,10 @@ package away3d.graphs.bsp
 			var i : int;
 			var child : Object3D;
 			var mng : BSPMeshManager;
-			
+
 			if (_children) {
 				i = _children.length;
-			
+
 				while (--i >= 0) {
 					child = Object3D(_children[i]);
 					if (traverser.match(child)) {
@@ -150,23 +150,23 @@ package away3d.graphs.bsp
 				}
 			}
 		}
-		
+
 		/*public function assignDynamic(child : Object3D, center : Vector3D, radius : Number) : void
 		{
 			var dist : Number;
 			var align : int;
 		}*/
-		
-		public function assignCollider(child : Object3D, center : Vector3D, radius : Number) : void 
+
+		public function assignCollider(child : Object3D, center : Vector3D, radius : Number) : void
 		{
 			var dist : Number;
 			var align : int;
-			
+
 			if (_isLeaf) {
 //				addCollider(child);
 				return;
 			}
-			
+
 			align = _partitionPlane._alignment;
 			if (align == Plane3D.X_AXIS)
 				dist = center.x*_partitionPlane.a + _partitionPlane.d;
@@ -176,12 +176,12 @@ package away3d.graphs.bsp
 				dist = center.z*_partitionPlane.c + _partitionPlane.d;
 			else
 				dist = center.x*_partitionPlane.a + center.y*_partitionPlane.b + center.z*_partitionPlane.c + _partitionPlane.d;
-			
+
 			if (dist < radius && _negativeNode) _negativeNode.assignCollider(child, center, radius);
 			if (dist > -radius && _positiveNode) _positiveNode.assignCollider(child, center, radius);
 		}
-		
-		public function addMesh(mesh : BSPMeshManager) : void 
+
+		public function addMesh(mesh : BSPMeshManager) : void
 		{
 			if (!_meshes) _meshes = [];
 			_meshes.push(mesh);
@@ -191,8 +191,8 @@ package away3d.graphs.bsp
 			}
 			_hasChildren = true;
 		}
-		
-		public function removeMesh(mesh : BSPMeshManager) : void 
+
+		public function removeMesh(mesh : BSPMeshManager) : void
 		{
 			var index : int = _meshes.indexOf(mesh);
 
@@ -207,10 +207,10 @@ package away3d.graphs.bsp
 			}
 			_hasChildren = (_meshes.length > 0 || (_children && _children.length > 0));
 		}
-		
+
 		/**
 		 * Adds a dynamic child to this leaf
-		 * 
+		 *
 		 * @private
 		 */
 		public function addChild(child : Object3D) : void
@@ -220,11 +220,11 @@ package away3d.graphs.bsp
 			child._sceneGraphMark = leafId;
 			_hasChildren = true;
 		}
-		
-		
+
+
 		/**
 		 * Removes a dynamic child from this leaf
-		 * 
+		 *
 		 * @private
 		 */
 		public function removeChild(child : Object3D) : void
@@ -236,7 +236,7 @@ package away3d.graphs.bsp
 			}
 			_hasChildren = (_children.length > 0 || (_meshes && _meshes.length > 0));
 		}
-		
+
 		/**
 		 * The mesh contained within if the current node is a leaf, otherwise null
 		 */
@@ -244,7 +244,7 @@ package away3d.graphs.bsp
 		{
 			return _mesh;
 		}
-		
+
 		/**
 		 * The bounding box for this node.
 		 */
@@ -252,7 +252,7 @@ package away3d.graphs.bsp
 		{
 			return _bounds;
 		}
-		
+
  /*
   * Methods used in construction or parsing
   */
@@ -268,7 +268,7 @@ package away3d.graphs.bsp
 
   		/**
   		 * Adds faces to the current leaf's mesh
-  		 * 
+  		 *
   		 * @private
   		 */
   		arcane function addFaces(faces : Vector.<Face>) : void
@@ -276,7 +276,7 @@ package away3d.graphs.bsp
 			var len : int = faces.length;
 			var face : Face;
 			var i : int;
-			
+
 			if (!_mesh) {
 				_mesh = new Mesh();
 				_mesh._preCulled = true;
@@ -284,19 +284,19 @@ package away3d.graphs.bsp
 				// faster screenZ calc if needed
 				_mesh.pushback = true;
 			}
-			
+
 			if (len == 0) return;
-			
+
 			do {
 				face = faces[i];
 				_mesh.addFace(face);
 			} while (++i < len);
-			
+
 		}
-		
+
 		/**
 		 * Adds a leaf to the current leaf's PVS
-		 * 
+		 *
 		 * @private
 		 */
 		arcane function addVisibleLeaf(index : int) : void
@@ -304,10 +304,10 @@ package away3d.graphs.bsp
 			if (!_visList) _visList = new Vector.<int>();
 			_visList.push(index);
 		}
-		
+
  		/**
  		 * Recursively calculates bounding box for the node
- 		 * 
+ 		 *
  		 * @private
  		 */
  		arcane function propagateBounds() : void
@@ -368,7 +368,7 @@ package away3d.graphs.bsp
 			_bounds.push(new Vector3D(_maxX, _maxY, _maxZ));
 			_bounds.push(new Vector3D(_minX, _maxY, _maxZ));
 		}
- 		
+
  		/**
  		 * Checks if a leaf is empty
  		 */
@@ -376,10 +376,10 @@ package away3d.graphs.bsp
  		{
  			return _mesh.geometry.faces.length == 0;
  		}
- 		
+
 		/**
 		 * Adds all leaves in the node's hierarchy to the vector
-		 * 
+		 *
 		 * @private
 		 */
 		arcane function gatherLeaves(leaves : Vector.<BSPNode>) : void
@@ -398,7 +398,7 @@ package away3d.graphs.bsp
 					}
 					else
 						_positiveNode.gatherLeaves(leaves);
-				
+
 				if (_negativeNode != null)
 					if (_negativeNode._isLeaf && _negativeNode.isEmpty())
 						_negativeNode = null;
@@ -419,30 +419,30 @@ package away3d.graphs.bsp
 		arcane var _balanceWeight : Number = 1;
 		arcane var _nonXZWeight : Number = 1.5;
 		arcane var _nonYWeight : Number = 1.2;
-		
+
 		private var _bestPlane : Plane3D;
 		private var _bestScore : Number;
 		private var _positiveFaces : Vector.<NGon>;
 		private var _negativeFaces : Vector.<NGon>;
-		
+
 		// indicates whether contents is convex or not when creating solid leaf tree
 		arcane var _convex : Boolean;
 		// triangle planes used to create solid leaf tree
 		private var _solidPlanes : Vector.<Plane3D>;
-		
+
 		private var _planeCount : int;
-		
+
 		arcane var _maxTimeOut : int = 500;
-		
+
 		arcane var _newFaces : int;
 		arcane var _assignedFaces : int;
 		arcane var _buildFaces : Vector.<NGon>;
-		
+
 //		arcane var _tempMesh : Mesh;
-		
+
 		arcane var _portals : Vector.<BSPPortal>;
 		arcane var _backPortals : Vector.<BSPPortal>;
-		
+
 		private static var _completeEvent : Event;
 
 		/**
@@ -469,14 +469,14 @@ package away3d.graphs.bsp
 			var face : NGon;
 			var len : int = faces.length;
 			var startTime : int = getTimer();
-			
+
 			do {
 				face = faces[_planeCount];
 				if (face._isSplitter) continue;
 				getPlaneScore(face.plane, faces);
 				if (_bestScore == 0) _planeCount = len;
 			} while (++_planeCount < len && getTimer()-startTime < _maxTimeOut);
-			
+
 			if (_planeCount >= len) {
 				if (_bestPlane)
 					// best plane was found, subdivide
@@ -491,7 +491,7 @@ package away3d.graphs.bsp
 				setTimeout(getBestPlane, 40, faces);
 			}
 		}
-		
+
 		/**
 		 * Finds all unique planes in a convex set of faces, used to turn the tree into a solid leaf tree (allows us to have empty or "solid" space)
 		 */
@@ -503,7 +503,7 @@ package away3d.graphs.bsp
 			var srcPlane : Plane3D;
 			var check : Boolean;
 			var face : NGon;
-			
+
 			while (--i >= 0) {
 				face = faces[i];
 				if (!face._isSplitter) {
@@ -520,7 +520,7 @@ package away3d.graphs.bsp
 			}
 			return planes;
 		}
-		
+
 		/**
 		 * Takes a set of convex faces and creates the solid leaf node
 		 */
@@ -533,7 +533,7 @@ package away3d.graphs.bsp
 				_ngons = faces;
 				if (faces.length > 0)
 					addNGons(faces);
-				
+
 			}
 			else {
 				_partitionPlane = _solidPlanes.pop();
@@ -546,7 +546,7 @@ package away3d.graphs.bsp
 			}
 			completeNode();
 		}
-		
+
 		/**
 		 * Adds faces to the leaf mesh based on NGons
 		 */
@@ -571,7 +571,7 @@ package away3d.graphs.bsp
 			}
 			_assignedFaces = faces.length;
 		}
-		
+
 		/**
 		 * Calculates the score for a given plane. The lower the score, the better a partition plane it is.
 		 * Score is -1 if the plane is completely unsuited.
@@ -584,11 +584,11 @@ package away3d.graphs.bsp
 			var face : NGon;
 			var i : int = faces.length;
 			var posCount : int, negCount : int, splitCount : int;
-			
+
 			while (--i >= 0) {
 				face = faces[i];
 				classification = face.classifyToPlane(candidate);
-				if (classification == -2) { 
+				if (classification == -2) {
 					plane = face.plane;
 					if (candidate.a * plane.a + candidate.b * plane.b + candidate.c * plane.c > 0)
 						++posCount;
@@ -602,28 +602,28 @@ package away3d.graphs.bsp
 				else
 					++splitCount;
 			}
-			
+
 			// all polys are on one side
 			if ((posCount == 0 || negCount == 0) && splitCount == 0)
 				return;
 			else {
 				score = Math.abs(negCount-posCount)*_balanceWeight + splitCount*_splitWeight;
 				if (candidate._alignment != Plane3D.X_AXIS || candidate._alignment != Plane3D.Z_AXIS) {
-					
+
 					if (candidate._alignment != Plane3D.Y_AXIS)
 						score *= _nonXZWeight;
 					else
 						score *= _nonYWeight;
 				}
-				
+
 			}
-			
+
 			if (score >= 0 && score < _bestScore) {
 				_bestScore = score;
 				_bestPlane = candidate;
 			}
 		}
-		
+
 		/**
 		 * Builds the child nodes, based on the partition plane
 		 */
@@ -634,19 +634,19 @@ package away3d.graphs.bsp
 			var len : int = faces.length;
 			var i : int = 0;
 			var plane : Plane3D;
-			
+
 			_positiveFaces = new Vector.<NGon>();
 			_negativeFaces = new Vector.<NGon>();
-			
+
 			_partitionPlane = bestPlane;
-			
+
 			do {
 				face = faces[i];
 				classification = face.classifyToPlane(bestPlane);
-				
-				if (classification == -2) { 
+
+				if (classification == -2) {
 					plane = face.plane;
-					
+
 					if (bestPlane.a * plane.a + bestPlane.b * plane.b + bestPlane.c * plane.c > 0) {
 						_positiveFaces.push(face);
 						face._isSplitter = true;
@@ -677,7 +677,7 @@ package away3d.graphs.bsp
 			_negativeNode._buildFaces = _negativeFaces;
 			completeNode();
 		}
-		
+
 		/**
 		 * Cleans up temporary data and notifies parent of completion
 		 */
@@ -689,7 +689,7 @@ package away3d.graphs.bsp
 			_solidPlanes = null;
 			dispatchEvent(_completeEvent);
 		}
-		
+
 	/*
 	 * Methods used to generate the PVS
 	 */
@@ -699,20 +699,20 @@ package away3d.graphs.bsp
  		arcane function generatePortals(rootNode : BSPNode) : Vector.<BSPPortal>
  		{
  			if (_isLeaf || _convex) return null;
- 			
+
  			var portal : BSPPortal = new BSPPortal();
  			var posPortals : Vector.<BSPPortal>;
  			var finalPortals : Vector.<BSPPortal>;
  			var splits : Vector.<BSPPortal>;
  			var i : int;
- 			
+
  			if (!portal.fromNode(this, rootNode)) return null;
  			portal.frontNode = _positiveNode;
  			portal.backNode = _negativeNode;
  			posPortals = _positiveNode.splitPortalByChildren(portal, Plane3D.FRONT);
- 			
+
 			if (!_negativeNode) return posPortals;
- 			
+
 			if (posPortals) {
 				i = posPortals.length;
  				while (--i >= 0) {
@@ -723,10 +723,10 @@ package away3d.graphs.bsp
  					}
  				}
  			}
- 			
+
  			return finalPortals;
  		}
- 		
+
  		/**
 	 	 * Splits a portal by this node's children, creating portals between leaves.
 	 	 */
@@ -735,14 +735,14 @@ package away3d.graphs.bsp
  			var portals : Vector.<BSPPortal>;
  			var splits : Vector.<BSPPortal>;
  			var classification : int;
- 			
+
  			if (!portal) return new Vector.<BSPPortal>();
- 			
+
  			if (side == Plane3D.FRONT)
 				portal.frontNode = this;
 			else
 				portal.backNode = this;
- 			
+
 			if (_isLeaf) {
 				portals = new Vector.<BSPPortal>();
 				portals.push(portal);
@@ -755,13 +755,13 @@ package away3d.graphs.bsp
 				// portal became too small
 				if (portal.nGon.isNeglectable())
 					return null;
-				
+
 				portals = _positiveNode.splitPortalByChildren(portal, side);
 				return portals;
 			}
- 			
+
  			classification = portal.nGon.classifyToPlane(_partitionPlane);
- 			
+
  			switch (classification) {
  				case Plane3D.FRONT:
  					portals = _positiveNode.splitPortalByChildren(portal, side);
@@ -775,17 +775,17 @@ package away3d.graphs.bsp
 					// how can positiveNode be null?
  					portals = _positiveNode.splitPortalByChildren(splits[0], side);
 					splits = _negativeNode.splitPortalByChildren(splits[1], side);
- 					
+
 					if (portals && splits)
 						portals = portals.concat(splits);
 					else if (!portals) portals = splits;
- 					
+
  					break;
  			}
- 			
+
  			return portals;
  		}
-		
+
 		/**
 	 	 * Assigns a portal to this leaf, looking in.
 	 	 */
@@ -794,7 +794,7 @@ package away3d.graphs.bsp
  			if (!_portals) _portals = new Vector.<BSPPortal>();
  			_portals.push(portal);
  		}
- 		
+
  		/**
  		 * Assigns a portal to this leaf, looking out.
  		 */
@@ -803,28 +803,28 @@ package away3d.graphs.bsp
 			if (!_backPortals) _backPortals = new Vector.<BSPPortal>();
 			_backPortals.push(portal);
 		}
-		
+
 		/**
 		 * Takes a set of portals and applies the visibility information
 		 */
 		public function processVislist(portals : Vector.<BSPPortal>) : void
 		{
 			if (!_backPortals || !portals) return;
-			
+
 			var backLen : int = _backPortals.length;
 			var backPortal : BSPPortal;
 			var portalsLen : int = portals.length;
 			var portal : BSPPortal;
 			var visLen : int = 0;
-			
+
 			_visList = new Vector.<int>();
-			
+
 			for (var i : int = 0; i < backLen; ++i) {
 				backPortal = _backPortals[i];
 				// direct neighbours are always visible
 				if (_visList.indexOf(backPortal.frontNode.leafId) == -1)
 					_visList[visLen++] = backPortal.frontNode.leafId;
-					
+
 				for (var j : int = 0; j < portalsLen; ++j) {
 					portal = portals[j];
 					// if in vislist and not yet added
@@ -833,11 +833,11 @@ package away3d.graphs.bsp
 				}
 			}
 			_visList.sort(sortVisList);
-			
+
 			_portals = null;
 			_backPortals = null;
-		}	
-		
+		}
+
 		/**
 		 * Sort the vislist so it can be culled fast
 		 */

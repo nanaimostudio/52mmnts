@@ -1,9 +1,9 @@
 package away3d.core.utils
 {
-    
+
     import flash.events.EventDispatcher;
     import flash.events.Event;
-    
+
     public class ValueObject extends EventDispatcher
     {
         public function addOnChange(listener:Function):void
@@ -25,7 +25,7 @@ package away3d.core.utils
 
             if (changed == null)
                 changed = new Event("changed");
-                
+
             dispatchEvent(changed);
         }
     }

@@ -22,9 +22,9 @@ package nochump.util.zip {
 	import flash.utils.Dictionary;
 	import flash.utils.Endian;
 	import flash.utils.ByteArray;
-	
+
 	public class ZipOutput {
-		
+
 		private var _entry:ZipEntry;
 		private var _entries:Array = [];
 		private var _names:Dictionary = new Dictionary();
@@ -32,18 +32,18 @@ package nochump.util.zip {
 		private var _crc:CRC32 = new CRC32();
 		private var _buf:ByteArray = new ByteArray();
 		private var _comment:String = "";
-		
+
 		public function ZipOutput() {
 			_buf.endian = Endian.LITTLE_ENDIAN;
 		}
-		
+
 		/**
 		 * Returns the number of entries in this zip file.
 		 */
 		public function get size():uint {
 			return _entries.length;
 		}
-		
+
 		/**
 		 * Returns the byte array of the finished zip.
 		 */
@@ -51,14 +51,14 @@ package nochump.util.zip {
 			_buf.position = 0;
 			return _buf;
 		}
-		
+
 		/**
 		 *
 		 */
 		public function set comment(value:String):void {
 			_comment = value;
 		}
-		
+
 		public function putNextEntry(e:ZipEntry):void {
 			if(_entry != null) closeEntry();
 			// TODO:
@@ -107,7 +107,7 @@ package nochump.util.zip {
 			_entries.push(e);
 			_entry = e;
 		}
-		
+
 		public function write(b:ByteArray):void {
 			if (_entry == null) {
 				throw new ZipError("no current ZIP entry");
@@ -136,7 +136,7 @@ package nochump.util.zip {
 			/**/
 			_crc.update(b);
 		}
-		
+
 		// check if this method is still necessary since we're not dealing with streams
 		// seems crc and whether a data descriptor i necessary is determined here
 		public function closeEntry():void {
@@ -173,7 +173,7 @@ package nochump.util.zip {
 				_entry = null;
 			}
 		}
-		
+
 		public function finish():void {
 			if(_entry != null) closeEntry();
 			if (_entries.length < 1) throw new ZipError("ZIP file must have at least one entry");
@@ -184,7 +184,7 @@ package nochump.util.zip {
 			}
 			writeEND(off, _buf.position - off);
 		}
-		
+
 		private function writeLOC(e:ZipEntry):void {
 			_buf.writeUnsignedInt(ZipConstants.LOCSIG);
 			_buf.writeShort(e.version);
@@ -209,7 +209,7 @@ package nochump.util.zip {
 				_buf.writeBytes(e.extra);
 			}
 		}
-		
+
 		/*
 		 * Writes extra data descriptor (EXT) for specified entry.
 		 */
@@ -219,7 +219,7 @@ package nochump.util.zip {
 			_buf.writeUnsignedInt(e.compressedSize); // compressed size
 			_buf.writeUnsignedInt(e.size); // uncompressed size
 		}
-		
+
 		/*
 		 * Write central directory (CEN) header for specified entry.
 		 * REMIND: add support for file attributes
@@ -249,7 +249,7 @@ package nochump.util.zip {
 				_buf.writeUTFBytes(e.comment);
 			}
 		}
-		
+
 		/*
 		 * Writes end of central directory (END) header.
 		 */
@@ -263,7 +263,7 @@ package nochump.util.zip {
 			_buf.writeUnsignedInt(off); // offset of central directory
 			_buf.writeUTF(_comment); // zip file comment
 		}
-		
+
 	}
-	
+
 }

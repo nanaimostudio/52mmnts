@@ -1,6 +1,6 @@
 package nochump.util.zip {
 	import flash.events.Event;
-	import flash.utils.ByteArray;	
+	import flash.utils.ByteArray;
 
 	public class ZipEvent extends Event
 	{
@@ -10,20 +10,20 @@ package nochump.util.zip {
 		public var entry : ByteArray;
 
 		public function ZipEvent(
-				_type:String, 
-				_bubbles:Boolean = false, 
+				_type:String,
+				_bubbles:Boolean = false,
 				_cancelable:Boolean = false,
 				_entry:ByteArray = null)
 		{
 			super(_type, _bubbles, _cancelable);
 			entry = _entry;
 		}
-		
-		
+
+
 		public override function clone():Event
 		{
 			return new ZipEvent(type);
-		}			
-		
+		}
+
 	}
 }

@@ -5,11 +5,11 @@ package away3d.lights
 	import away3d.containers.*;
 	import away3d.core.utils.*;
 	import away3d.events.*;
-	
+
 	import flash.display.*;
-	
+
 	use namespace arcane;
-	
+
     /**
     * Lightsource that colors all shaded materials evenly from any angle
     */
@@ -21,21 +21,21 @@ package away3d.lights
         arcane var _green:Number;
         /** @private */
         arcane var _blue:Number;
-        
+
         private var _oldscene:Scene3D;
 		/** @private */
 		private function onSceneChange(event:Object3DEvent = null):void
         {
         	_oldscene = _scene;
-        	
+
         	if (_scene)
         		_scene.internalRemoveLight(this);
-        	
+
             _scene = _parent.scene;
-            
+
         	if (_scene)
         		_scene.internalAddLight(this);
-			
+
         	onSceneTransformChange();
         }
         /**
@@ -103,12 +103,12 @@ package away3d.lights
 		protected function updateDebugPrimitive():void
 		{
 		}
-		
+
         /** @private */
 		protected function onSceneTransformChange(event:Object3DEvent = null):void
         {
         }
-                
+
         /**
          * Color transform used in cached shading materials for combined ambient and diffuse color intensities.
          */
@@ -116,10 +116,10 @@ package away3d.lights
         {
 			if (_ambientDirty)
 				updateAmbient();
-			
+
         	return _ambientColorTransform;
         }
-        
+
         /**
          * Color transform used in cached shading materials for ambient intensities.
          */
@@ -127,10 +127,10 @@ package away3d.lights
         {
 			if (_diffuseDirty)
 				updateDiffuse();
-			
+
         	return _diffuseColorTransform;
         }
-         
+
 		/**
 		 * Lightmap for ambient intensity.
 		 */
@@ -138,10 +138,10 @@ package away3d.lights
         {
 			if (_ambientDirty)
 				updateAmbient();
-			
+
         	return _ambientBitmap;
         }
-		
+
 		/**
 		 * Lightmap for diffuse intensity.
 		 */
@@ -149,10 +149,10 @@ package away3d.lights
         {
 			if (_diffuseDirty)
 				updateDiffuse();
-			
+
         	return _diffuseBitmap;
         }
-		
+
 		/**
 		 * Combined lightmap for ambient and diffuse intensities.
 		 */
@@ -160,10 +160,10 @@ package away3d.lights
         {
 			if (_ambientDiffuseDirty)
 				updateAmbientDiffuse();
-			
+
         	return _ambientDiffuseBitmap;
         }
-		
+
 		/**
 		 * Lightmap for specular intensity.
 		 */
@@ -171,10 +171,10 @@ package away3d.lights
         {
 			if (_specularDirty)
 				updateSpecular();
-			
+
         	return _specularBitmap;
         }
-		
+
 		/**
 		 * Defines the color of the light object.
 		 */
@@ -182,23 +182,23 @@ package away3d.lights
 		{
 			return _color;
 		}
-		
+
 		public function set color(val:uint):void
 		{
 			_color = val;
 			_red = ((_color & 0xFF0000) >> 16)/255;
             _green = ((_color & 0xFF00) >> 8)/255;
             _blue  = (_color & 0xFF)/255;
-            
+
             _ambientDirty = true;
         	_diffuseDirty = true;
         	_ambientDiffuseDirty = true;
         	_specularDirty = true;
-        	
+
         	if (_debug)
         		updateDebugPrimitive();
 		}
-        
+
         /**
         * Toggles debug mode: light object is visualised in the scene.
         */
@@ -206,25 +206,25 @@ package away3d.lights
         {
         	return _debug;
         }
-        
+
         public function set debug(val:Boolean):void
         {
         	if (_debug == val)
         		return;
-        	
+
         	_debug = val;
-        	
+
         	if (_parent) {
         		if (_debug)
         			addDebugPrimitive(_parent);
         		else
         			removeDebugPrimitive(_parent);
         	}
-        	
+
         	if (_debug)
         		updateDebugPrimitive();
         }
-				
+
     	/**
     	 * Defines the parent of the light.
     	 */
@@ -232,36 +232,36 @@ package away3d.lights
         {
             return _parent;
         }
-		
+
         public function set parent(val:ObjectContainer3D):void
         {
             if (val == _parent)
                 return;
-			
+
 			_oldscene = _scene;
-			
+
 			if (_parent != null) {
                 _parent.removeOnSceneChange(onSceneChange);
                 _parent.removeOnSceneTransformChange(onSceneTransformChange);
-                
+
                 if (_debug)
                 	removeDebugPrimitive(_parent);
             }
-			
+
             _parent = val;
 			_scene = _parent ? _parent.scene : null;
-			
+
             if (_parent != null) {
                 _parent.addOnSceneChange(onSceneChange);
                 _parent.addOnSceneTransformChange(onSceneTransformChange);
-                
+
                 if (_debug)
 					addDebugPrimitive(_parent);
-				
+
                 onSceneTransformChange();
             }
-			
-			
+
+
 			if (_oldscene != _scene) {
             	if (_oldscene)
             		_oldscene.internalRemoveLight(this);
@@ -269,23 +269,23 @@ package away3d.lights
             		_scene.internalAddLight(this);
 			}
         }
-        
+
 		/**
 		 * Creates a new <code>AmbientLight3D</code> object.
-		 * 
+		 *
 		 * @param	init	[optional]	An initialisation object for specifying default instance properties.
 		 */
         public function AbstractLight(init:Object = null)
         {
             ini = Init.parse(init);
-            
+
             color = ini.getColor("color", 0xFFFFFF);
             debug = ini.getBoolean("debug", false);
         }
-		
+
 		/**
 		 * Duplicates the light object's properties to another <code>AbstractLight</code> object
-		 * 
+		 *
 		 * @param	light	[optional]	The new light instance into which all properties are copied
 		 * @return						The new light instance with duplicated properties applied
 		 */

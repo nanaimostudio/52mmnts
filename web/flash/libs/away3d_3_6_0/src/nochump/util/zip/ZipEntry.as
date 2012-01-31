@@ -18,9 +18,9 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 */
 package nochump.util.zip {
-	
+
 	import flash.utils.ByteArray;
-	
+
 	/**
 	 * This class represents a member of a zip archive.  ZipFile
 	 * will give you instances of this class as information
@@ -30,7 +30,7 @@ package nochump.util.zip {
 	 * @author David Chang
 	 */
 	public class ZipEntry {
-		
+
 		// some members are internal as ZipFile will need to set these directly
 		// where their accessor does type conversion
 		private var _name:String;
@@ -49,7 +49,7 @@ package nochump.util.zip {
 		internal var version:int; // version needed to extract
 		/** @private */
 		internal var offset:int; // offset of loc header
-		
+
 		/**
 		 * Creates a zip entry with the given name.
 		 * @param name the name. May include directory components separated
@@ -58,15 +58,15 @@ package nochump.util.zip {
 		public function ZipEntry(name:String) {
 			_name = name;
 		}
-		
+
 		/**
 		 * Returns the entry name.  The path components in the entry are
-		 * always separated by slashes ('/').  
+		 * always separated by slashes ('/').
 		 */
 		public function get name():String {
 			return _name;
 		}
-		
+
 		/**
 		 * Gets the time of last modification of the entry.
 		 * @return the time of last modification of the entry, or -1 if unknown.
@@ -96,7 +96,7 @@ package nochump.util.zip {
 				| d.minutes << 5
 				| d.seconds >> 1;
 		}
-		
+
 		/**
 		 * Gets the size of the uncompressed data.
 		 */
@@ -109,7 +109,7 @@ package nochump.util.zip {
 		public function set size(size:int):void {
 			_size = size;
 		}
-		
+
 		/**
 		 * Gets the size of the compressed data.
 		 */
@@ -122,7 +122,7 @@ package nochump.util.zip {
 		public function set compressedSize(csize:int):void {
 			_compressedSize = csize;
 		}
-		
+
 		/**
 		 * Gets the crc of the uncompressed data.
 		 */
@@ -135,9 +135,9 @@ package nochump.util.zip {
 		public function set crc(crc:uint):void {
 			_crc = crc;
 		}
-		
+
 		/**
-		 * Gets the compression method. 
+		 * Gets the compression method.
 		 */
 		public function get method():int {
 			return _method;
@@ -149,7 +149,7 @@ package nochump.util.zip {
 		public function set method(method:int):void {
 			_method = method;
 		}
-		
+
 		/**
 		 * Gets the extra data.
 		 */
@@ -162,7 +162,7 @@ package nochump.util.zip {
 		public function set extra(extra:ByteArray):void {
 			_extra = extra;
 		}
-		
+
 		/**
 		 * Gets the extra data.
 		 */
@@ -175,15 +175,15 @@ package nochump.util.zip {
 		public function set comment(comment:String):void {
 			_comment = comment;
 		}
-		
+
 		/**
 		 * Gets true, if the entry is a directory.  This is solely
-		 * determined by the name, a trailing slash '/' marks a directory.  
+		 * determined by the name, a trailing slash '/' marks a directory.
 		 */
 		public function isDirectory():Boolean {
 			return _name.charAt(_name.length - 1) == '/';
 		}
-		
+
 		/**
 		 * Gets the string representation of this ZipEntry.  This is just
 		 * the name as returned by name.
@@ -191,7 +191,7 @@ package nochump.util.zip {
 		public function toString():String {
 			return _name;
 		}
-		
+
 	}
-	
+
 }

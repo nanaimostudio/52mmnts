@@ -40,27 +40,27 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
  Most easing equations give a smooth, gradual transition between the start and end values, but SteppedEase provides
- an easy way to define a specific number of steps that the transition should take. For example, if mc.x is 0 and you 
+ an easy way to define a specific number of steps that the transition should take. For example, if mc.x is 0 and you
  want to tween it to 100 with 5 steps (20, 40, 60, 80, and 100) over the course of 2 seconds, you'd do:<br /><br /><code>
- 
+
  TweenLite.to(mc, 2, {x:100, ease:SteppedEase.create(5)});<br /><br /></code>
- 
+
  <b>EXAMPLE CODE</b><br /><br /><code>
  import com.greensock.TweenLite;<br />
  import com.greensock.easing.SteppedEase;<br /><br />
- 
+
  TweenLite.to(mc, 2, {x:100, ease:SteppedEase.create(5)});<br /><br />
- 
+
  //or create an instance directly<br />
  var steppedEase:SteppedEase = new SteppedEase(5);<br />
  TweenLite.to(mc, 3, {y:300, ease:steppedEase.ease});
  </code><br /><br />
- 
- Note: SteppedEase is optimized for use with the GreenSock tweenining platform, so it isn't intended to be used with other engines. 
+
+ Note: SteppedEase is optimized for use with the GreenSock tweenining platform, so it isn't intended to be used with other engines.
  Specifically, its easing equation always returns values between 0 and 1.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -91,7 +91,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#SteppedEase()">SteppedEase</a>(steps:int)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">SteppedEase</td>
 </tr>
@@ -100,12 +100,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#create()">create</a>(steps:int):Function</div>
 <div class="summaryTableDescription">[static]
-   This static function provides a quick way to create a SteppedEase and immediately reference its ease function 
+   This static function provides a quick way to create a SteppedEase and immediately reference its ease function
    in a tween, like:<br /><br /><code>
-   
+
    TweenLite.to(mc, 2, {x:100, ease:SteppedEase.create(5)});<br />
    </code>
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">SteppedEase</td>
 </tr>
@@ -149,11 +149,11 @@ showHideInherited();
 <div class="detailBody">
 <code>public function SteppedEase(steps:int)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">steps</span>:int</code> &mdash; Number of steps between the start and the end values. 
+<td width="20px"></td><td><code><span class="label">steps</span>:int</code> &mdash; Number of steps between the start and the end values.
    </td>
 </tr>
 </table>
@@ -168,16 +168,16 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static function create(steps:int):Function</code><p>
-   This static function provides a quick way to create a SteppedEase and immediately reference its ease function 
+   This static function provides a quick way to create a SteppedEase and immediately reference its ease function
    in a tween, like:<br /><br /><code>
-   
+
    TweenLite.to(mc, 2, {x:100, ease:SteppedEase.create(5)});<br />
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">steps</span>:int</code> &mdash; Number of steps between the start and the end values. 
+<td width="20px"></td><td><code><span class="label">steps</span>:int</code> &mdash; Number of steps between the start and the end values.
    </td>
 </tr>
 </table>
@@ -198,8 +198,8 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function ease(t:Number, b:Number, c:Number, d:Number):Number</code><p>
-   Easing function that interpolates values. 
-   
+   Easing function that interpolates values.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

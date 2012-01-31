@@ -13,15 +13,15 @@ package com.nanaimostudio.utils
 		public static const ERROR_COLOR : uint = 0xd94100;
 		public static const TRACKING_COLOR : uint = 0x00aa00;
 		public static const DEBUG_COLOR : uint = 0x0000FF;
-		
+
 		private static var isInitialized:Boolean;
-		
-		private static function initialize():void 
+
+		private static function initialize():void
 		{
 			if (isInitialized) return;
-			
+
 			isInitialized = true;
-			
+
 			if (StageReference.getStage() != null)
 			{
 				MonsterDebugger.initialize(StageReference.getStage());
@@ -31,11 +31,11 @@ package com.nanaimostudio.utils
 				isInitialized = false;
 			}
 		}
-		
+
 		public static function debug(sender: Object, msg: Object, label: String = ""): void
 		{
 			initialize();
-			
+
 			label = label == "" ? "DEBUG" : label;
 			trace(sender + ": " + msg);
 			Debug.log(sender + ": " + msg);
@@ -43,11 +43,11 @@ package com.nanaimostudio.utils
 				MonsterDebugger.trace(sender, msg, userName, label, DEBUG_COLOR);
 			}
 		}
-		
+
 		public static function message(sender: Object, msg: Object, label: String = ""): void
 		{
 			initialize();
-			
+
 			label = label == "" ? "MESSAGE" : label;
 			trace(sender + ": " + msg);
 			Debug.log(sender + ": " + msg);
@@ -59,7 +59,7 @@ package com.nanaimostudio.utils
 		public static function warning(sender: Object, msg: Object, label: String = ""): void
 		{
 			initialize();
-			
+
 			label = label == "" ? "WARNING" : label;
 			trace(sender + ": " + msg);
 			Debug.log(sender + ": " + msg);
@@ -71,7 +71,7 @@ package com.nanaimostudio.utils
 		public static function error(sender: Object, msg: Object, label: String = ""): void
 		{
 			initialize();
-			
+
 			label = label == "" ? "ERROR" : label;
 			trace(sender + ": " + msg);
 			Debug.log(sender + ": " + msg);

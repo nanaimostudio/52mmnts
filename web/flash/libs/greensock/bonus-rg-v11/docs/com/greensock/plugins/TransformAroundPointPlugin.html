@@ -47,37 +47,37 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  Normally, all transformations (scale, rotation, and position) are based on the DisplayObject's registration
  point (most often its upper left corner), but TransformAroundPoint allows you to define ANY point around which
- 2D transformations will occur during the tween. For example, you may have a dynamically-loaded image that you 
+ 2D transformations will occur during the tween. For example, you may have a dynamically-loaded image that you
  want to scale from its center or rotate around a particular point on the stage. <br /><br />
- 
+
  If you define an x or y value in the transformAroundPoint object, it will correspond to the custom registration
- point which makes it easy to position (as opposed to having to figure out where the original registration point 
- should tween to). If you prefer to define the x/y in relation to the original registration point, do so outside 
+ point which makes it easy to position (as opposed to having to figure out where the original registration point
+ should tween to). If you prefer to define the x/y in relation to the original registration point, do so outside
  the transformAroundPoint object, like: <br /><br /><code>
- 
+
  TweenLite.to(mc, 3, {x:50, y:40, transformAroundPoint:{point:new Point(200, 300), scale:0.5, rotation:30}});<br /><br /></code>
- 
+
  To define the <code>point</code> according to the target's local coordinates (as though it is inside the target),
  simply pass <code>pointIsLocal:true</code> in the transformAroundPoint object, like:<br /><br /><code>
- 
+
  TweenLite.to(mc, 3, {transformAroundPoint:{point:new Point(200, 300), pointIsLocal:true, scale:0.5, rotation:30}});<br /><br /></code>
- 
- TransformAroundPointPlugin is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit. 
- You must have a valid membership to use this class without violating the terms of use. Visit 
+
+ TransformAroundPointPlugin is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit.
+ You must have a valid membership to use this class without violating the terms of use. Visit
  <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a> to sign up or get more details. <br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.TransformAroundPointPlugin; <br />
    TweenPlugin.activate([TransformAroundPointPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 1, {transformAroundPoint:{point:new Point(100, 300), scaleX:2, scaleY:1.5, rotation:150}}); <br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

@@ -41,29 +41,29 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  Most easing equations give a smooth, gradual transition between the start and end values, but RoughEase provides
  an easy way to get a rough, jagged effect instead. You can define an ease that it will use as a template (like a
- general guide - Linear.easeNone is the default) and then it will randomly plot points that wander from that template. 
+ general guide - Linear.easeNone is the default) and then it will randomly plot points that wander from that template.
  The strength parameter controls how far from the template ease the points are allowed to go (a small number like
  0.1 keeps it very close to the template ease whereas a larger number like 2 creates much larger jumps). You can
  also control the number of points in the ease, making it jerk more or less frequently. And lastly, you can associate
- a name with each RoughEase instance and retrieve it later like RoughEase.byName("myEaseName"). Since creating 
+ a name with each RoughEase instance and retrieve it later like RoughEase.byName("myEaseName"). Since creating
  the initial RoughEase is the most processor-intensive part, it's a good idea to reuse instances if/when you can.<br /><br />
- 
+
  <b>EXAMPLE CODE</b><br /><br /><code>
  import com.greensock.TweenLite;<br />
  import com.greensock.easing.RoughEase;<br /><br />
- 
+
  TweenLite.from(mc, 3, {alpha:0, ease:RoughEase.create(1, 15)});<br /><br />
- 
+
  //or create an instance directly<br />
  var rough:RoughEase = new RoughEase(1.5, 30, true, Strong.easeOut, "none", true, "superRoughEase");<br />
  TweenLite.to(mc, 3, {y:300, ease:rough.ease});<br /><br />
- 
+
  //and later, you can find the ease by name like:<br />
  TweenLite.to(mc, 3, {y:300, ease:RoughEase.byName("superRoughEase")});
  </code><br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -94,7 +94,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#RoughEase()">RoughEase</a>(strength:Number = 1, points:uint = 20, restrictMaxAndMin:Boolean = false, templateEase:Function = null, taper:String = "none", randomize:Boolean = true, name:String = "")</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">RoughEase</td>
 </tr>
@@ -111,12 +111,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#create()">create</a>(strength:Number = 1, points:uint = 20, restrictMaxAndMin:Boolean = false, templateEase:Function = null, taper:String = "none", randomize:Boolean = true, name:String = ""):Function</div>
 <div class="summaryTableDescription">[static]
-   This static function provides a quick way to create a RoughEase and immediately reference its ease function 
+   This static function provides a quick way to create a RoughEase and immediately reference its ease function
    in a tween, like:<br /><br /><code>
-   
+
    TweenLite.from(mc, 2, {alpha:0, ease:RoughEase.create(1.5, 15)});<br />
    </code>
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">RoughEase</td>
 </tr>
@@ -133,7 +133,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#ease()">ease</a>(t:Number, b:Number, c:Number, d:Number):Number</div>
 <div class="summaryTableDescription">
    Easing function that interpolates the numbers
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">RoughEase</td>
 </tr>
@@ -171,7 +171,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function RoughEase(strength:Number = 1, points:uint = 20, restrictMaxAndMin:Boolean = false, templateEase:Function = null, taper:String = "none", randomize:Boolean = true, name:String = "")</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -217,7 +217,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">name</span>:String</code> (default = "<code></code>")<code></code> &mdash; a name to associate with the ease so that you can use RoughEase.byName() to look it up later. Of course you should always make sure you use a unique name for each ease (if you leave it blank, a name will automatically be generated). 
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> (default = "<code></code>")<code></code> &mdash; a name to associate with the ease so that you can use RoughEase.byName() to look it up later. Of course you should always make sure you use a unique name for each ease (if you leave it blank, a name will automatically be generated).
    </td>
 </tr>
 </table>
@@ -233,7 +233,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public static function byName(name:String):Function</code><p>
    Provides a quick way to look up a RoughEase by its name.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -258,12 +258,12 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static function create(strength:Number = 1, points:uint = 20, restrictMaxAndMin:Boolean = false, templateEase:Function = null, taper:String = "none", randomize:Boolean = true, name:String = ""):Function</code><p>
-   This static function provides a quick way to create a RoughEase and immediately reference its ease function 
+   This static function provides a quick way to create a RoughEase and immediately reference its ease function
    in a tween, like:<br /><br /><code>
-   
+
    TweenLite.from(mc, 2, {alpha:0, ease:RoughEase.create(1.5, 15)});<br />
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -309,7 +309,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">name</span>:String</code> (default = "<code></code>")<code></code> &mdash; a name to associate with the ease so that you can use RoughEase.byName() to look it up later. Of course you should always make sure you use a unique name for each ease (if you leave it blank, a name will automatically be generated). 
+<td width="20px"></td><td><code><span class="label">name</span>:String</code> (default = "<code></code>")<code></code> &mdash; a name to associate with the ease so that you can use RoughEase.byName() to look it up later. Of course you should always make sure you use a unique name for each ease (if you leave it blank, a name will automatically be generated).
    </td>
 </tr>
 </table>
@@ -339,7 +339,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function ease(t:Number, b:Number, c:Number, d:Number):Number</code><p>
    Easing function that interpolates the numbers
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

@@ -9,13 +9,13 @@ package away3d.materials.shaders
 	import away3d.core.utils.*;
 	import away3d.core.vos.*;
 	import away3d.materials.*;
-	
+
 	import flash.display.*;
 	import flash.geom.*;
-	import flash.utils.*;	
-	
+	import flash.utils.*;
+
 	use namespace arcane;
-	
+
 	/**
 	 * Base class for shaders.
     * Not intended for direct use - use one of the shading materials in the materials package.
@@ -84,7 +84,7 @@ package away3d.materials.shaders
 		arcane var _mapping:Matrix;
         /** @private */
 		arcane final function contains(v0x:Number, v0y:Number, v1x:Number, v1y:Number, v2x:Number, v2y:Number, x:Number, y:Number):Boolean
-        {   
+        {
             if (v0x*(y - v1y) + v1x*(v0y - y) + x*(v1y - v0y) < -0.001)
                 return false;
 
@@ -100,80 +100,80 @@ package away3d.materials.shaders
         arcane override function renderLayer(priIndex:uint, viewSourceObject:ViewSourceObject, renderer:Renderer, layer:Sprite, level:int):int
         {
         	layer;
-        	
+
         	_source = viewSourceObject.source as Mesh;
 			_session = renderer._session;
         	_view = renderer._view;
-			
+
         	_startIndex = renderer.primitiveProperties[uint(priIndex*9)];
         	_endIndex = renderer.primitiveProperties[uint(priIndex*9 + 1)];
 			_faceVO = renderer.primitiveElements[priIndex] as FaceVO;
 			_uvs = renderer.primitiveUVs[priIndex];
 			_generated = renderer.primitiveGenerated[priIndex];
-			
+
 			_screenVertices = viewSourceObject.screenVertices;
 			_screenIndices = viewSourceObject.screenIndices;
 			_screenUVTs = viewSourceObject.screenUVTs;
-			
+
         	_face = _faceVO.face;
-			
+
 			return level;
         }
-        
+
 		/** @private */
         arcane override function renderBitmapLayer(priIndex:uint, viewSourceObject:ViewSourceObject, renderer:Renderer, containerRect:Rectangle, parentFaceMaterialVO:FaceMaterialVO):FaceMaterialVO
         {
         	containerRect;
-        	
+
         	_source = viewSourceObject.source as Mesh;
 			_session = renderer._session;
         	_view = renderer._view;
-			
+
         	_startIndex = renderer.primitiveProperties[uint(priIndex*9)];
         	_endIndex = renderer.primitiveProperties[uint(priIndex*9 + 1)];
 			_faceVO = renderer.primitiveElements[priIndex] as FaceVO;
 			_uvs = renderer.primitiveUVs[priIndex];
 			_generated = renderer.primitiveGenerated[priIndex];
-			
+
 			_screenVertices = viewSourceObject.screenVertices;
 			_screenIndices = viewSourceObject.screenIndices;
 			_screenUVTs = viewSourceObject.screenUVTs;
-			
+
         	_face = _faceVO.face;
-        	
+
 			_parentFaceMaterialVO = parentFaceMaterialVO;
-			
+
 			_faceMaterialVO = getFaceMaterialVO(_faceVO, _source, _view);
-			
+
 			//pass on inverse texturemapping
 			_faceMaterialVO.invtexturemapping = parentFaceMaterialVO.invtexturemapping;
-			
+
 			//pass on resize value
 			if (parentFaceMaterialVO.resized) {
 				parentFaceMaterialVO.resized = false;
 				_faceMaterialVO.resized = true;
 			}
-			
+
 			//check to see if rendering can be skipped
 			if (parentFaceMaterialVO.updated || _faceMaterialVO.invalidated || _faceMaterialVO.updated) {
 				parentFaceMaterialVO.updated = false;
-				
+
 				//retrieve the bitmapRect
 				_bitmapRect = _faceVO.face.bitmapRect;
-				
+
 				//reset booleans
 				if (_faceMaterialVO.invalidated)
 					_faceMaterialVO.invalidated = false;
-				else 
+				else
 					_faceMaterialVO.updated = true;
-				
+
 				//store a clone
 				_faceMaterialVO.bitmap = parentFaceMaterialVO.bitmap;
-				
+
 				//draw shader
 				renderShader(priIndex);
 			}
-			
+
 			return _faceMaterialVO;
         }
 		/** @private */
@@ -182,10 +182,10 @@ package away3d.materials.shaders
         	source;view;//TODO : FDT Warning
         	if ((_faceMaterialVO = _faceDictionary[faceVO]))
         		return _faceMaterialVO;
-        	
+
         	return _faceDictionary[faceVO] = new FaceMaterialVO(source, view);
         }
-        
+
         protected var _startIndex:uint;
         protected var _endIndex:uint;
         protected var _uvs:Vector.<UV>;
@@ -193,21 +193,21 @@ package away3d.materials.shaders
         protected var _screenVertices:Vector.<Number>;
 		protected var _screenIndices:Vector.<int>;
 		protected var _screenUVTs:Vector.<Number>;
-		
+
         /**
         * Renders the shader to the specified face.
-        * 
+        *
         * @param	priIndex	The index of the primitive being rendered.
         */
         protected function renderShader(priIndex:uint):void
         {
         	throw new Error("Not implemented");
         }
-        
+
         protected function calcMapping(priIndex:uint, map:Matrix):Matrix
         {
         	priIndex; map;
-        	
+
         	map.a = 1;
 			map.b = 0;
 			map.c = 0;
@@ -215,27 +215,27 @@ package away3d.materials.shaders
 			map.tx = 0;
 			map.ty = 0;
             map.invert();
-            
+
             return map;
         }
-        
+
         protected function calcUVT(priIndex:uint, uvt:Vector.<Number>):Vector.<Number>
         {
         	priIndex; uvt;
-        	
+
 			uvt[0] = 0;
     		uvt[1] = 1;
     		uvt[3] = 0;
     		uvt[4] = 0;
     		uvt[6] = 1;
     		uvt[7] = 0;
-    		
+
     		return uvt;
         }
-        
+
         /**
         * Calculates the mapping matrix required to draw the triangle texture to screen.
-        * 
+        *
         * @param	tri		The data object holding all information about the triangle to be drawn.
         * @return			The required matrix object.
         */
@@ -243,66 +243,66 @@ package away3d.materials.shaders
 		{
 			//if (_generated)
 				return calcMapping(priIndex, _map);
-			
+
 			_faceMaterialVO = getFaceMaterialVO(_faceVO);
-			
+
 			if (!_faceMaterialVO.invalidated)
 				return _faceMaterialVO.texturemapping;
-			
+
 			_faceMaterialVO.invalidated = false;
-			
+
 			return calcMapping(priIndex, _faceMaterialVO.texturemapping);
 		}
-		
+
 		protected function getUVData(priIndex:uint):Vector.<Number>
 		{
 			_faceMaterialVO = getFaceMaterialVO(_faceVO, _source, _view);
-			
+
 			if (_view.camera.lens is ZoomFocusLens)
         		_focus = _view.camera.focus;
         	else
         		_focus = 0;
-			
+
 			_faceMaterialVO.invalidated = false;
 			//if (tri.generated) {
 				_uvt[uint(2)] = _screenUVTs[uint(_screenIndices[_startIndex]*3 + 2)];
 				_uvt[uint(5)] = _screenUVTs[uint(_screenIndices[uint(_startIndex + 1)]*3 + 2)];
 				_uvt[uint(8)] = _screenUVTs[uint(_screenIndices[uint(_startIndex + 2)]*3 + 2)];
-				
+
 	    		return calcUVT(priIndex, _uvt);
 			//}
 			/*
 			_faceMaterialVO.uvtData[uint(2)] = _screenUVTs[uint(_screenIndices[_startIndex]*3 + 2)];
 			_faceMaterialVO.uvtData[uint(5)] = _screenUVTs[uint(_screenIndices[uint(_startIndex + 1)]*3 + 2)];
 			_faceMaterialVO.uvtData[uint(8)] = _screenUVTs[uint(_screenIndices[uint(_startIndex + 2)]*3 + 2)];
-			
+
 			if (!_faceMaterialVO.invalidated)
 				return _faceMaterialVO.uvtData;
-			
-        	
+
+
 			return calcUVT(tri, _faceMaterialVO.uvtData);
 			*/
 		}
-		
+
     	/**
     	 * Determines if the shader bitmap is smoothed (bilinearly filtered) when drawn to screen
     	 */
         public var smooth:Boolean;
-        
+
         /**
         * Defines a blendMode value for the shader bitmap.
         */
         public var blendMode:String;
-        
+
 		/**
 		 * Creates a new <code>AbstractShader</code> object.
-		 * 
+		 *
 		 * @param	init	[optional]	An initialisation object for specifying default instance properties.
 		 */
         public function AbstractShader(init:Object = null)
         {
             super(init);
-            
+
             smooth = ini.getBoolean("smooth", false);
             blendMode = ini.getString("blendMode", BlendMode.NORMAL);
         }

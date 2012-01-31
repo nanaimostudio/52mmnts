@@ -13,12 +13,12 @@
 		<script type="text/javascript" src="../js/7_VisDoc.min.js"></script>
 	</head>
 	<body class='isShowingNavigation' id='page_org_casalib_transitions_PropertyTween'>
-	    <div id='page'> 
+	    <div id='page'>
 			<div id='wrapper'>
-				<div id='outer'> 
-					<div id='floatWrap'> 
+				<div id='outer'>
+					<div id='floatWrap'>
 						<div id='main'>
-							<div id='clearHeaderCenter'></div> 
+							<div id='clearHeaderCenter'></div>
 							<div id='mainContent'>
 																<h1>PropertyTween</h1>									<div class='classProperties'>
 		<table cellspacing='0'>
@@ -72,21 +72,21 @@
     CASA Lib for ActionScript 3.0
     Copyright (c) 2011, Aaron Clinger & Contributors of CASA Lib
     All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-    
+
     - Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    
+
     - Redistributions in binary form must reproduce the above copyright notice,
       this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    
+
     - Neither the name of the CASA Lib nor the names of its contributors
       may be used to endorse or promote products derived from this software
       without specific prior written permission.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
     AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
     IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -100,10 +100,10 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 package org.casalib.transitions {
-    
+
     /**
         A simple property tween class that extends {@link Tween}.
-        
+
         @author Aaron Clinger
         @author Mike Creighton
         @author Jon Adams
@@ -115,23 +115,23 @@ package org.casalib.transitions {
                     import org.casalib.display.CasaMovieClip;
                     import org.casalib.display.CasaSprite;
                     import org.casalib.transitions.PropertyTween;
-                    
-                    
+
+
                     public class MyExample extends CasaMovieClip {
                         protected var _box:CasaSprite;
                         protected var _tween:PropertyTween;
-                        
-                        
+
+
                         public function MyExample() {
                             super();
-                            
+
                             this._box = new CasaSprite();
                             this._box.graphics.beginFill(0xFF00FF);
                             this._box.graphics.drawRect(0, 0, 25, 25);
                             this._box.graphics.endFill();
-                            
+
                             this.addChild(this._box);
-                            
+
                             this._tween = new PropertyTween(this._box, "x", Bounce.easeOut, 200, 5);
                             this._tween.start();
                         }
@@ -143,11 +143,11 @@ package org.casalib.transitions {
     public class PropertyTween extends Tween {
         protected var _scope:Object;
         protected var _property:String;
-        
-        
+
+
         /**
             A convenience method that creates and starts a new PropertyTween and {@link Tween#start starts} it automatically.
-            
+
             @param scope: An object that contains the property specified by <code>property</code>.
             @param property: Name of the property you want to tween.
             @param equation: The tween equation.
@@ -159,13 +159,13 @@ package org.casalib.transitions {
         public static function to(scope:Object, property:String, equation:Function, endPos:Number, duration:Number, useFrames:Boolean = false):PropertyTween {
             const pt:PropertyTween = new PropertyTween(scope, property, equation, endPos, duration, useFrames);
             pt.start();
-            
+
             return pt;
         }
-        
+
         /**
             A convenience method that creates and starts a new PropertyTween and {@link Tween#start starts} it automatically.
-            
+
             @param scope: An object that contains the property specified by <code>property</code>.
             @param property: Name of the property you want to tween.
             @param equation: The tween equation.
@@ -177,16 +177,16 @@ package org.casalib.transitions {
         public static function from(scope:Object, property:String, equation:Function, startPos:Number, duration:Number, useFrames:Boolean = false):PropertyTween {
             const endPos:Number = scope[property];
             scope[property]     = startPos;
-            
+
             const pt:PropertyTween = new PropertyTween(scope, property, equation, endPos, duration, useFrames);
             pt.start();
-            
+
             return pt;
         }
-        
+
         /**
             Creates and defines a new PropertyTween.
-            
+
             @param scope: An object that contains the property specified by <code>property</code>.
             @param property: Name of the property you want to tween.
             @param equation: The tween equation.
@@ -198,56 +198,56 @@ package org.casalib.transitions {
         public function PropertyTween(scope:Object, property:String, equation:Function, endPos:Number, duration:Number, useFrames:Boolean = false) {
             this._scope    = scope;
             this._property = property;
-            
+
             super(equation, this.position, endPos, duration, useFrames);
         }
-        
+
         /**
             @exclude
         */
         override public function start():void {
             this._initPropertyTween();
-            
+
             super.start();
         }
-        
+
         /**
             @exclude
         */
         override public function continueTo(endPos:Number, duration:Number):void {
             this._initPropertyTween();
-            
+
             super.continueTo(endPos, duration);
         }
-        
+
         /**
             @exclude
         */
         override public function get position():Number {
             return this.scope[this.property];
         }
-        
+
         /**
             @exclude
         */
         override public function set position(pos:Number):void {
             this.scope[this.property] = pos;
         }
-        
+
         /**
             Retrieves the object defined as scope in the class' constructor.
         */
         public function get scope():Object {
             return this._scope;
         }
-        
+
         /**
             Retrieves the property as a String defined in the class' constructor.
         */
         public function get property():String {
             return this._property;
         }
-        
+
         protected function _initPropertyTween():void {
             this._begin   = this.position;
             this._diff    = this._end - this._begin;
@@ -270,23 +270,23 @@ package {
     import org.casalib.display.CasaMovieClip;
     import org.casalib.display.CasaSprite;
     import org.casalib.transitions.PropertyTween;
-    
-    
+
+
     public class MyExample extends CasaMovieClip {
         protected <span class="codeKeyword">var</span> _box:CasaSprite;
         protected <span class="codeKeyword">var</span> _tween:PropertyTween;
-        
-        
+
+
         public <span class="codeKeyword">function</span> MyExample() {
             <span class="codeIdentifier">super</span>();
-            
+
             <span class="codeIdentifier">this</span>._box = <span class="codeKeyword">new</span> CasaSprite();
             <span class="codeIdentifier">this</span>._box.graphics<span class="codeIdentifier">.beginFill</span>(0xFF00FF);
             <span class="codeIdentifier">this</span>._box.graphics.drawRect(<span class="codeNumber">0</span>, <span class="codeNumber">0</span>, <span class="codeNumber">25</span>, <span class="codeNumber">25</span>);
             <span class="codeIdentifier">this</span>._box.graphics<span class="codeIdentifier">.endFill</span>();
-            
+
             <span class="codeIdentifier">this</span>.addChild(<span class="codeIdentifier">this</span>._box);
-            
+
             <span class="codeIdentifier">this</span>._tween = <span class="codeKeyword">new</span> PropertyTween(<span class="codeIdentifier">this</span>._box, <span class="codeString">&quot;x&quot;</span>, Bounce.easeOut, <span class="codeNumber">200</span>, <span class="codeNumber">5</span>);
             <span class="codeIdentifier">this</span>._tween<span class="codeIdentifier">.start</span>();
         }
@@ -328,7 +328,7 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Constructor</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#PropertyTween">PropertyTween</a>
 																<span class='typeInfo'>(scope:Object, property:String, equation:Function, endPos:Number, duration:Number, useFrames:Boolean = false)</span>																<ul class='summary'>
 									<li>Creates and defines a new PropertyTween.</li>
@@ -338,12 +338,12 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance properties</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#scope">scope</a>
 																<span class='typeInfo'> : Object</span>																<ul class='summary'>
 									<li>Retrieves the object defined as scope in the class' constructor.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#property">property</a>
 																<span class='typeInfo'> : String</span>																<ul class='summary'>
 									<li>Retrieves the property as a String defined in the class' constructor.</li>
@@ -354,12 +354,12 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Class methods</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#to">to</a>
 																<span class='typeInfo'>(scope:Object, property:String, equation:Function, endPos:Number, duration:Number, useFrames:Boolean = false) : <a href="org_casalib_transitions_PropertyTween.html">PropertyTween</a></span>																<ul class='summary'>
 									<li>A convenience method that creates and starts a new PropertyTween and starts it automatically.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#from">from</a>
 																<span class='typeInfo'>(scope:Object, property:String, equation:Function, startPos:Number, duration:Number, useFrames:Boolean = false) : <a href="org_casalib_transitions_PropertyTween.html">PropertyTween</a></span>																<ul class='summary'>
 									<li>A convenience method that creates and starts a new PropertyTween and starts it automatically.</li>
@@ -534,11 +534,11 @@ package {
 				<div class='memberSection'>
 			<h2 id='Instancemethods'>Instance methods</h2>
 					</div>
-		
+
 							</div>
 						</div>
 											<div id='sidebar'>
-		<div id='clearHeaderLeft'></div> 
+		<div id='clearHeaderLeft'></div>
 		<div id='sidebarContent'>
 				<div class="list">
 							<ul>
@@ -906,7 +906,7 @@ package {
 	</div>
 
 					</div>
-					<div class='clear'>&nbsp;</div> 
+					<div class='clear'>&nbsp;</div>
 				</div>
 			</div>
 			<div id='header'>

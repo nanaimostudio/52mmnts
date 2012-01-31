@@ -18,9 +18,9 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 */
 package nochump.util.zip {
-	
+
 	internal class ZipConstants {
-		
+
 		/* The local file header */
 		internal static const LOCSIG:uint = 0x04034b50;	// "PK\003\004"
 		internal static const LOCHDR:uint = 30;	// LOC header size
@@ -33,14 +33,14 @@ package nochump.util.zip {
 		//internal static const LOCLEN:uint = 22; // uncompressed size
 		internal static const LOCNAM:uint = 26; // filename length
 		//internal static const LOCEXT:uint = 28; // extra field length
-		
+
 		/* The Data descriptor */
 		internal static const EXTSIG:uint = 0x08074b50;	// "PK\007\008"
 		internal static const EXTHDR:uint = 16;	// EXT header size
 		//internal static const EXTCRC:uint = 4; // uncompressed file crc-32 value
 		//internal static const EXTSIZ:uint = 8; // compressed size
 		//internal static const EXTLEN:uint = 12; // uncompressed size
-		
+
 		/* The central directory file header */
 		internal static const CENSIG:uint = 0x02014b50;	// "PK\001\002"
 		internal static const CENHDR:uint = 46;	// CEN header size
@@ -59,7 +59,7 @@ package nochump.util.zip {
 		//internal static const CENATT:uint = 36; // internal file attributes
 		//internal static const CENATX:uint = 38; // external file attributes
 		internal static const CENOFF:uint = 42; // LOC header offset
-		
+
 		/* The entries in the end of central directory */
 		internal static const ENDSIG:uint = 0x06054b50;	// "PK\005\006"
 		internal static const ENDHDR:uint = 22; // END header size
@@ -68,11 +68,11 @@ package nochump.util.zip {
 		//internal static const ENDSIZ:uint = 12; // central directory size in bytes
 		internal static const ENDOFF:uint = 16; // offset of first CEN header
 		//internal static const ENDCOM:uint = 20; // zip file comment length
-		
+
 		/* Compression methods */
 		internal static const STORED:uint = 0;
 		internal static const DEFLATED:uint = 8;
-		
+
 	}
 
 }

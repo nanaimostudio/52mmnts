@@ -18,7 +18,7 @@ kernel CubicEnvMapShader
 	input image3 normalMap;
 	input image3 positionMap;
 	output pixel4 dst;
-	
+
 	parameter float alpha
 	<
 		minValue: float(0.0);
@@ -26,7 +26,7 @@ kernel CubicEnvMapShader
 		defaultValue: float(0.5);
 		description: "The alpha of the environment map";
 	>;
-	
+
 	parameter float cubeDim
 	<
 		minValue: float(0.0);
@@ -42,14 +42,14 @@ kernel CubicEnvMapShader
 		defaultValue: float3x3(0.0);
 		description: "The transformation matrix that transforms the displayObject to stage coordinates";
 	>;
-	
+
 	parameter float4x4 positionTransformation
 	<
 		minValue: float4x4(-8000.0);
 		maxValue: float4x4(8000.0);
 		defaultValue: float4x4(0.0);
 	>;
-	
+
 	parameter float3 viewPos
 	<
 		minValue: float3(0.0);
@@ -57,7 +57,7 @@ kernel CubicEnvMapShader
 		defaultValue: float3(0.0);
 		description: "The position of the camera";
 	>;
-	
+
 	void evaluatePixel()
 	{
 		float3 coord3d = sampleNearest(positionMap, outCoord());
@@ -83,7 +83,7 @@ kernel CubicEnvMapShader
 			maxcoord = absN;
 			face = refl.z > 0.0? 4 : 5;
 		}
-		
+
 		float invMax = 1.0/maxcoord;
 		// sample the cube
 		if (face == 0)
@@ -98,9 +98,9 @@ kernel CubicEnvMapShader
 			reflection = sampleNearest(front, float2(1.0+refl.x*invMax, 1.0-refl.y*invMax)*cubeDim);
 		else if (face == 5)
 			reflection = sampleNearest(back, float2(1.0-refl.x*invMax, 1.0-refl.y*invMax)*cubeDim);
-		
+
 		dst = sampleNearest(diffuse, outCoord());
-		
+
 		float reflStrength = sampleNearest(reflectivityMap, outCoord()).x*alpha;
 		dst.xyz = dst.xyz*(1.0-reflStrength)+reflection*reflStrength*dst.a;
 	}

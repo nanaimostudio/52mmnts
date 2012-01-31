@@ -28,9 +28,9 @@ package away3d.graphs.bsp.builder
 
 		override public function destroy() : void
 		{
-			
+
 		}
-		
+
 		public function get portals() : Vector.<BSPPortal>
 		{
 			return IBSPPortalProvider(wrapped).portals;

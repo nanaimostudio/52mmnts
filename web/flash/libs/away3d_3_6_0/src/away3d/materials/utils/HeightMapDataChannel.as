@@ -3,7 +3,7 @@
 package away3d.materials.utils
 {
 
-	public final class HeightMapDataChannel 
+	public final class HeightMapDataChannel
 	{
 		public static const RED : uint = 1;
 		public static const GREEN : uint = 2;

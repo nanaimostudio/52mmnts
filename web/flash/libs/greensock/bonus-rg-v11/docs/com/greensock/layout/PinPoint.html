@@ -48,12 +48,12 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- PinPoint works with LiquidStage to create reference points on the stage and/or inside 
+ PinPoint works with LiquidStage to create reference points on the stage and/or inside
  DisplayObjects so that the movement of these PinPoints trickles down and affects
  the position of attached DisplayObjects. See LiquidStage documentation for more information. <br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -71,7 +71,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#PinPoint()">PinPoint</a>(x:Number, y:Number, target:DisplayObject, liquidStage:<a href="LiquidStage.html">LiquidStage</a> = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">PinPoint</td>
 </tr>
@@ -88,7 +88,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#attach()">attach</a>(target:DisplayObject, strict:Boolean = false, reconcile:Boolean = true, tweenDuration:Number = 0, tweenVars:Object = null, roundPosition:Boolean = false):void</div>
 <div class="summaryTableDescription">
-   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the 
+   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the
    PinPoint will also affect the relative position of the DisplayObject.</div>
 </td><td class="summaryTableOwnerCol">PinPoint</td>
 </tr>
@@ -175,7 +175,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function PinPoint(x:Number, y:Number, target:DisplayObject, liquidStage:<a href="LiquidStage.html">LiquidStage</a> = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -216,7 +216,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void</code><p>
    Use this to add an <code>Event.CHANGE</code> listener to find out when the PinPoint moves.
-    
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -261,23 +261,23 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function attach(target:DisplayObject, strict:Boolean = false, reconcile:Boolean = true, tweenDuration:Number = 0, tweenVars:Object = null, roundPosition:Boolean = false):void</code><p>
-   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the 
+   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the
    PinPoint will also affect the relative position of the DisplayObject. Attaching the DisplayObject
-   does NOT force it to share the same coordinates as the PinPoint - it simply causes the PinPoint's 
+   does NOT force it to share the same coordinates as the PinPoint - it simply causes the PinPoint's
    movement to proportionally affect the position of the DisplayObject. The relationship is one-way
    so moving the DisplayObject will not move the PinPoint. Unless the <code>strict</code> parameter
-   is <code>true</code>, changes are relative so you are free to move the DisplayObject as you wish and when the 
+   is <code>true</code>, changes are relative so you are free to move the DisplayObject as you wish and when the
    PinPoint's position changes, its proportional movement will honor the DisplayObject's new position
    instead of forcing it back to the same distance from the PinPoint. But again, you can set
-   the <code>strict</code> parameter to <code>true</code> if you want to force the object to always 
+   the <code>strict</code> parameter to <code>true</code> if you want to force the object to always
    maintain a certain distance from the PinPoint<br /><br />
-   
+
    For example, if your object is 100 pixels away from the PinPoint and the PinPoint moves 15 pixels,
    the DisplayObject will move 15 pixels as well (or however many pixels it takes to maintain its relative
    distance to the PinPoint which may be more or less than 15 pixels if it is nested inside a scaled parent).
    Strict mode, however, will force the DisplayObject to maintain its exact distance away from the PinPoint
    (no manual position changes will be honored when LiquidStage updates).
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -394,8 +394,8 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function release(target:DisplayObject):Boolean</code><p>
-   Releases a DisplayObject from being controlled by LiquidStage after having been attached. 
-   
+   Releases a DisplayObject from being controlled by LiquidStage after having been attached.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -446,12 +446,12 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function toLocal(target:DisplayObject):Point</code><p>
-   Determines a PinPoint's coordinates according to any DisplayObject's coordinate space. 
+   Determines a PinPoint's coordinates according to any DisplayObject's coordinate space.
    For example, to figure out where the CENTER PinPoint is inside the "myImage" DisplayObject,
    you'd do:<br /><br /><code>
-   
+
    var point:Point = myPinPoint.toLocal(myImage);</code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

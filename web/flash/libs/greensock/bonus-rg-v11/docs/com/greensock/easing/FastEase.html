@@ -41,7 +41,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  TweenMax (AS3 only) has built-in algorithms that speed up the processing of certain easing equations but in order
  to take advantage of those optimizations, you must activate the easing equations first (you only need to
- activate them ONCE in your swf). The following easing equations from the com.greensock.easing package are 
+ activate them ONCE in your swf). The following easing equations from the com.greensock.easing package are
  eligible for activation:
  <code>
  <ul>
@@ -53,28 +53,28 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li>Strong (easeIn, easeOut, and easeInOut)</li>
  </ul><br />
  </code>
- 
+
  <b>EXAMPLE</b><br /><br />
- 
+
  <code>
    import com.greensock.easing.<br /><br />
-   
+
    //activate the optimized ease classes<br />
    FastEase.activate([Strong, Linear, Quad]);<br /><br />
- 
+
    //then tween as usual (you don't have to do anything special in your tweens)<br />
    TweenMax.to(mc, 2, {x:200, ease:Linear.easeNone});<br /><br />
  </code>
- 
+
  Once activated, the easing calculations run about <b>35-80% faster!</b> Keep in mind that the easing calculations are only one small part
  of the tweening engine, so you may only see a 2-15% improvement overall depending on the equation and quantity of simultaneous tweens.
- 
+
  Notes: <br />
  <ul>
    <li>TweenLite does <b>NOT</b> have the internal algorithms in place to take advantage of optimized eases at this time (to conserve file size).</li>
    <li>Activating an ease multiple times doesn't hurt or help</li>
  </ul>
- 
+
  <p></p>
 <br>
 <hr>
@@ -102,7 +102,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#activateEase()">activateEase</a>(ease:Function, type:int, power:uint):void</div>
 <div class="summaryTableDescription">[static]
    Normally you should use the <code>FastEase.activate()</code> method to activate optimized eases, but if you
-   want to activate an ease that is NOT in the com.greensock.easing package (for example 
+   want to activate an ease that is NOT in the com.greensock.easing package (for example
    <code>fl.motion.easing.Quadratic</code>), you can register individual easing equations with
    this method.</div>
 </td><td class="summaryTableOwnerCol">FastEase</td>
@@ -126,7 +126,7 @@ showHideInherited();
 <code>public static function activate(easeClasses:Array):void</code><p>
    TweenMax (AS3 only) has built-in algorithms that speed up the processing of certain easing equations but in order
    to take advantage of those optimizations, you must activate the easing equations first (you only need to
-   activate them ONCE in your swf). The following easing equations from the com.greensock.easing package are 
+   activate them ONCE in your swf). The following easing equations from the com.greensock.easing package are
    eligible for activation:
    <code>
    <ul>
@@ -138,21 +138,21 @@ showHideInherited();
      <li>Strong (easeIn, easeOut, and easeInOut)</li>
    </ul><br />
    </code>
-   
+
    <b>EXAMPLE</b><br /><br />
-   
+
    <code>
      import com.greensock.easing.<br /><br />
-     
+
      FastEase.activate([Strong, Linear, Quad]);<br /><br />
    </code>
-   
+
    Notes: <br />
    <ul>
      <li>TweenLite does <b>NOT</b> have the internal algorithms in place to take advantage of optimized eases at this time (to conserve file size).</li>
      <li>Activating an ease multiple times doesn't hurt or help</li>
    </ul>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -170,17 +170,17 @@ showHideInherited();
 <div class="detailBody">
 <code>public static function activateEase(ease:Function, type:int, power:uint):void</code><p>
    Normally you should use the <code>FastEase.activate()</code> method to activate optimized eases, but if you
-   want to activate an ease that is NOT in the com.greensock.easing package (for example 
+   want to activate an ease that is NOT in the com.greensock.easing package (for example
    <code>fl.motion.easing.Quadratic</code>), you can register individual easing equations with
    this method. For example:
-   
+
    <code>
      import fl.motion.easing.Quadratic;<br />
      import com.greensock.easing.FastEase;<br /><br />
-   
+
      FastEase.activateEase(Quadratic.easeIn, 1, 1);
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

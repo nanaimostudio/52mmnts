@@ -2,21 +2,21 @@
 	CASA Framework for ActionScript 3.0
 	Copyright (c) 2011, Contributors of CASA Framework
 	All rights reserved.
-	
+
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
-	
+
 	- Redistributions of source code must retain the above copyright notice,
 	  this list of conditions and the following disclaimer.
-	
+
 	- Redistributions in binary form must reproduce the above copyright notice,
 	  this list of conditions and the following disclaimer in the documentation
 	  and/or other materials provided with the distribution.
-	
+
 	- Neither the name of the CASA Framework nor the names of its contributors
 	  may be used to endorse or promote products derived from this software
 	  without specific prior written permission.
-	
+
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,18 +30,18 @@
 	POSSIBILITY OF SUCH DAMAGE.
 */
 package org.casalib.util {
-	
+
 	/**
 		Utilities for constructing and working with Classes.
-		
+
 		@author Aaron Clinger
 		@version 02/13/10
 	*/
 	public class ClassUtil {
-		
+
 		/**
 			Dynamically constructs a Class.
-			
+
 			@param type: The Class to create.
 			@param arguments: Up to ten arguments to the constructor.
 			@return Returns the dynamically created instance of the Class specified by <code>type</code> parameter.
@@ -49,14 +49,14 @@ package org.casalib.util {
 			@example
 				<code>
 					var bData:* = ClassUtil.construct(BitmapData, 200, 200);
-					
+
 					trace(bData is BitmapData, bData.width);
 				</code>
 		*/
 		public static function construct(type:Class, ...arguments):* {
 			if (arguments.length > 10)
 				throw new Error('You have passed more arguments than the "construct" method accepts (accepts ten or less).');
-			
+
 			switch (arguments.length) {
 					case 0 :
 						return new type();

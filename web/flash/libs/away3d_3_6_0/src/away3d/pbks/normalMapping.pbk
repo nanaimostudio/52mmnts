@@ -22,11 +22,11 @@ kernel normalMapping
     
     input image4 normalmap;
     
-    
+
     output pixel4 dst;
-    
-    // evaluatePixel(): The function of the filter that actually does the 
-    //                  processing of the image.  This function is called once 
+
+    // evaluatePixel(): The function of the filter that actually does the
+    //                  processing of the image.  This function is called once
     //                  for each pixel of the output image.
     void
     evaluatePixel()
@@ -36,7 +36,7 @@ kernel normalMapping
         
         // Obtain the normalmap pixel color
         float4 mapColor = sampleNearest(normalmap, outCoord());
-        
+
         // set the output
         float4 diffuse = textureColor*(max(mapColor.r*diffuseMatrixR + mapColor.g*diffuseMatrixG + mapColor.b*diffuseMatrixB + diffuseMatrixO, float4(0.0, 0.0, 0.0, 0.0)) + ambientMatrixO);
         float4 specular = mapColor.r*specularMatrixR + mapColor.g*specularMatrixG + mapColor.b*specularMatrixB + specularMatrixO;

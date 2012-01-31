@@ -44,23 +44,23 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  Toggles the visibility at the end of a tween. For example, if you want to set <code>visible</code> to false
  at the end of the tween, do:<br /><br /><code>
- 
+
  TweenLite.to(mc, 1, {x:100, visible:false});<br /><br /></code>
- 
+
  The <code>visible</code> property is forced to true during the course of the tween. <br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.VisiblePlugin; <br />
    TweenPlugin.activate([VisiblePlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 1, {x:100, visible:false}); <br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

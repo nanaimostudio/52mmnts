@@ -42,15 +42,15 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- Loads an MP3 audio file and also provides convenient playback methods 
- and properties like <code>pauseSound(), playSound(), gotoSoundTime(), playProgress, volume, 
+ Loads an MP3 audio file and also provides convenient playback methods
+ and properties like <code>pauseSound(), playSound(), gotoSoundTime(), playProgress, volume,
  soundPaused, duration, </code> and <code>soundTime</code>. An MP3Loader will dispatch useful events
  like <code>SOUND_COMPLETE, SOUND_PAUSE, SOUND_PLAY</code>, and <code>PLAY_PROGRESS</code> in addition
- to the typical loader events, making it easy to hook up your own control interface. It packs a 
+ to the typical loader events, making it easy to hook up your own control interface. It packs a
  surprising amount of functionality into a very small amount of kb. <br /><br />
- 
+
  <strong>OPTIONAL VARS PROPERTIES</strong><br />
- The following special properties can be passed into the MP3Loader constructor via its <code>vars</code> 
+ The following special properties can be passed into the MP3Loader constructor via its <code>vars</code>
  parameter which can be either a generic object or an <code><a href="data/MP3LoaderVars.html">MP3LoaderVars</a></code> object:<br />
  <ul>
    <li><strong> name : String</strong> - A name that is used to identify the MP3Loader instance. This name can be fed to the <code>find()</code> method or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
@@ -65,7 +65,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li><strong> requireWithRoot : DisplayObject</strong> - LoaderMax supports <i>subloading</i>, where an object can be factored into a parent's loading progress. If you want LoaderMax to require this MP3Loader as part of its parent SWFLoader's progress, you must set the <code>requireWithRoot</code> property to your swf's <code>root</code>. For example, <code>var loader:MP3Loader = new MP3Loader("audio.mp3", {name:"audio", requireWithRoot:this.root});</code></li>
    <li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
    <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
-   
+
    <br /><br />----EVENT HANDLER SHORTCUTS----</li>
    <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onInit : Function</strong> - A handler function for <code>Event.INIT</code> events which will be dispatched when the <code>bytesLoaded</code> exceeds the <code>initThreshold</code> (100k by default) and the MP3 has streamed enough of its content to identify the ID3 meta data. Make sure your onInit function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
@@ -76,20 +76,20 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li><strong> onFail : Function</strong> - A handler function for <code>LoaderEvent.FAIL</code> events which are dispatched whenever the loader fails and its <code>status</code> changes to <code>LoaderStatus.FAILED</code>. Make sure your onFail function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onIOError : Function</strong> - A handler function for <code>LoaderEvent.IO_ERROR</code> events which will also call the onError handler, so you can use that as more of a catch-all whereas <code>onIOError</code> is specifically for LoaderEvent.IO_ERROR events. Make sure your onIOError function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  </ul><br />
- 
- <strong>Note:</strong> Using a <code><a href="data/MP3LoaderVars.html">MP3LoaderVars</a></code> instance 
- instead of a generic object to define your <code>vars</code> is a bit more verbose but provides 
+
+ <strong>Note:</strong> Using a <code><a href="data/MP3LoaderVars.html">MP3LoaderVars</a></code> instance
+ instead of a generic object to define your <code>vars</code> is a bit more verbose but provides
  code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.<br /><br />
- 
+
  <code>content</code> data type: <strong><code>flash.media.Sound</code></strong><br /><br />
- 
- <strong>NOTE:</strong> To avoid garbage collection issues in the Flash player, the <code>Sound</code> 
- object that MP3Loader employs must get recreated internally anytime the MP3Loader is unloaded or its loading 
+
+ <strong>NOTE:</strong> To avoid garbage collection issues in the Flash player, the <code>Sound</code>
+ object that MP3Loader employs must get recreated internally anytime the MP3Loader is unloaded or its loading
  is cancelled, so it is best to access the <code>content</code> after the <code>COMPLETE</code>
  event has been dispatched. Otherwise, if you store a reference to the MP3Loader's <code>content</code>
- before or during a load and it gets cancelled or unloaded for some reason, the <code>Sound</code> object 
+ before or during a load and it gets cancelled or unloaded for some reason, the <code>Sound</code> object
  won't be the one into which the MP3 is eventually loaded.<br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -97,45 +97,45 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  import com.greensock.*;
  import com.greensock.loading.*;
  import com.greensock.events.LoaderEvent;
- 
+
  //create a MP3Loader that will begin playing immediately when it loads
  var sound:MP3Loader = new MP3Loader("mp3/audio.mp3", {name:"audio", autoPlay:true, repeat:3, estimatedBytes:9500});
- 
+
  //begin loading
  sound.load();
- 
+
  //add a CLICK listener to a button that causes the sound to toggle its paused state.
  button.addEventListener(MouseEvent.CLICK, toggleSound);
  function toggleSound(event:MouseEvent):void {
      sound.soundPaused = !sound.soundPaused;
  }
- 
+
  //or you could put the MP3Loader into a LoaderMax queue. Create one first...
  var queue:LoaderMax = new LoaderMax({name:"mainQueue", onProgress:progressHandler, onComplete:completeHandler, onError:errorHandler});
- 
+
  //append the MP3Loader and then several other loaders
  queue.append( sound );
  queue.append( new XMLLoader("xml/doc.xml", {name:"xmlDoc", estimatedBytes:425}) );
  queue.append( new ImageLoader("img/photo1.jpg", {name:"photo1", estimatedBytes:3500}) );
- 
+
  //start loading
  queue.load();
- 
+
  function progressHandler(event:LoaderEvent):void {
    trace("progress: " + event.target.progress);
  }
- 
+
  function completeHandler(event:LoaderEvent):void {
    trace(event.target + " is complete!");
  }
- 
+
  function errorHandler(event:LoaderEvent):void {
    trace("error occured with " + event.target + ": " + event.text);
  }
  </pre></div>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <p>
 <span class="classHeaderTableLabel">See also</span>
@@ -162,7 +162,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -187,7 +187,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">MP3Loader</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#content">content</a> : *<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#content">content</a> : *<div class="summaryTableDescription">
    The content that was loaded by the loader which varies by the type of loader:
    <ul>
      <li><strong> ImageLoader </strong> - A <code>com.greensock.loading.display.ContentDisplay</code> (a Sprite) which contains the ImageLoader's <code>rawContent</code> (a <code>flash.display.Bitmap</code> unless script access was denied in which case <code>rawContent</code> will be a <code>flash.display.Loader</code> to avoid security errors).</div>
@@ -206,8 +206,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">MP3Loader</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription"> 
-   The number of seconds that elapsed between when the loader began and when it either completed, failed, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription">
+   The number of seconds that elapsed between when the loader began and when it either completed, failed,
    or was canceled.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -297,8 +297,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderItem.html#auditSize()">auditSize</a>():void</div>
-<div class="summaryTableDescription"> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
+<div class="summaryTableDescription">
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
    in order to improve the accuracy of the <code>progress</code> property.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderItem.html">LoaderItem</a></td>
 </tr>
@@ -306,8 +306,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#cancel()">cancel</a>():void</div>
-<div class="summaryTableDescription"> 
-   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled 
+<div class="summaryTableDescription">
+   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled
    immediately and its status will change to <code>LoaderStatus.READY</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -315,7 +315,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#dispose()">dispose</a>(flushContent:Boolean = false):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Disposes of the loader and releases it internally for garbage collection.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -323,7 +323,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#gotoSoundTime()">gotoSoundTime</a>(time:Number, forcePlay:Boolean = false, resetRepeatCount:Boolean = true):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Attempts to jump to a certain time in the sound.</div>
 </td><td class="summaryTableOwnerCol">MP3Loader</td>
 </tr>
@@ -346,7 +346,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#pauseSound()">pauseSound</a>(event:Event = null):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Pauses playback of the sound.</div>
 </td><td class="summaryTableOwnerCol">MP3Loader</td>
 </tr>
@@ -354,7 +354,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#playSound()">playSound</a>(event:Event = null):SoundChannel</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Plays the sound.</div>
 </td><td class="summaryTableOwnerCol">MP3Loader</td>
 </tr>
@@ -362,7 +362,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#prioritize()">prioritize</a>(loadNow:Boolean = true):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Immediately prioritizes the loader inside any LoaderMax instances that contain it,
    forcing it to the top position in their queue and optionally calls <code>load()</code>
    immediately as well.</div>
@@ -386,7 +386,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#unload()">unload</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Removes any content that was loaded and sets <code>bytesLoaded</code> back to zero.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -608,7 +608,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function MP3Loader(urlOrRequest:*, vars:Object = null)</code><p>
    Constructor.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -620,7 +620,7 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object containing optional configuration details. For example: <code>new MP3Loader("mp3/audio.mp3", {name:"audio", autoPlay:true, onComplete:completeHandler, onProgress:progressHandler})</code>.<br /><br />
-   
+
    The following special properties can be passed into the constructor via the <code>vars</code> parameter
    which can be either a generic object or an <code><a href="data/MP3LoaderVars.html">MP3LoaderVars</a></code> object:<br />
    <ul>
@@ -636,7 +636,7 @@ showHideInherited();
      <li><strong> requireWithRoot : DisplayObject</strong> - LoaderMax supports <i>subloading</i>, where an object can be factored into a parent's loading progress. If you want LoaderMax to require this MP3Loader as part of its parent SWFLoader's progress, you must set the <code>requireWithRoot</code> property to your swf's <code>root</code>. For example, <code>var loader:MP3Loader = new MP3Loader("audio.mp3", {name:"audio", requireWithRoot:this.root});</code></li>
      <li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
      <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
-     
+
      <br /><br />----EVENT HANDLER SHORTCUTS----</li>
      <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
      <li><strong> onInit : Function</strong> - A handler function for <code>Event.INIT</code> events which will be dispatched when the <code>bytesLoaded</code> exceeds the <code>initThreshold</code> (100k by default) and the MP3 has streamed enough of its content to identify the ID3 meta data. Make sure your onInit function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
@@ -718,13 +718,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function gotoSoundTime(time:Number, forcePlay:Boolean = false, resetRepeatCount:Boolean = true):void</code><p> 
+<code>public function gotoSoundTime(time:Number, forcePlay:Boolean = false, resetRepeatCount:Boolean = true):void</code><p>
    Attempts to jump to a certain time in the sound. If the sound hasn't downloaded enough to get to
    the new time, it will get as close as possible.
    For example, to jump to exactly 3-seconds into the sound and play from there:<br /><br /><code>
-   
+
    loader.gotoSoundTime(3, true);<br /><br /></code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -766,14 +766,14 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function pauseSound(event:Event = null):void</code><p> 
-   Pauses playback of the sound. 
-   
+<code>public function pauseSound(event:Event = null):void</code><p>
+   Pauses playback of the sound.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; An optional Event which simply makes it easier to use the method as a handler for mouse clicks or other events.
-   
+
    </td>
 </tr>
 </table>
@@ -799,9 +799,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function playSound(event:Event = null):SoundChannel</code><p> 
+<code>public function playSound(event:Event = null):SoundChannel</code><p>
    Plays the sound.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -814,7 +814,7 @@ showHideInherited();
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20"></td><td><code>SoundChannel</code> &mdash; The SoundChannel object created by the play()
-   
+
    </td>
 </tr>
 </table>

@@ -1,7 +1,7 @@
 package away3d.core.utils {
-	
+
     import away3d.materials.*;
-    
+
     import flash.display.*;
     import flash.geom.Matrix;
     import flash.utils.*;
@@ -20,7 +20,7 @@ package away3d.core.utils {
 
             return String(data);
         }
-    
+
         public static function bytearray(data:*):ByteArray
         {
             //throw new Error(typeof(data));
@@ -33,7 +33,7 @@ package away3d.core.utils {
 
             return ByteArray(data);
         }
-    
+
         public static function xml(data:*):XML
         {
             if (data is Class)
@@ -44,7 +44,7 @@ package away3d.core.utils {
 
             return XML(data);
         }
-    
+
         private static var colornames:Dictionary;
         private static var hexchars:String = "0123456789abcdefABCDEF";
 
@@ -70,7 +70,7 @@ package away3d.core.utils {
             {
                 if (data == "random")
                     return uint(Math.random()*0x1000000);
-            
+
                 if (colornames == null)
                 {
                     colornames = new Dictionary();
@@ -216,17 +216,17 @@ package away3d.core.utils {
                     colornames["black"] = 0x000000;
                     colornames["transparent"] = 0xFF000000;
                 }
-            
+
                 if (colornames[data] != null)
                     return colornames[data];
-            
+
                 if (((data as String).length == 6) && hexstring(data))
                     return parseInt("0x"+data);
             }
 
-            return 0xFFFFFF;                                  
+            return 0xFFFFFF;
         }
-        
+
         public static function color(data:*):uint
         {
             var result:uint = trycolor(data);
@@ -259,7 +259,7 @@ package away3d.core.utils {
 
             if (data is BitmapData)
                 return data;
-			
+
 			if (data is Bitmap)
             	if ((data as Bitmap).hasOwnProperty("bitmapData")) // if (data is BitmapAsset)
                 	return (data as Bitmap).bitmapData;
@@ -326,10 +326,10 @@ package away3d.core.utils {
             if (data is Material)
                 return data;
 
-            if (data is int) 
+            if (data is int)
                 return new ColorMaterial(data);
 
-            if (data is MovieClip) 
+            if (data is MovieClip)
                 return new MovieMaterial(data);
 
             if (data is String)
@@ -398,7 +398,7 @@ package away3d.core.utils {
                 {
                     if (wire != null)
                         Debug.warning("Bitmap materials do not support wire");
-                        
+
                     var smooth:Boolean = ini.getBoolean("smooth", false);
                     var precision:Number = ini.getNumber("precision", 0);
                     if (precision)
@@ -411,7 +411,7 @@ package away3d.core.utils {
 
                         return new BitmapMaterial(bitmap, {smooth:smooth, precision:precision});
                     }
-                        
+
                     if (lighting)
                     {
                         if (alpha < 1)
@@ -454,7 +454,7 @@ package away3d.core.utils {
             if (data is Material)
                 return data;
 
-            if (data is int) 
+            if (data is int)
                 return new WireframeMaterial(data);
 
             if (data is String)

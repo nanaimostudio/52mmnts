@@ -4,12 +4,12 @@
 	import away3d.core.base.*;
 	import away3d.materials.*;
 	import away3d.sprites.*;
-    
+
 	use namespace arcane;
-	
+
     /**
     * Abstract base class for shaded primitives
-    */ 
+    */
     public class AbstractPrimitive extends Mesh
     {
 		/** @private */
@@ -93,53 +93,53 @@
    			}
             return _segment;
 		}
-		
+
 		private var _index:int;
-     	
+
      	arcane function updatePrimitive():void
      	{
 			buildPrimitive();
-    		
+
         	//execute quarterFaces
         	var i:int = geometry.quarterFacesTotal;
         	while (i--)
         		quarterFaces();
      	}
-     	
+
 		/**
 		 * Builds the vertex, face and uv objects that make up the 3d primitive.
 		 */
     	protected function buildPrimitive():void
     	{
     		_primitiveDirty = false;
-    		
+
     		//remove all faces from the mesh
     		_index = faces.length;
     		while (_index--)
     			removeFace(faces[_index]);
-    		
+
     		//remove all segments from the mesh
     		_index = segments.length;
     		while (_index--)
     			removeSegment(segments[_index]);
-    			
+
     		//clear vertex objects
     		_vStore = _vStore.concat(_vActive);
         	_vActive = [];
-    		
+
     		//clear uv objects
     		_uvStore = _uvStore.concat(_uvActive);
         	_uvActive = [];
-        	
+
         	//clear face objects
     		_faceStore = _faceStore.concat(_faceActive);
         	_faceActive = [];
-        	
+
         	//clear segment objects
     		_segmentStore = _segmentStore.concat(_segmentActive);
         	_segmentActive = [];
     	}
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -147,10 +147,10 @@
         {
     		if (_primitiveDirty)
     			updatePrimitive();
-    		
+
             return _geometry.vertices;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -158,10 +158,10 @@
         {
     		if (_primitiveDirty)
     			updatePrimitive();
-    		
+
             return _geometry.faces;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -169,10 +169,10 @@
         {
     		if (_primitiveDirty)
     			updatePrimitive();
-    		
+
             return _geometry.segments;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -180,10 +180,10 @@
         {
     		if (_primitiveDirty)
     			updatePrimitive();
-    		
+
             return _geometry.sprites;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -191,10 +191,10 @@
         {
     		if (_primitiveDirty)
     			updatePrimitive();
-    		
+
             return _geometry.elements;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -202,10 +202,10 @@
         {
     		if (_primitiveDirty)
     			updatePrimitive();
-    		
+
         	return _geometry;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -213,10 +213,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.boundingRadius;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -224,10 +224,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.maxX;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -235,10 +235,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.minX;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -246,10 +246,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.maxY;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -257,10 +257,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.minY;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -268,10 +268,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.maxZ;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -279,10 +279,10 @@
         {
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
            return super.minZ;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -290,10 +290,10 @@
 		{
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
 			return super.objectWidth;
 		}
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -301,10 +301,10 @@
 		{
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
 			return super.objectHeight;
 		}
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -312,10 +312,10 @@
 		{
             if (_primitiveDirty)
     			updatePrimitive();
-           
+
 			return  super.objectDepth;
 		}
-		
+
 		/**
 		 * Creates a new <code>AbstractPrimitive</code> object.
 		 *
@@ -324,7 +324,7 @@
 		public function AbstractPrimitive(init:Object = null)
 		{
 			super(init);
-			
+
 			_primitiveDirty = true;
 		}
     }

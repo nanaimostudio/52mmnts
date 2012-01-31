@@ -45,126 +45,126 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
-  TimelineMax extends TimelineLite, offering exactly the same functionality plus useful 
-  (but non-essential) features like AS3 event dispatching, repeat, repeatDelay, yoyo, 
+  TimelineMax extends TimelineLite, offering exactly the same functionality plus useful
+  (but non-essential) features like AS3 event dispatching, repeat, repeatDelay, yoyo,
   currentLabel, addCallback(), removeCallback(), tweenTo(), tweenFromTo(), getLabelAfter(), getLabelBefore(),
-  and getActive() (and probably more in the future). It is the ultimate sequencing tool. 
-  Think of a TimelineMax instance like a virtual MovieClip timeline or a container where 
+  and getActive() (and probably more in the future). It is the ultimate sequencing tool.
+  Think of a TimelineMax instance like a virtual MovieClip timeline or a container where
   you place tweens (or other timelines) over the course of time. You can:
-  
+
  <ul>
-   <li> build sequences easily by adding tweens with the append(), prepend(), insert(), appendMultiple(), 
-    prependMultiple(), and insertMultiple() methods. Tweens can overlap as much as you want and you have 
+   <li> build sequences easily by adding tweens with the append(), prepend(), insert(), appendMultiple(),
+    prependMultiple(), and insertMultiple() methods. Tweens can overlap as much as you want and you have
     complete control over where they get placed on the timeline.</li>
- 
+
    <li> add labels, play(), stop(), gotoAndPlay(), gotoAndStop(), restart(), tweenTo() and even reverse()! </li>
-   
+
    <li> nest timelines within timelines as deeply as you want.</li>
-   
+
    <li> set the progress of the timeline using its <code>currentProgress</code> property. For example, to skip to
      the halfway point, set <code>myTimeline.currentProgress = 0.5</code>.</li>
-     
-   <li> tween the <code>currentTime</code>, <code>totalTime</code>, <code>currentProgress</code>, or <code>totalProgress</code> 
-    property to fastforward/rewind the timeline. You could 
-     even attach a slider to one of these properties to give the user the ability to drag 
+
+   <li> tween the <code>currentTime</code>, <code>totalTime</code>, <code>currentProgress</code>, or <code>totalProgress</code>
+    property to fastforward/rewind the timeline. You could
+     even attach a slider to one of these properties to give the user the ability to drag
      forwards/backwards through the whole timeline.</li>
-     
-   <li> add onStart, onUpdate, onComplete, onReverseComplete, and/or onRepeat callbacks using the 
+
+   <li> add onStart, onUpdate, onComplete, onReverseComplete, and/or onRepeat callbacks using the
      constructor's <code>vars</code> object.</li>
-   
+
    <li> speed up or slow down the entire timeline with its <code>timeScale</code> property. You can even tween
      this property to gradually speed up or slow down the timeline.</li>
-     
-   <li> use the insertMultiple(), appendMultiple(), or prependMultiple() methods to create 
-    complex sequences including various alignment modes and staggering capabilities.  
+
+   <li> use the insertMultiple(), appendMultiple(), or prependMultiple() methods to create
+    complex sequences including various alignment modes and staggering capabilities.
     Works great in conjunction with TweenMax.allTo() too. </li>
-     
+
    <li> base the timing on frames instead of seconds if you prefer. Please note, however, that
      the timeline's timing mode dictates its childrens' timing mode as well. </li>
-   
+
    <li> kill the tweens of a particular object inside the timeline with killTweensOf() or get the tweens of an object
      with getTweensOf() or get all the tweens/timelines in the timeline with getChildren()</li>
-     
+
    <li> set the timeline to repeat any number of times or indefinitely. You can even set a delay
      between each repeat cycle and/or cause the repeat cycles to yoyo, appearing to reverse
      every other cycle. </li>
-   
+
    <li> listen for START, UPDATE, REPEAT, REVERSE_COMPLETE, and COMPLETE events.</li>
-   
+
    <li> get the active tweens in the timeline with getActive().</li>
- 
-   <li> add callbacks (function calls) anywhere in the timeline that call a function of your choosing when 
+
+   <li> add callbacks (function calls) anywhere in the timeline that call a function of your choosing when
     the "virtual playhead" passes a particular spot.</li>
-   
+
    <li> Get the <code>currentLabel</code> or find labels at various positions in the timeline
     using getLabelAfter() and getLabelBefore()</li>
   </ul>
-  
+
  <b>EXAMPLE:</b><br /><br /><code>
-   
+
    import com.greensock.*;<br /><br />
-   
+
    //create the timeline and add an onComplete call to myFunction when the timeline completes<br />
    var myTimeline:TimelineMax = new TimelineMax({onComplete:myFunction});<br /><br />
-   
+
    //add a tween<br />
    myTimeline.append(new TweenLite(mc, 1, {x:200, y:100}));<br /><br />
-   
+
    //add another tween at the end of the timeline (makes sequencing easy)<br />
    myTimeline.append(new TweenLite(mc, 0.5, {alpha:0}));<br /><br />
-   
+
    //repeat the entire timeline twice<br />
    myTimeline.repeat = 2;<br /><br />
-   
+
    //delay the repeat by 0.5 seconds each time.<br />
    myTimeline.repeatDelay = 0.5;<br /><br />
-   
+
    //pause the timeline (stop() works too)<br />
    myTimeline.pause();<br /><br />
-   
+
    //reverse it anytime...<br />
    myTimeline.reverse();<br /><br />
-   
+
    //Add a "spin" label 3-seconds into the timeline.<br />
    myTimeline.addLabel("spin", 3);<br /><br />
-   
+
    //insert a rotation tween at the "spin" label (you could also define the insert point as the time instead of a label)<br />
    myTimeline.insert(new TweenLite(mc, 2, {rotation:"360"}), "spin"); <br /><br />
-   
+
    //go to the "spin" label and play the timeline from there...<br />
    myTimeline.gotoAndPlay("spin");<br /><br />
- 
+
    //call myCallbackwhen the "virtual playhead" travels past the 1.5-second point.
    myTimeline.addCallback(myCallback, 1.5);
-   
+
    //add a tween to the beginning of the timeline, pushing all the other existing tweens back in time<br />
    myTimeline.prepend(new TweenMax(mc, 1, {tint:0xFF0000}));<br /><br />
-   
+
    //nest another TimelineMax inside your timeline...<br />
    var nestedTimeline:TimelineMax = new TimelineMax();<br />
    nestedTimeline.append(new TweenLite(mc2, 1, {x:200}));<br />
    myTimeline.append(nestedTimeline);<br /><br /></code>
-   
-   
-  <code>insertMultiple()</code> and <code>appendMultiple()</code> provide some very powerful sequencing tools as well, 
-  allowing you to add an Array of tweens/timelines and optionally align them with <code>SEQUENCE</code> or <code>START</code> 
-  modes, and even stagger them if you want. For example, to insert 3 tweens into the timeline, aligning their start times but 
+
+
+  <code>insertMultiple()</code> and <code>appendMultiple()</code> provide some very powerful sequencing tools as well,
+  allowing you to add an Array of tweens/timelines and optionally align them with <code>SEQUENCE</code> or <code>START</code>
+  modes, and even stagger them if you want. For example, to insert 3 tweens into the timeline, aligning their start times but
   staggering them by 0.2 seconds, <br /><br /><code>
-  
+
    myTimeline.insertMultiple([new TweenLite(mc, 1, {y:"100"}),
             new TweenLite(mc2, 1, {x:120}),
-            new TweenLite(mc3, 1, {alpha:0.5})], 
-            0, 
-            TweenAlign.START, 
+            new TweenLite(mc3, 1, {alpha:0.5})],
+            0,
+            TweenAlign.START,
             0.2);</code><br /><br />
-            
+
   You can use the constructor's <code>vars</code> object to do all the setup too, like:<br /><br /><code>
-  
+
    var myTimeline:TimelineMax = new TimelineMax({tweens:[new TweenLite(mc1, 1, {y:"100"}), TweenMax.to(mc2, 1, {tint:0xFF0000})], align:TweenAlign.SEQUENCE, onComplete:myFunction, repeat:2, repeatDelay:1});</code><br /><br />
-  
+
   If that confuses you, don't worry. Just use the <code>append()</code>, <code>insert()</code>, and <code>prepend()</code> methods to build your
   sequence. But power users will likely appreciate the quick, compact way they can set up sequences now. <br /><br />
-  
+
   <b>NOTES:</b>
  <ul>
   <li> TimelineMax automatically inits the OverwriteManager class to prevent unexpected overwriting behavior in sequences.
@@ -172,9 +172,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    (see <a href="http://www.greensock.com/overwritemanager/">http://www.greensock.com/overwritemanager/</a>)</li>
   <li> TimelineMax adds about 4.9k to your SWF (not including OverwriteManager).</li>
  </ul>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -203,14 +203,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">TimelineMax</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="TimelineLite.html#currentProgress">currentProgress</a> : Number<div class="summaryTableDescription"> 
-   Value between 0 and 1 indicating the progress of the timeline according to its duration 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="TimelineLite.html#currentProgress">currentProgress</a> : Number<div class="summaryTableDescription">
+   Value between 0 and 1 indicating the progress of the timeline according to its duration
     where 0 is at the beginning, 0.5 is halfway finished, and 1 is finished.</div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/TweenCore.html#currentTime">currentTime</a> : Number<div class="summaryTableDescription">
-   Most recently rendered time (or frame for frames-based tweens/timelines) according to its 
+   Most recently rendered time (or frame for frames-based tweens/timelines) according to its
    <code>duration</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/TweenCore.html">TweenCore</a></td>
 </tr>
@@ -219,7 +219,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="core/TweenCore.html">TweenCore</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/TweenCore.html#delay">delay</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/TweenCore.html#delay">delay</a> : Number<div class="summaryTableDescription">
    Length of time in seconds (or frames for frames-based tweens/timelines) before the tween should begin.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/TweenCore.html">TweenCore</a></td>
 </tr>
@@ -265,19 +265,19 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">TimelineMax</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#totalProgress">totalProgress</a> : Number<div class="summaryTableDescription"> 
-   Value between 0 and 1 indicating the overall progress of the timeline according to its <code>totalDuration</code> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#totalProgress">totalProgress</a> : Number<div class="summaryTableDescription">
+   Value between 0 and 1 indicating the overall progress of the timeline according to its <code>totalDuration</code>
     where 0 is at the beginning, 0.5 is halfway finished, and 1 is finished.</div>
 </td><td class="summaryTableOwnerCol">TimelineMax</td>
 </tr>
 <tr class="hideInheritedProperty">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/TweenCore.html#totalTime">totalTime</a> : Number<div class="summaryTableDescription">
-   Most recently rendered time (or frame for frames-based tweens/timelines) according to its 
+   Most recently rendered time (or frame for frames-based tweens/timelines) according to its
    <code>totalDuration</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/TweenCore.html">TweenCore</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="TimelineLite.html#useFrames">useFrames</a> : Boolean<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="TimelineLite.html#useFrames">useFrames</a> : Boolean<div class="summaryTableDescription">
    Indicates whether or not the timeline's timing mode is frames-based as opposed to time-based.</div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -286,8 +286,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="core/TweenCore.html">TweenCore</a></td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#yoyo">yoyo</a> : Boolean<div class="summaryTableDescription"> 
-   Works in conjunction with the repeat property, determining the behavior of each cycle; when <code>yoyo</code> is true, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#yoyo">yoyo</a> : Boolean<div class="summaryTableDescription">
+   Works in conjunction with the repeat property, determining the behavior of each cycle; when <code>yoyo</code> is true,
    the timeline will go back and forth, appearing to reverse every other cycle (this has no affect on the <code>reversed</code> property though).</div>
 </td><td class="summaryTableOwnerCol">TimelineMax</td>
 </tr>
@@ -340,7 +340,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </div>
 <div class="summaryTableDescription">
    Inserts a TweenLite, TweenMax, TimelineLite, or TimelineMax instance at the <strong>end</strong> of the timeline,
-   optionally offsetting its insertion point by a certain amount (to make it overlap with the end of 
+   optionally offsetting its insertion point by a certain amount (to make it overlap with the end of
    the timeline or leave a gap before its insertion point).</div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -349,7 +349,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="TimelineLite.html#appendMultiple()">appendMultiple</a>(tweens:Array, offset:Number = 0, align:String = "normal", stagger:Number = 0):Array</div>
 <div class="summaryTableDescription">
-   Appends multiple tweens/timelines at the end of the timeline at once, optionally offsetting the insertion point by a certain amount, 
+   Appends multiple tweens/timelines at the end of the timeline at once, optionally offsetting the insertion point by a certain amount,
    aligning them (as a sequence for example), and/or staggering their relative timing.</div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -358,7 +358,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="TimelineLite.html#clear()">clear</a>(tweens:Array = null):void</div>
 <div class="summaryTableDescription">
-   Empties the timeline of all child tweens/timelines, or you can optionally pass an Array containing specific 
+   Empties the timeline of all child tweens/timelines, or you can optionally pass an Array containing specific
    tweens/timelines to remove.</div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -424,7 +424,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="TimelineLite.html#goto()">goto</a>(timeOrLabel:*, suppressEvents:Boolean = true):void</div>
 <div class="summaryTableDescription">
    Skips to a particular time, frame, or label without changing the paused state of the timeline
-   
+
    </div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -434,7 +434,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="TimelineLite.html#gotoAndPlay()">gotoAndPlay</a>(timeOrLabel:*, suppressEvents:Boolean = true):void</div>
 <div class="summaryTableDescription">
    Skips to a particular time, frame, or label and plays the timeline forwards from there (unpausing it)
-   
+
    </div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -444,7 +444,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="TimelineLite.html#gotoAndStop()">gotoAndStop</a>(timeOrLabel:*, suppressEvents:Boolean = true):void</div>
 <div class="summaryTableDescription">
    Skips to a particular time, frame, or label and stops the timeline (pausing it)
-   
+
    </div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -470,8 +470,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#invalidate()">invalidate</a>():void</div>
-<div class="summaryTableDescription">   
-   Clears any initialization data (like starting values in tweens) which can be useful if, for example, 
+<div class="summaryTableDescription">
+   Clears any initialization data (like starting values in tweens) which can be useful if, for example,
    you want to restart it without reverting to any previously recorded starting values.</div>
 </td><td class="summaryTableOwnerCol">TimelineMax</td>
 </tr>
@@ -487,7 +487,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="TimelineLite.html#killTweensOf()">killTweensOf</a>(target:Object, nested:Boolean = true, vars:Object = null):Boolean</div>
 <div class="summaryTableDescription">
-   Kills all the tweens (or certain tweening properties) of a particular object inside this TimelineLite, 
+   Kills all the tweens (or certain tweening properties) of a particular object inside this TimelineLite,
    optionally completing them first.</div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -522,7 +522,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summaryTableDescription">
    Prepends multiple tweens/timelines to the beginning of the timeline at once, moving all existing children back to make
    room, and optionally aligning the new children (as a sequence for example) and/or staggering the timing.<br /><br />
-    
+
    </div>
 </td><td class="summaryTableOwnerCol"><a href="TimelineLite.html">TimelineLite</a></td>
 </tr>
@@ -594,7 +594,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#tweenFromTo()">tweenFromTo</a>(fromTimeOrLabel:*, toTimeOrLabel:Object, vars:* = null):<a href="../greensock/TweenLite.html">TweenLite</a>
 </div>
 <div class="summaryTableDescription">
-   Creates a linear tween that essentially scrubs the playhead from a particular time or label to another 
+   Creates a linear tween that essentially scrubs the playhead from a particular time or label to another
    time or label and then stops.</div>
 </td><td class="summaryTableOwnerCol">TimelineMax</td>
 </tr>
@@ -678,13 +678,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>totalProgress:Number</code>&nbsp;&nbsp;[read-write]<p> 
-   Value between 0 and 1 indicating the overall progress of the timeline according to its <code>totalDuration</code> 
-    where 0 is at the beginning, 0.5 is halfway finished, and 1 is finished. <code>currentProgress</code>, 
+<code>totalProgress:Number</code>&nbsp;&nbsp;[read-write]<p>
+   Value between 0 and 1 indicating the overall progress of the timeline according to its <code>totalDuration</code>
+    where 0 is at the beginning, 0.5 is halfway finished, and 1 is finished. <code>currentProgress</code>,
     by contrast, describes the progress according to the timeline's duration which does not
-    include repeats and repeatDelays. For example, if a TimelineMax instance is set 
-    to repeat once, at the end of the first cycle <code>totalProgress</code> would only be 0.5 
-   whereas <code>currentProgress</code> would be 1. If you tracked both properties over the course of the 
+    include repeats and repeatDelays. For example, if a TimelineMax instance is set
+    to repeat once, at the end of the first cycle <code>totalProgress</code> would only be 0.5
+   whereas <code>currentProgress</code> would be 1. If you tracked both properties over the course of the
    tween, you'd see <code>currentProgress</code> go from 0 to 1 twice (once for each cycle) in the same
    time it takes the <code>totalProgress</code> property to go from 0 to 1 once.
    </p><span class="label">Implementation</span>
@@ -701,11 +701,11 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public var yoyo:Boolean</code><p> 
-   Works in conjunction with the repeat property, determining the behavior of each cycle; when <code>yoyo</code> is true, 
-   the timeline will go back and forth, appearing to reverse every other cycle (this has no affect on the <code>reversed</code> property though). 
-   So if repeat is 2 and <code>yoyo</code> is false, it will look like: start - 1 - 2 - 3 - 1 - 2 - 3 - 1 - 2 - 3 - end. 
-   But if repeat is 2 and <code>yoyo</code> is true, it will look like: start - 1 - 2 - 3 - 3 - 2 - 1 - 1 - 2 - 3 - end.  
+<code>public var yoyo:Boolean</code><p>
+   Works in conjunction with the repeat property, determining the behavior of each cycle; when <code>yoyo</code> is true,
+   the timeline will go back and forth, appearing to reverse every other cycle (this has no affect on the <code>reversed</code> property though).
+   So if repeat is 2 and <code>yoyo</code> is false, it will look like: start - 1 - 2 - 3 - 1 - 2 - 3 - 1 - 2 - 3 - end.
+   But if repeat is 2 and <code>yoyo</code> is true, it will look like: start - 1 - 2 - 3 - 3 - 2 - 1 - 1 - 2 - 3 - end.
    </p></div>
 <a name="constructorDetail"></a>
 <div class="detailSectionHeader">Constructor detail</div>
@@ -718,33 +718,33 @@ showHideInherited();
 <div class="detailBody">
 <code>public function TimelineMax(vars:Object = null)</code><p>
    Constructor. <br /><br />
-   
+
    <b>SPECIAL PROPERTIES</b><br />
    The following special properties may be passed in via the constructor's vars parameter, like
-   <code>new TimelineMax({paused:true, onComplete:myFunction, repeat:2, yoyo:true})</code> 
-   
+   <code>new TimelineMax({paused:true, onComplete:myFunction, repeat:2, yoyo:true})</code>
+
    <ul>
     <li><b> delay : Number</b>    Amount of delay in seconds (or frames for frames-based timelines) before the timeline should begin.</li>
-           
-    <li><b> useFrames : Boolean</b>   If <code>useFrames</code> is set to true, the timeline's timing mode will be based on frames. 
-              Otherwise, it will be based on seconds/time. NOTE: a TimelineLite's timing mode is 
+
+    <li><b> useFrames : Boolean</b>   If <code>useFrames</code> is set to true, the timeline's timing mode will be based on frames.
+              Otherwise, it will be based on seconds/time. NOTE: a TimelineLite's timing mode is
               always determined by its parent timeline. </li>
-   
+
     <li><b> paused : Boolean</b>    Sets the initial paused state of the timeline (by default, timelines automatically begin playing immediately)</li>
-   
-    <li><b> reversed : Boolean</b>   If true, the timeline will be reversed initially. This does NOT force it to the very end and start 
-              playing backwards. It simply affects the orientation of the timeline, so if <code>reversed</code> is set to 
+
+    <li><b> reversed : Boolean</b>   If true, the timeline will be reversed initially. This does NOT force it to the very end and start
+              playing backwards. It simply affects the orientation of the timeline, so if <code>reversed</code> is set to
               true initially, it will appear not to play because it is already at the beginning. To cause it to
               play backwards from the end, set reversed to true and then set the <code>currentProgress</code> property to 1 immediately
               after creating the timeline.</li>
-            
+
     <li><b> tweens : Array</b>    To immediately insert several tweens into the timeline, use the <code>tweens</code> special property
               to pass in an Array of TweenLite/TweenMax/TimelineLite/TimelineMax instances. You can use this in conjunction
               with the <code>align</code> and <code>stagger</code> special properties to set up complex sequences with minimal code.
               These values simply get passed to the <code>insertMultiple()</code> method.</li>
-    
+
     <li><b> align : String</b>    Only used in conjunction with the <code>tweens</code> special property when multiple tweens are
-              to be inserted immediately through the constructor. The value simply gets passed to the 
+              to be inserted immediately through the constructor. The value simply gets passed to the
               <code>insertMultiple()</code> method. The default is <code>TweenAlign.NORMAL</code>. Options are:
               <ul>
                <li><b> TweenAlign.SEQUENCE:</b> aligns the tweens one-after-the-other in a sequence</li>
@@ -755,65 +755,65 @@ showHideInherited();
               of one of the nested tweens, it does <b>not</b> force all subsequent timelines to change their position
               on the timeline. The <code>align</code> special property only affects the alignment of the tweens that are
               initially placed into the timeline through the <code>tweens</code> special property of the <code>vars</code> object.</li>
-             
+
     <li><b> stagger : Number</b>   Only used in conjunction with the <code>tweens</code> special property when multiple tweens are
               to be inserted immediately. It staggers the tweens by a set amount of time (in seconds) (or
-              in frames if <code>useFrames</code> is true). For example, if the stagger value is 0.5 and the <code>align</code> 
-              property is set to <code>TweenAlign.START</code>, the second tween will start 0.5 seconds after the first one 
-              starts, then 0.5 seconds later the third one will start, etc. If the align property is 
-              <code>TweenAlign.SEQUENCE</code>, there would be 0.5 seconds added between each tween. This value simply gets 
+              in frames if <code>useFrames</code> is true). For example, if the stagger value is 0.5 and the <code>align</code>
+              property is set to <code>TweenAlign.START</code>, the second tween will start 0.5 seconds after the first one
+              starts, then 0.5 seconds later the third one will start, etc. If the align property is
+              <code>TweenAlign.SEQUENCE</code>, there would be 0.5 seconds added between each tween. This value simply gets
               passed to the <code>insertMultiple()</code> method. Default is 0.</li>
-    
+
     <li><b> onStart : Function</b>   A function that should be called when the timeline begins (the <code>currentProgress</code> won't necessarily
               be zero when onStart is called. For example, if the timeline is created and then its <code>currentProgress</code>
               property is immediately set to 0.5 or if its <code>currentTime</code> property is set to something other than zero,
               onStart will still get fired because it is the first time the timeline is getting rendered.)</li>
-    
+
     <li><b> onStartParams : Array</b>  An Array of parameters to pass the onStart function.</li>
-    
-    <li><b> onUpdate : Function</b>   A function that should be called every time the timeline's time/position is updated 
+
+    <li><b> onUpdate : Function</b>   A function that should be called every time the timeline's time/position is updated
               (on every frame while the timeline is active)</li>
-    
+
     <li><b> onUpdateParams : Array</b>  An Array of parameters to pass the onUpdate function</li>
-    
+
     <li><b> onComplete : Function</b>  A function that should be called when the timeline has finished </li>
-    
+
     <li><b> onCompleteParams : Array</b> An Array of parameters to pass the onComplete function</li>
-    
+
     <li><b> onReverseComplete : Function</b> A function that should be called when the timeline has reached its starting point again after having been reversed </li>
-    
+
     <li><b> onReverseCompleteParams : Array</b> An Array of parameters to pass the onReverseComplete functions</li>
-    
+
     <li><b> onRepeat : Function</b>   A function that should be called every time the timeline repeats </li>
-    
+
     <li><b> onRepeatParams : Array</b>  An Array of parameters to pass the onRepeat function</li>
-    
+
     <li><b> autoRemoveChildren : Boolean</b> If autoRemoveChildren is set to true, as soon as child tweens/timelines complete,
               they will automatically get killed/removed. This is normally undesireable because
-              it prevents going backwards in time (like if you want to reverse() or set the 
+              it prevents going backwards in time (like if you want to reverse() or set the
               <code>currentProgress</code> value to a lower value, etc.). It can, however, improve speed and memory
               management. TweenLite's root timelines use <code>autoRemoveChildren:true</code>.</li>
-   
+
     <li><b> repeat : int</b>    Number of times that the timeline should repeat. To repeat indefinitely, use -1.</li>
-    
+
     <li><b> repeatDelay : Number</b>  Amount of time in seconds (or frames for frames-based timelines) between repeats.</li>
-    
-    <li><b> yoyo : Boolean</b>     Works in conjunction with the repeat property, determining the behavior of each 
-              cycle. When <code>yoyo</code> is true, the timeline will go back and forth, appearing to reverse 
+
+    <li><b> yoyo : Boolean</b>     Works in conjunction with the repeat property, determining the behavior of each
+              cycle. When <code>yoyo</code> is true, the timeline will go back and forth, appearing to reverse
               every other cycle (this has no affect on the <code>reversed</code> property though). So if repeat is
-              2 and yoyo is false, it will look like: start - 1 - 2 - 3 - 1 - 2 - 3 - 1 - 2 - 3 - end. But 
+              2 and yoyo is false, it will look like: start - 1 - 2 - 3 - 1 - 2 - 3 - 1 - 2 - 3 - end. But
               if repeat is 2 and yoyo is true, it will look like: start - 1 - 2 - 3 - 3 - 2 - 1 - 1 - 2 - 3 - end. </li>
-            
+
     <li><b> onStartListener : Function</b> A function to which the TimelineMax instance should dispatch a TweenEvent when it begins.
                 This is the same as doing <code>myTimeline.addEventListener(TweenEvent.START, myFunction);</code></li>
-    
-    <li><b> onUpdateListener : Function</b> A function to which the TimelineMax instance should dispatch a TweenEvent every time it 
+
+    <li><b> onUpdateListener : Function</b> A function to which the TimelineMax instance should dispatch a TweenEvent every time it
               updates values. This is the same as doing <code>myTimeline.addEventListener(TweenEvent.UPDATE, myFunction);</code></li>
-      
+
     <li><b> onCompleteListener : Function</b> A function to which the TimelineMax instance should dispatch a TweenEvent when it completes.
                  This is the same as doing <code>myTimeline.addEventListener(TweenEvent.COMPLETE, myFunction);</code></li>
     </ul>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -835,8 +835,8 @@ showHideInherited();
    If you want a function to be called at a particular time or label, use addCallback. When you add
    a callback, it is technically considered a zero-duration tween, so if you getChildren() there will be
    a tween returned for each callback. You can discern a callback from other tweens by the fact that
-   their target is a function and the duration is zero. 
-   
+   their target is a function and the duration is zero.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -862,10 +862,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../greensock/TweenLite.html">TweenLite</a></code> &mdash; 
+<td width="20"></td><td><code><a href="../greensock/TweenLite.html">TweenLite</a></code> &mdash;
                         TweenLite instance
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -879,11 +879,11 @@ showHideInherited();
 <div class="detailBody">
 <code>public override function complete(skipRender:Boolean = false, suppressEvents:Boolean = false):void</code><p>
    Forces the timeline to completion.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">skipRender</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; to skip rendering the final state of the timeline, set skipRender to true. 
+<td width="20px"></td><td><code><span class="label">skipRender</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; to skip rendering the final state of the timeline, set skipRender to true.
    </td>
 </tr>
 <tr>
@@ -904,7 +904,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function getActive(nested:Boolean = true, tweens:Boolean = true, timelines:Boolean = false):Array</code><p>
    Returns the tweens/timelines that are currently active in the timeline.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -945,12 +945,12 @@ showHideInherited();
 <code>public function getLabelAfter(time:Number):String</code><p>
    Returns the next label (if any) that occurs AFTER the time parameter. It makes no difference
    if the timeline is reversed. A label that is positioned exactly at the same time as the <code>time</code>
-   parameter will be ignored. 
-   
+   parameter will be ignored.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; Time after which the label is searched for. If you do not pass a time in, the currentTime will be used. 
+<td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; Time after which the label is searched for. If you do not pass a time in, the currentTime will be used.
    </td>
 </tr>
 </table>
@@ -973,12 +973,12 @@ showHideInherited();
 <code>public function getLabelBefore(time:Number):String</code><p>
    Returns the previous label (if any) that occurs BEFORE the time parameter. It makes no difference
    if the timeline is reversed. A label that is positioned exactly at the same time as the <code>time</code>
-   parameter will be ignored. 
-   
+   parameter will be ignored.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; Time before which the label is searched for. If you do not pass a time in, the currentTime will be used. 
+<td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; Time before which the label is searched for. If you do not pass a time in, the currentTime will be used.
    </td>
 </tr>
 </table>
@@ -998,15 +998,15 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function invalidate():void</code><p>   
-   Clears any initialization data (like starting values in tweens) which can be useful if, for example, 
-   you want to restart it without reverting to any previously recorded starting values. When you invalidate() 
-   a tween/timeline, it will be re-initialized the next time it renders and its <code>vars</code> object will be re-parsed. 
+<code>public override function invalidate():void</code><p>
+   Clears any initialization data (like starting values in tweens) which can be useful if, for example,
+   you want to restart it without reverting to any previously recorded starting values. When you invalidate()
+   a tween/timeline, it will be re-initialized the next time it renders and its <code>vars</code> object will be re-parsed.
    The timing of the tween/timeline (duration, startTime, delay) will NOT be affected. Another example would be if you
-   have a <code>TweenMax(mc, 1, {x:100, y:100})</code> that ran when mc.x and mc.y were initially at 0, but now mc.x 
-   and mc.y are 200 and you want them tween to 100 again, you could simply <code>invalidate()</code> the tween and 
-   <code>restart()</code> it. Without invalidating first, restarting it would cause the values jump back to 0 immediately 
-   (where they started when the tween originally began). When you invalidate a timeline, it automatically invalidates 
+   have a <code>TweenMax(mc, 1, {x:100, y:100})</code> that ran when mc.x and mc.y were initially at 0, but now mc.x
+   and mc.y are 200 and you want them tween to 100 again, you could simply <code>invalidate()</code> the tween and
+   <code>restart()</code> it. Without invalidating first, restarting it would cause the values jump back to 0 immediately
+   (where they started when the tween originally began). When you invalidate a timeline, it automatically invalidates
    all of its children.
    </p></div>
 <a name="removeCallback()"></a>
@@ -1019,7 +1019,7 @@ showHideInherited();
 <code>public function removeCallback(callback:Function, timeOrLabel:* = null):Boolean</code><p>
    Removes a callback from a particular time or label. If timeOrLabel is null, all callbacks of that
    particular function are removed from the timeline.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1051,32 +1051,32 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function tweenFromTo(fromTimeOrLabel:*, toTimeOrLabel:Object, vars:* = null):<a href="../greensock/TweenLite.html">TweenLite</a></code><p>
-   Creates a linear tween that essentially scrubs the playhead from a particular time or label to another 
-   time or label and then stops. If you plan to sequence multiple playhead tweens one-after-the-other, 
-   <code>tweenFromTo()</code> is better to use than <code>tweenTo()</code> because it allows the duration 
-   to be determined immediately, ensuring that subsequent tweens that are appended to a sequence are 
-   positioned appropriately. For example, to make the TimelineMax play from the label "myLabel1" to the "myLabel2" 
+   Creates a linear tween that essentially scrubs the playhead from a particular time or label to another
+   time or label and then stops. If you plan to sequence multiple playhead tweens one-after-the-other,
+   <code>tweenFromTo()</code> is better to use than <code>tweenTo()</code> because it allows the duration
+   to be determined immediately, ensuring that subsequent tweens that are appended to a sequence are
+   positioned appropriately. For example, to make the TimelineMax play from the label "myLabel1" to the "myLabel2"
    label, and then from "myLabel2" back to the beginning (a time of 0), simply do: <br /><br /><code>
-   
+
    var playheadTweens:TimelineMax = new TimelineMax(); <br />
    playheadTweens.append( myTimeline.tweenFromTo("myLabel1", "myLabel2") );<br />
    playheadTweens.append( myTimeline.tweenFromTo("myLabel2", 0); <br /><br /></code>
-   
-   If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a delay, 
-   just pass in a vars object with the appropriate properties. For example, to tween from the start (0) to the 
-   5-second point on the timeline and then call a function named <code>myFunction</code> and pass in a parameter 
+
+   If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a delay,
+   just pass in a vars object with the appropriate properties. For example, to tween from the start (0) to the
+   5-second point on the timeline and then call a function named <code>myFunction</code> and pass in a parameter
    that's references this TimelineMax and use a Strong.easeOut ease, you'd do: <br /><br /><code>
-   
+
    myTimeline.tweenFromTo(0, 5, {onComplete:myFunction, onCompleteParams:[myTimeline], ease:Strong.easeOut});<br /><br /></code>
-   
-   Remember, this method simply creates a TweenLite instance that tweens the <code>currentTime</code> property of your timeline. 
+
+   Remember, this method simply creates a TweenLite instance that tweens the <code>currentTime</code> property of your timeline.
    So you can store a reference to that tween if you want, and you can <code>kill()</code> it anytime. Also note that <code>tweenFromTo()</code>
    does <b>NOT</b> affect the timeline's <code>reversed</code> property. So if your timeline is oriented normally
    (not reversed) and you tween to a time/label that precedes the current time, it will appear to go backwards
    but the <code>reversed</code> property will <b>not</b> change to <code>true</code>. Also note that <code>tweenFromTo()</code>
    pauses the timeline immediately before tweening its <code>currentTime</code> property, and it stays paused after the tween completes.
    If you need to resume playback, you could always use an onComplete to call the <code>resume()</code> method.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1102,10 +1102,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../greensock/TweenLite.html">TweenLite</a></code> &mdash; 
+<td width="20"></td><td><code><a href="../greensock/TweenLite.html">TweenLite</a></code> &mdash;
                         TweenLite instance that handles tweening the timeline between the desired times/labels.
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -1124,30 +1124,30 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function tweenTo(timeOrLabel:*, vars:Object = null):<a href="../greensock/TweenLite.html">TweenLite</a></code><p>
-   Creates a linear tween that essentially scrubs the playhead to a particular time or label and then stops. For 
+   Creates a linear tween that essentially scrubs the playhead to a particular time or label and then stops. For
    example, to make the TimelineMax play to the "myLabel2" label, simply do: <br /><br /><code>
-   
+
    myTimeline.tweenTo("myLabel2"); <br /><br /></code>
-   
-   If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a delay, 
-   just pass in a vars object with the appropriate properties. For example, to tween to the 5-second point on the 
-   timeline and then call a function named <code>myFunction</code> and pass in a parameter that's references this 
+
+   If you want advanced control over the tween, like adding an onComplete or changing the ease or adding a delay,
+   just pass in a vars object with the appropriate properties. For example, to tween to the 5-second point on the
+   timeline and then call a function named <code>myFunction</code> and pass in a parameter that's references this
    TimelineMax and use a Strong.easeOut ease, you'd do: <br /><br /><code>
-   
+
    myTimeline.tweenTo(5, {onComplete:myFunction, onCompleteParams:[myTimeline], ease:Strong.easeOut});<br /><br /></code>
-   
-   Remember, this method simply creates a TweenLite instance that tweens the <code>currentTime</code> property of your timeline. 
+
+   Remember, this method simply creates a TweenLite instance that tweens the <code>currentTime</code> property of your timeline.
    So you can store a reference to that tween if you want, and you can kill() it anytime. Also note that <code>tweenTo()</code>
    does <b>NOT</b> affect the timeline's <code>reversed</code> property. So if your timeline is oriented normally
    (not reversed) and you tween to a time/label that precedes the current time, it will appear to go backwards
    but the <code>reversed</code> property will <b>not</b> change to <code>true</code>. Also note that <code>tweenTo()</code>
    pauses the timeline immediately before tweening its <code>currentTime</code> property, and it stays paused after the tween completes.
    If you need to resume playback, you could always use an onComplete to call the <code>resume()</code> method.<br /><br />
-   
-   If you plan to sequence multiple playhead tweens one-after-the-other, it is typically better to use 
-   <code>tweenFromTo()</code> so that you can define the starting point and ending point, allowing the 
-   duration to be accurately determined immediately. 
-   
+
+   If you plan to sequence multiple playhead tweens one-after-the-other, it is typically better to use
+   <code>tweenFromTo()</code> so that you can define the starting point and ending point, allowing the
+   duration to be accurately determined immediately.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1166,10 +1166,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../greensock/TweenLite.html">TweenLite</a></code> &mdash; 
+<td width="20"></td><td><code><a href="../greensock/TweenLite.html">TweenLite</a></code> &mdash;
                         TweenLite instance that handles tweening the timeline to the desired time/label.
-   
-                        
+
+
                      </td>
 </tr>
 </table>

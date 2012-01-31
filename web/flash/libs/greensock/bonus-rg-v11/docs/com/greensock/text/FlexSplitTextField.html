@@ -42,19 +42,19 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- FlexSplitTextField makes it easy to break apart the TextField in a UIComponent like a Label, 
- Text, or TextArea so that each character, word, or line is in its own TextField, making complex 
- animation simple. When you create a FlexSplitTextField, it loops through the source's children 
- looking for a TextField and when it finds one, it replaces it with the SplitTextField (a Sprite) 
- containing these multiple TextFields, all conveniently stored in a "textFields" array that you can, 
- for example, feed to a TweenMax.allFrom() or loop through to create unique tweens for each character, 
- word or line. The FlexSplitTextField keeps the same scale/rotation/position as the source TextField, 
- and you can optionally offset the registration point by a certain number of pixels on its 
- local x- or y-axis, which can be useful if, for example, you want to be able to scale the whole 
+ FlexSplitTextField makes it easy to break apart the TextField in a UIComponent like a Label,
+ Text, or TextArea so that each character, word, or line is in its own TextField, making complex
+ animation simple. When you create a FlexSplitTextField, it loops through the source's children
+ looking for a TextField and when it finds one, it replaces it with the SplitTextField (a Sprite)
+ containing these multiple TextFields, all conveniently stored in a "textFields" array that you can,
+ for example, feed to a TweenMax.allFrom() or loop through to create unique tweens for each character,
+ word or line. The FlexSplitTextField keeps the same scale/rotation/position as the source TextField,
+ and you can optionally offset the registration point by a certain number of pixels on its
+ local x- or y-axis, which can be useful if, for example, you want to be able to scale the whole
  FlexSplitTextField from its center instead of its upper left corner. Use an onComplete in your
- tween to call the FlexSplitTextField's <code>deactivate()</code> or <code>destroy()</code> 
+ tween to call the FlexSplitTextField's <code>deactivate()</code> or <code>destroy()</code>
  method which will swap the original TextField back into place. <br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -90,7 +90,7 @@ var stf3:FlexSplitTextField = new FlexSplitTextField(myText, FlexSplitTextField.
 TweenMax.allFrom(stf3.textFields, 1, {x:"200", autoAlpha:0}, 0.5, stf3.destroy);
 
 </pre></div>
- 
+
  <b>NOTES / LIMITATIONS</b><br />
  <ul>
    <li>Does not work perfectly with non-standard antialiasing (like "anti-alias for readability")</li>
@@ -99,20 +99,20 @@ TweenMax.allFrom(stf3.textFields, 1, {x:"200", autoAlpha:0}, 0.5, stf3.destroy);
    <li>To improve performance, mouseChildren is set to false by default (you're welcome to set it to true if you need the TextFields to receive MouseEvents)</li>
    <li>To avoid some bugs in the way Flash renders TextFields, when creating TextField instances
     dynamically make sure you set the various properties of the TextField <b>BEFORE</b> adding
-    the actual text. For example, set the <code>width, height, embedFonts, autoSize, multiline,</code> and 
+    the actual text. For example, set the <code>width, height, embedFonts, autoSize, multiline,</code> and
     other properties before setting the <code>text</code> property.</li>
-   <li>Due to rendering delays in the Flex framework, some componenets (like Text) will 
+   <li>Due to rendering delays in the Flex framework, some componenets (like Text) will
     use the default width of 100 for the TextField initially until the component fully
     renders which happens even after the creationComplete event! Therefore, if you try
     to split apart the component's TextField too quickly, the result will look odd (100 pixels wide).</li>
  </ul><br />
- 
- FlexSplitTextField is a <a href="http://blog.greensock.com/club/">Club GreenSock</a> membership benefit. 
- You must have a valid membership to use this class without violating the terms of use. Visit 
+
+ FlexSplitTextField is a <a href="http://blog.greensock.com/club/">Club GreenSock</a> membership benefit.
+ You must have a valid membership to use this class without violating the terms of use. Visit
  <a href="http://blog.greensock.com/club/">http://blog.greensock.com/club/</a> to sign up or get more details. <br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -176,7 +176,7 @@ TweenMax.allFrom(stf3.textFields, 1, {x:"200", autoAlpha:0}, 0.5, stf3.destroy);
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#deactivate()">deactivate</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    When a FlexSplitTextField is activated, it swaps the source's original TextField back into the display list.</div>
 </td><td class="summaryTableOwnerCol">FlexSplitTextField</td>
 </tr>
@@ -184,9 +184,9 @@ TweenMax.allFrom(stf3.textFields, 1, {x:"200", autoAlpha:0}, 0.5, stf3.destroy);
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#destroy()">destroy</a>():void</div>
-<div class="summaryTableDescription"> 
-   Deactivates the FlexSplitTextField (swapping the original TextField back into place) and 
-   deletes all child TextFields that resulted from the split operation, and nulls references to 
+<div class="summaryTableDescription">
+   Deactivates the FlexSplitTextField (swapping the original TextField back into place) and
+   deletes all child TextFields that resulted from the split operation, and nulls references to
    the source so that it's eligible for garbage collection.</div>
 </td><td class="summaryTableOwnerCol">FlexSplitTextField</td>
 </tr>
@@ -318,7 +318,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function FlexSplitTextField(source:UIComponent = null, splitType:String = "characters", regOffsetX:Number = 0, regOffsetY:Number = 0)</code><p>
    Constructor.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -365,9 +365,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function deactivate():void</code><p> 
-   When a FlexSplitTextField is activated, it swaps the source's original TextField back into the display list. 
-   This makes it simple to animate the FlexSplitTextField's contents with TweenLite/Max and then use 
+<code>public function deactivate():void</code><p>
+   When a FlexSplitTextField is activated, it swaps the source's original TextField back into the display list.
+   This makes it simple to animate the FlexSplitTextField's contents with TweenLite/Max and then use
    an onComplete to call disable() which will swap the original (source) TextField back into place.
    </p></div>
 <a name="destroy()"></a>
@@ -377,10 +377,10 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function destroy():void</code><p> 
-   Deactivates the FlexSplitTextField (swapping the original TextField back into place) and 
-   deletes all child TextFields that resulted from the split operation, and nulls references to 
-   the source so that it's eligible for garbage collection. 
+<code>public function destroy():void</code><p>
+   Deactivates the FlexSplitTextField (swapping the original TextField back into place) and
+   deletes all child TextFields that resulted from the split operation, and nulls references to
+   the source so that it's eligible for garbage collection.
    </p></div>
 <a name="split()"></a>
 <table cellspacing="0" cellpadding="0" class="detailHeader">
@@ -391,9 +391,9 @@ showHideInherited();
 <div class="detailBody">
 <code>public static function split(source:TextField, spitType:String = "characters", container:DisplayObjectContainer = null, offset:Point = null):Array</code><p>
    This static method can be used to split apart any TextField and place the resulting
-   TextFields into any DisplayObjectContainer. It provides the core functionality of the 
-   FlexSplitTextField class, but can be used apart from any instance thereof as well. 
-   
+   TextFields into any DisplayObjectContainer. It provides the core functionality of the
+   FlexSplitTextField class, but can be used apart from any instance thereof as well.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -418,7 +418,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">offset</span>:Point</code> (default = <code>null</code>)<code></code> &mdash; Determines the offset x/y of the new TextFields. By default, the TextFields will be positioned in the container as though the container's registration point was aligned perfectly with the source TextField's. The source TextField's scale, rotation, and x/y coordinates will have no effect whatsoever. 
+<td width="20px"></td><td><code><span class="label">offset</span>:Point</code> (default = <code>null</code>)<code></code> &mdash; Determines the offset x/y of the new TextFields. By default, the TextFields will be positioned in the container as though the container's registration point was aligned perfectly with the source TextField's. The source TextField's scale, rotation, and x/y coordinates will have no effect whatsoever.
    </td>
 </tr>
 </table>

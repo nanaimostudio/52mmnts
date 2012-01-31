@@ -13,12 +13,12 @@
 		<script type="text/javascript" src="../js/7_VisDoc.min.js"></script>
 	</head>
 	<body class='isShowingNavigation' id='page_org_casalib_display_CasaSprite'>
-	    <div id='page'> 
+	    <div id='page'>
 			<div id='wrapper'>
-				<div id='outer'> 
-					<div id='floatWrap'> 
+				<div id='outer'>
+					<div id='floatWrap'>
 						<div id='main'>
-							<div id='clearHeaderCenter'></div> 
+							<div id='clearHeaderCenter'></div>
 							<div id='mainContent'>
 																<h1>CasaSprite</h1>									<div class='classProperties'>
 		<table cellspacing='0'>
@@ -86,21 +86,21 @@
     CASA Lib for ActionScript 3.0
     Copyright (c) 2011, Aaron Clinger & Contributors of CASA Lib
     All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-    
+
     - Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    
+
     - Redistributions in binary form must reproduce the above copyright notice,
       this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    
+
     - Neither the name of the CASA Lib nor the names of its contributors
       may be used to endorse or promote products derived from this software
       without specific prior written permission.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
     AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
     IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -122,38 +122,38 @@ package org.casalib.display {
     import org.casalib.events.ListenerManager;
     import org.casalib.util.StageReference;
     import org.casalib.util.DisplayObjectUtil;
-    
-    
+
+
     /**
         A base Sprite that implements {@link IRemovableEventDispatcher} and {@link IDestroyable}.
-        
+
         @author Aaron Clinger
         @version 10/09/11
     */
     public class CasaSprite extends Sprite implements IRemovableEventDispatcher, IDestroyable {
         protected var _listenerManager:ListenerManager;
         protected var _isDestroyed:Boolean;
-        
-        
+
+
         /**
             Creates a new <code>CasaSprite</code>.
         */
         public function CasaSprite() {
             super();
-            
+
             this._listenerManager = ListenerManager.getManager(this);
         }
-        
+
         /**
             @exclude
         */
         override public function dispatchEvent(event:Event):Boolean {
             if (this.willTrigger(event.type))
                 return super.dispatchEvent(event);
-            
+
             return true;
         }
-        
+
         /**
             @exclude
         */
@@ -161,7 +161,7 @@ package org.casalib.display {
             super.addEventListener(type, listener, useCapture, priority, useWeakReference);
             this._listenerManager.addEventListener(type, listener, useCapture, priority, useWeakReference);
         }
-        
+
         /**
             @exclude
         */
@@ -169,23 +169,23 @@ package org.casalib.display {
             super.removeEventListener(type, listener, useCapture);
             this._listenerManager.removeEventListener(type, listener, useCapture);
         }
-        
+
         public function removeEventsForType(type:String):void {
             this._listenerManager.removeEventsForType(type);
         }
-        
+
         public function removeEventsForListener(listener:Function):void {
             this._listenerManager.removeEventsForListener(listener);
         }
-        
+
         public function removeEventListeners():void {
             this._listenerManager.removeEventListeners();
         }
-        
+
         public function getTotalEventListeners(type:String = null):uint {
             return this._listenerManager.getTotalEventListeners(type);
         }
-        
+
         /**
             The Stage of the display object or if the display object is not added to the display list and {@link StageReference} is defined <code>stage</code> will return the {@link StageReference#STAGE_DEFAULT default stage}; otherwise <code>null</code>.
         */
@@ -195,32 +195,32 @@ package org.casalib.display {
                     return StageReference.getStage();
                 } catch (e:Error) {}
             }
-            
+
             return super.stage;
         }
-        
+
         /**
             Returns the current children of the <code>CasaSprite</code> as an <code>Array</code>.
-            
+
             @usageNote The <code>Array</code> is created dynamically when requested. It is best practice to store the result until no longer needed.
         */
         public function get children():Array {
             return DisplayObjectUtil.getChildren(this);
         }
-        
+
         /**
             Removes and optionally destroys children of the <code>CasaSprite</code>.
-            
+
             @param destroyChildren: If a child implements {@link IDestroyable} call its {@link IDestroyable#destroy destroy} method <code>true</code>, or don't destroy <code>false</code>; defaults to <code>false</code>.
             @param recursive: Call this method with the same arguments on all of the children's children (all the way down the display list) <code>true</code>, or leave the children's children <code>false</code>; defaults to <code>false</code>.
         */
         public function removeAllChildren(destroyChildren:Boolean = false, recursive:Boolean = false):void {
             DisplayObjectUtil.removeAllChildren(this, destroyChildren, recursive);
         }
-        
+
         /**
             Removes and optionally destroys children of the <code>CasaSprite</code> then destroys itself.
-            
+
             @param destroyChildren: If a child implements {@link IDestroyable} call its {@link IDestroyable#destroy destroy} method <code>true</code>, or don't destroy <code>false</code>; defaults to <code>false</code>.
             @param recursive: Call this method with the same arguments on all of the children's children (all the way down the display list) <code>true</code>, or leave the children's children <code>false</code>; defaults to <code>false</code>.
         */
@@ -228,21 +228,21 @@ package org.casalib.display {
             this.removeAllChildren(destroyChildren, recursive);
             this.destroy();
         }
-        
+
         public function get destroyed():Boolean {
             return this._isDestroyed;
         }
-        
+
         /**
             {@inheritDoc}
-            
+
             Calling <code>destroy()</code> on a CASA display object also removes it from its current parent.
         */
         public function destroy():void {
             this._listenerManager.destroy();
-            
+
             this._isDestroyed = true;
-            
+
             if (this.parent != null)
                 this.parent.removeChild(this);
         }
@@ -269,7 +269,7 @@ package org.casalib.display {
 							<div class='memberSummaryPart'>
 					<span class='title'>Constructor</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#CasaSprite">CasaSprite</a>
 																<span class='typeInfo'>()</span>																<ul class='summary'>
 									<li>Creates a new CasaSprite.</li>
@@ -279,17 +279,17 @@ package org.casalib.display {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance properties</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#stage">stage</a>
 																<span class='typeInfo'> : Stage</span>																<ul class='summary'>
 									<li>The Stage of the display object or if the display object is not added to the display list and StageReference is defined stage will return the default stage; otherwise null.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#children">children</a>
 																<span class='typeInfo'> : Array</span>																<ul class='summary'>
 									<li>Returns the current children of the CasaSprite as an Array.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#destroyed">destroyed</a>
 																<span class='typeInfo'> : Boolean</span>																<ul class='summary'>
 									<li><div</li>
@@ -299,37 +299,37 @@ package org.casalib.display {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance methods</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventsForType">removeEventsForType</a>
 																<span class='typeInfo'>(type:String) : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventsForListener">removeEventsForListener</a>
 																<span class='typeInfo'>(listener:Function) : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventListeners">removeEventListeners</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#getTotalEventListeners">getTotalEventListeners</a>
 																<span class='typeInfo'>(type:String = null) : uint</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeAllChildren">removeAllChildren</a>
 																<span class='typeInfo'>(destroyChildren:Boolean = false, recursive:Boolean = false) : void</span>																<ul class='summary'>
 									<li>Removes and optionally destroys children of the CasaSprite.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeAllChildrenAndDestroy">removeAllChildrenAndDestroy</a>
 																<span class='typeInfo'>(destroyChildren:Boolean = false, recursive:Boolean = false) : void</span>																<ul class='summary'>
 									<li>Removes and optionally destroys children of the CasaSprite then destroys itself.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#destroy">destroy</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
@@ -389,9 +389,9 @@ package org.casalib.display {
 									<h3>destroy</h3>											<div class='fullMemberString'>
 							<span class='code'>function <strong>destroy</strong>() : void</span>						</div>											<div class='description'>
 																			<p><div class="inheritDoc">Removes any event listeners and stops all internal processes to help allow for prompt garbage collection.
-			
+
 			<strong>Always call <code>destroy()</code> before deleting last object pointer.</strong> <span class="inheritDocLink"><a href="org_casalib_core_IDestroyable.html#destroy">&rarr;</a></span></div>
-			
+
 			Calling <code>destroy()</code> on a CASA display object also removes it from its current parent.</p>						</div>									</div>
 							<div class='member' id='getTotalEventListeners'>
 									<h3>getTotalEventListeners</h3>											<div class='fullMemberString'>
@@ -497,11 +497,11 @@ package org.casalib.display {
 
 											</div>				</div>
 					</div>
-		
+
 							</div>
 						</div>
 											<div id='sidebar'>
-		<div id='clearHeaderLeft'></div> 
+		<div id='clearHeaderLeft'></div>
 		<div id='sidebarContent'>
 				<div class="list">
 							<ul>
@@ -869,7 +869,7 @@ package org.casalib.display {
 	</div>
 
 					</div>
-					<div class='clear'>&nbsp;</div> 
+					<div class='clear'>&nbsp;</div>
 				</div>
 			</div>
 			<div id='header'>

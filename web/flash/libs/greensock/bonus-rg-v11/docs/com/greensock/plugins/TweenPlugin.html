@@ -43,59 +43,59 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
  TweenPlugin is the base class for all TweenLite/TweenMax plugins. <br /><br />
-  
+
  <b>USAGE:</b><br />
- 
+
   To create your own plugin, extend TweenPlugin and override whichever methods you need. Typically,
   you only need to override onInitTween() and the changeFactor setter. I'd recommend looking at a
-  simple plugin like FramePlugin or ScalePlugin and using it as a template of sorts. There are a few 
+  simple plugin like FramePlugin or ScalePlugin and using it as a template of sorts. There are a few
   key concepts to keep in mind:
   <ol>
    <li> In the constructor, set this.propName to whatever special property you want your plugin to handle. </li>
-   
-   <li> When a tween that uses your plugin initializes its tween values (normally when it starts), a new instance 
-     of your plugin will be created and the onInitTween() method will be called. That's where you'll want to 
-     store any initial values and prepare for the tween. onInitTween() should return a Boolean value that 
-     essentially indicates whether or not the plugin initted successfully. If you return false, TweenLite/Max 
+
+   <li> When a tween that uses your plugin initializes its tween values (normally when it starts), a new instance
+     of your plugin will be created and the onInitTween() method will be called. That's where you'll want to
+     store any initial values and prepare for the tween. onInitTween() should return a Boolean value that
+     essentially indicates whether or not the plugin initted successfully. If you return false, TweenLite/Max
      will just use a normal tween for the value, ignoring the plugin for that particular tween.</li>
-     
+
    <li> The changeFactor setter will be updated on every frame during the course of the tween with a multiplier
-     that describes the amount of change based on how far along the tween is and the ease applied. It will be 
-     zero at the beginning of the tween and 1 at the end, but inbetween it could be any value based on the 
-     ease applied (for example, an Elastic.easeOut tween would cause the value to shoot past 1 and back again before 
+     that describes the amount of change based on how far along the tween is and the ease applied. It will be
+     zero at the beginning of the tween and 1 at the end, but inbetween it could be any value based on the
+     ease applied (for example, an Elastic.easeOut tween would cause the value to shoot past 1 and back again before
      the end of the tween). So if the tween uses the Linear.easeNone easing equation, when it's halfway finished,
      the changeFactor will be 0.5. </li>
-     
+
    <li> The overwriteProps is an Array that should contain the properties that your plugin should overwrite
-     when OverwriteManager's mode is AUTO and a tween of the same object is created. For example, the 
-     autoAlpha plugin controls the "visible" and "alpha" properties of an object, so if another tween 
-     is created that controls the alpha of the target object, your plugin's killProps() will be called 
+     when OverwriteManager's mode is AUTO and a tween of the same object is created. For example, the
+     autoAlpha plugin controls the "visible" and "alpha" properties of an object, so if another tween
+     is created that controls the alpha of the target object, your plugin's killProps() will be called
      which should handle killing the "alpha" part of the tween. It is your responsibility to populate
      (and depopulate) the overwriteProps Array. Failure to do so properly can cause odd overwriting behavior.</li>
-     
+
    <li> Note that there's a "round" property that indicates whether or not values in your plugin should be
      rounded to the nearest integer (compatible with TweenMax only). If you use the _tweens Array, populating
-     it through the addTween() method, rounding will happen automatically (if necessary) in the 
+     it through the addTween() method, rounding will happen automatically (if necessary) in the
      updateTweens() method, but if you don't use addTween() and prefer to manually calculate tween values
      in your changeFactor setter, just remember to accommodate the "round" flag if it makes sense in your plugin.</li>
-     
+
    <li> If you need to run a block of code when the tween has finished, point the onComplete property to a
      method you created inside your plugin.</li>
- 
+
    <li> If you need to run a function when the tween gets disabled, point the onDisable property to a
      method you created inside your plugin. Same for onEnable if you need to run code when a tween is
      enabled. (A tween gets disabled when it gets overwritten or finishes or when its timeline gets disabled)</li>
-   
+
    <li> Please use the same naming convention as the rest of the plugins, like MySpecialPropertyNamePlugin.</li>
-   
-   <li> IMPORTANT: The plugin framework is brand new, so there is a chance that it will change slightly over time and 
+
+   <li> IMPORTANT: The plugin framework is brand new, so there is a chance that it will change slightly over time and
      you may need to adjust your custom plugins if the framework changes. I'll try to minimize the changes,
      but I'd highly recommend getting a membership to Club GreenSock to make sure you get update notifications.
      See http://blog.greensock.com/club/ for details.</li>
  </ol>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

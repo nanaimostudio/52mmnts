@@ -42,9 +42,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- In its simplest form, a LoaderMax provides a way to group a sequence of loaders together and 
- report their progress as a whole. It is essentially a queue of loaders. But there are many other 
- conveniences that the LoaderMax system delivers: 
+ In its simplest form, a LoaderMax provides a way to group a sequence of loaders together and
+ report their progress as a whole. It is essentially a queue of loaders. But there are many other
+ conveniences that the LoaderMax system delivers:
  <ul>
    <li><strong> Integration of loaders inside subloaded swfs</strong> - With most other systems, if you subload a swf, the loader will only concern itself with the swf file's bytes but what if that swf must subload other content like XML, images, and/or other swf files before it should be considered fully loaded? LoaderMax can elegantly handle the sub-subloads as deep as they go. You can link any loader and/or LoaderMax with a swf's root (using the <code>requireWithRoot</code> vars property) so that when you subload it into another Flash application, the parent SWFLoader automatically factors the nested loaders into its overall loading progress! It won't dispatch its <code>COMPLETE</code> event until they have finished as well. </li>
    <li><strong> Automatic parsing of LoaderMax-related nodes inside XML</strong> - The XMLLoader class automatically looks for LoaderMax-related nodes like <code>&lt;LoaderMax&gt;, &lt;ImageLoader&gt;, &lt;SWFLoader&gt;, &lt;XMLLoader&gt;, &lt;VideoLoader&gt;, &lt;DataLoader&gt;, &lt;CSSLoader&gt;, &lt;MP3Loader&gt;</code>, etc. in XML files that it loads, and if any are found it will create the necessary instances and then begin loading the ones that had a <code>load="true"</code> attribute, automatically integrating their progress into the XMLLoader's overall progress and it won't dispatch a <code>COMPLETE</code> event until the XML-driven loaders have finished as well.</li>
@@ -65,7 +65,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li><strong> pause()/resume()</strong> - no queue loading solution would be complete without the ability to pause()/resume() anytime.</li>
    <li><strong> Flex friendly </strong> - Simply change the <code>LoaderMax.contentDisplayClass</code> to <code>FlexContentDisplay</code> and then ImageLoaders, SWFLoaders, and VideoLoaders will return <code>content</code> wrapped in a UIComponent.</li>
  </ul><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -74,7 +74,7 @@ import com.greensock.*;
 import com.greensock.loading.*;
 import com.greensock.events.LoaderEvent;
 import com.greensock.loading.display.*;
- 
+
 //create a LoaderMax named "mainQueue" and set up onProgress, onComplete and onError listeners
 var queue:LoaderMax = new LoaderMax({name:"mainQueue", onProgress:progressHandler, onComplete:completeHandler, onError:errorHandler});
 
@@ -101,19 +101,19 @@ function completeHandler(event:LoaderEvent):void {
   TweenLite.to(image, 1, {alpha:1, y:100});
   trace(event.target + " is complete!");
 }
- 
+
 function errorHandler(event:LoaderEvent):void {
     trace("error occured with " + event.target + ": " + event.text);
 }
  </pre></div>
- 
- LoaderMax will automatically skip over any child loaders in the queue that are already complete. By default 
- it will also skip any that have failed or are paused (you can change this behavior with the <code>skipFailed</code> 
+
+ LoaderMax will automatically skip over any child loaders in the queue that are already complete. By default
+ it will also skip any that have failed or are paused (you can change this behavior with the <code>skipFailed</code>
  and <code>skipPaused</code> special properties). To flush the content and force a full reload, simply <code>unload()</code>
  first or use the <code>flushContent</code> parameter in <code>load()</code> like <code>load(true)</code>.<br /><br />
- 
+
  <strong>OPTIONAL VARS PROPERTIES</strong><br />
- The following special properties can be passed into the LoaderMax constructor via the <code>vars</code> 
+ The following special properties can be passed into the LoaderMax constructor via the <code>vars</code>
  parameter which can be either a generic object or a <code><a href="data/LoaderMaxVars.html">LoaderMaxVars</a></code> object:<br />
  <ul>
    <li><strong> name : String</strong> - A name that is used to identify the LoaderMax instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
@@ -125,7 +125,7 @@ function errorHandler(event:LoaderEvent):void {
    <li><strong> loaders : Array</strong> - An array of loaders (ImageLoaders, SWFLoaders, XMLLoaders, MP3Loaders, other LoaderMax instances, etc.) that should be immediately inserted into the LoaderMax.</li>
    <li><strong> requireWithRoot : DisplayObject</strong> - LoaderMax supports <i>subloading</i>, where an object can be factored into a parent's loading progress. If you want this LoaderMax to be required as part of its parent SWFLoader's progress, you must set the <code>requireWithRoot</code> property to your swf's <code>root</code>. For example, <code>var loader:LoaderMax = new LoaderMax({name:"mainQueue", requireWithRoot:this.root});</code></li>
    <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
-    
+
    <br /><br />----EVENT HANDLER SHORTCUTS----</li>
    <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onProgress : Function</strong> - A handler function for <code>LoaderEvent.PROGRESS</code> events which are dispatched whenever the <code>bytesLoaded</code> changes. Make sure your onProgress function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>). You can use the LoaderEvent's <code>target.progress</code> to get the loader's progress value or use its <code>target.bytesLoaded</code> and <code>target.bytesTotal</code>.</li>
@@ -141,13 +141,13 @@ function errorHandler(event:LoaderEvent):void {
    <li><strong> onHTTPStatus : Function</strong> - A handler function for <code>LoaderEvent.HTTP_STATUS</code> events. Make sure your onHTTPStatus function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onScriptAccessDenied : Function</strong> - A handler function for <code>LoaderEvent.SCRIPT_ACCESS_DENIED</code> events which are dispatched when one of the LoaderMax's children (or any descendant) is loaded from another domain and no crossdomain.xml is in place to grant full script access for things like smoothing or BitmapData manipulation. Make sure your function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  </ul><br /><br />
- 
- <strong>Note:</strong> Using a <code><a href="data/LoaderMaxVars.html">LoaderMaxVars</a></code> instance 
- instead of a generic object to define your <code>vars</code> is a bit more verbose but provides 
+
+ <strong>Note:</strong> Using a <code><a href="data/LoaderMaxVars.html">LoaderMaxVars</a></code> instance
+ instead of a generic object to define your <code>vars</code> is a bit more verbose but provides
  code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <p>
 <span class="classHeaderTableLabel">See also</span>
@@ -174,7 +174,7 @@ function errorHandler(event:LoaderEvent):void {
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">[read-only]  
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">[read-only]
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -219,8 +219,8 @@ function errorHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription"> 
-   The number of seconds that elapsed between when the loader began and when it either completed, failed, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription">
+   The number of seconds that elapsed between when the loader began and when it either completed, failed,
    or was canceled.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -245,8 +245,8 @@ function errorHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription">[read-only] 
-   An unweighted value between 0 and 1 indicating the overall loading progress of the LoaderMax - this calculation does not concern 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription">[read-only]
+   An unweighted value between 0 and 1 indicating the overall loading progress of the LoaderMax - this calculation does not concern
    itself whatsoever with <code>bytesLoaded</code> and <code>bytesTotal</code> but rather the ratio of the children that are loaded
    (all having equal weight).</div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
@@ -290,7 +290,7 @@ function errorHandler(event:LoaderEvent):void {
 <a class="signatureLink" href="#LoaderMax()">LoaderMax</a>(vars:Object = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
 </tr>
@@ -299,7 +299,7 @@ function errorHandler(event:LoaderEvent):void {
 <div class="summarySignature">
 <a class="signatureLink" href="#activate()">activate</a>(loaderClasses:Array):void</div>
 <div class="summaryTableDescription">[static]
-   Activates particular loader classes (like ImageLoader, SWFLoader, etc.) so that they can be 
+   Activates particular loader classes (like ImageLoader, SWFLoader, etc.) so that they can be
    recognized inside the <code>parse()</code> method and XMLLoader.</div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
 </tr>
@@ -323,8 +323,8 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#auditSize()">auditSize</a>():void</div>
-<div class="summaryTableDescription"> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
+<div class="summaryTableDescription">
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
    in order to improve the accuracy of the <code>progress</code> property.</div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
 </tr>
@@ -332,8 +332,8 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#cancel()">cancel</a>():void</div>
-<div class="summaryTableDescription"> 
-   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled 
+<div class="summaryTableDescription">
+   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled
    immediately and its status will change to <code>LoaderStatus.READY</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -341,7 +341,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#dispose()">dispose</a>(flushContent:Boolean = false):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Disposes of the loader and releases it internally for garbage collection.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -374,7 +374,7 @@ function errorHandler(event:LoaderEvent):void {
 <div class="summarySignature">
 <a class="signatureLink" href="#getChildren()">getChildren</a>(includeNested:Boolean = false, omitLoaderMaxes:Boolean = false):Array</div>
 <div class="summaryTableDescription">
-   Returns and array of all child loaders inside the LoaderMax, optionally exposing more deeply nested 
+   Returns and array of all child loaders inside the LoaderMax, optionally exposing more deeply nested
    instances as well (like loaders inside a child LoaderMax instance).</div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
 </tr>
@@ -425,7 +425,7 @@ function errorHandler(event:LoaderEvent):void {
 <a class="signatureLink" href="#parse()">parse</a>(data:*, vars:Object = null, childrenVars:Object = null):*</div>
 <div class="summaryTableDescription">[static]
    Analyzes a url or array of urls and attempts to automatically create the appropriate loader(s) based
-   on file extension(s) in the url(s), returning either an individual loader like an ImageLoader, 
+   on file extension(s) in the url(s), returning either an individual loader like an ImageLoader,
    SWFLoader, XMLLoader, etc or if an array is passed in, a LoaderMax will be returned containing
    a child for each parsed url (or URLRequest) in the array.</div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
@@ -489,7 +489,7 @@ function errorHandler(event:LoaderEvent):void {
 <a class="signatureLink" href="#replaceURLText()">replaceURLText</a>(fromText:String, toText:String, includeNested:Boolean = false):void</div>
 <div class="summaryTableDescription">
    Immediately replaces a certain substring in each child loader's <code>url</code> with another string,
-   making it simple to do something like change <code>"{imageDirectory}image1.jpg"</code> to 
+   making it simple to do something like change <code>"{imageDirectory}image1.jpg"</code> to
    <code>"http://www.greensock.com/images/image1.jpg"</code>.</div>
 </td><td class="summaryTableOwnerCol">LoaderMax</td>
 </tr>
@@ -511,7 +511,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#unload()">unload</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Removes any content that was loaded and sets <code>bytesLoaded</code> back to zero.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -660,7 +660,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>auditedSize:Boolean</code>&nbsp;&nbsp;[read-only]<p>  
+<code>auditedSize:Boolean</code>&nbsp;&nbsp;[read-only]<p>
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -757,29 +757,29 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>rawProgress:Number</code>&nbsp;&nbsp;[read-only]<p> 
-   An unweighted value between 0 and 1 indicating the overall loading progress of the LoaderMax - this calculation does not concern 
+<code>rawProgress:Number</code>&nbsp;&nbsp;[read-only]<p>
+   An unweighted value between 0 and 1 indicating the overall loading progress of the LoaderMax - this calculation does not concern
    itself whatsoever with <code>bytesLoaded</code> and <code>bytesTotal</code> but rather the ratio of the children that are loaded
-   (all having equal weight). Therefore, <code>rawProgress</code> is a more crude way of measuring the overall loading progress and 
-   isn't weighted in terms of file size the way that <code>progress</code> is. The only benefit of using <code>rawProgress</code> instead 
-   of <code>progress</code> is that there is never a risk of the value moving backwards the way it can with <code>progress</code> 
+   (all having equal weight). Therefore, <code>rawProgress</code> is a more crude way of measuring the overall loading progress and
+   isn't weighted in terms of file size the way that <code>progress</code> is. The only benefit of using <code>rawProgress</code> instead
+   of <code>progress</code> is that there is never a risk of the value moving backwards the way it can with <code>progress</code>
    when child loaders have inaccurately low estimatedByte values (before LoaderMax audits the file size values). The rate at which
    <code>rawProgress</code> increases may slow down or speed up depending on the file size of the asset currently loading. For example,
    if a LoaderMax contains two loaders, the first for a file that's 100k and the second for a file that's 10,000k, <code>rawProgress</code>
-   will move quickly (while loading the 100k file) until it reaches 0.5 and then slow down significantly (while loading the 10,000k file) 
+   will move quickly (while loading the 100k file) until it reaches 0.5 and then slow down significantly (while loading the 10,000k file)
    until it reaches 1. <br /><br />
-   
-   Or let's say you have a LoaderMax that contains 3 ImageLoaders: the first two must load images that are 25k each and the 
-   3rd one must load an image that's 450k. After the first two ImageLoaders finish, the LoaderMax's <code>progress</code> property would 
-   report 0.1 (50k loaded out of 500k total) whereas the <code>rawProgress</code> would report 0.66 (2 loaders out of 3 total have completed). 
-   However, if you set the <code>estimatedBytes</code> of all of the ImageLoaders in this example to 25600 (25k) and set the LoaderMax's 
+
+   Or let's say you have a LoaderMax that contains 3 ImageLoaders: the first two must load images that are 25k each and the
+   3rd one must load an image that's 450k. After the first two ImageLoaders finish, the LoaderMax's <code>progress</code> property would
+   report 0.1 (50k loaded out of 500k total) whereas the <code>rawProgress</code> would report 0.66 (2 loaders out of 3 total have completed).
+   However, if you set the <code>estimatedBytes</code> of all of the ImageLoaders in this example to 25600 (25k) and set the LoaderMax's
    <code>auditSize</code> to <code>false</code>, the <code>progress</code> would read about 0.66 after the first two ImageLoaders complete
-   (it still thinks they're all 25k) and then when the 3rd one starts loading and LoaderMax finds out that it's 450k, the <code>bytesTotal</code> 
-   would automatically adjust and the <code>progress</code> would jump backwards to 0.1 (which correctly reflects the weighted progress). 
-   Of course a solution would be to more accurately set the <code>estimatedBytes</code> and/or leave <code>auditSize true</code> in the 
+   (it still thinks they're all 25k) and then when the 3rd one starts loading and LoaderMax finds out that it's 450k, the <code>bytesTotal</code>
+   would automatically adjust and the <code>progress</code> would jump backwards to 0.1 (which correctly reflects the weighted progress).
+   Of course a solution would be to more accurately set the <code>estimatedBytes</code> and/or leave <code>auditSize true</code> in the
    LoaderMax, but <code>rawProgress</code> can be useful if those solutions are undesirable in your scenario and you need to avoid any
    backwards adjustment of a preloader progress bar or some other interface element.<br /><br />
-   
+
    </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get rawProgress():Number</code>
@@ -830,12 +830,12 @@ showHideInherited();
 <div class="detailBody">
 <code>public function LoaderMax(vars:Object = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object containing optional configuration details. For example: <code>new LoaderMax({name:"queue", onComplete:completeHandler, onProgress:progressHandler, maxConnections:3})</code>.<br /><br />
-   
+
    The following special properties can be passed into the LoaderMax constructor via the <code>vars</code> parameter
    which can be either a generic object or a <code><a href="data/LoaderMaxVars.html">LoaderMaxVars</a></code> object:<br />
    <ul>
@@ -848,7 +848,7 @@ showHideInherited();
      <li><strong> loaders : Array</strong> - An array of loaders (ImageLoaders, SWFLoaders, XMLLoaders, MP3Loaders, other LoaderMax instances, etc.) that should be immediately inserted into the LoaderMax.</li>
      <li><strong> requireWithRoot : DisplayObject</strong> - LoaderMax supports <i>subloading</i>, where an object can be factored into a parent's loading progress. If you want this LoaderMax to be required as part of its parent SWFLoader's progress, you must set the <code>requireWithRoot</code> property to your swf's <code>root</code>. For example, <code>var loader:LoaderMax = new LoaderMax({name:"mainQueue", requireWithRoot:this.root});</code></li>
      <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
-      
+
      <br /><br />----EVENT HANDLER SHORTCUTS----</li>
      <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
      <li><strong> onProgress : Function</strong> - A handler function for <code>LoaderEvent.PROGRESS</code> events which are dispatched whenever the <code>bytesLoaded</code> changes. Make sure your onProgress function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>). You can use the LoaderEvent's <code>target.progress</code> to get the loader's progress value or use its <code>target.bytesLoaded</code> and <code>target.bytesTotal</code>.</li>
@@ -884,18 +884,18 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static function activate(loaderClasses:Array):void</code><p>
-   Activates particular loader classes (like ImageLoader, SWFLoader, etc.) so that they can be 
+   Activates particular loader classes (like ImageLoader, SWFLoader, etc.) so that they can be
    recognized inside the <code>parse()</code> method and XMLLoader. For example, if <code>LoaderMax.parse("image.jpg")</code>
    is called without first activating ImageLoader (like <code>LoaderMax.activate([ImageLoader])</code>),
    it wouldn't properly recognize the ".jpg" extension and return the necessary ImageLoader instance. Likewise,
    without activating ImageLoader first, XMLLoader wouldn't be able to recognize <code>&lt;ImageLoader&gt;</code>
-   nodes nested inside an XML file. You only need to activate() the loader classes once in your swf. 
+   nodes nested inside an XML file. You only need to activate() the loader classes once in your swf.
    For example:<br /><br /><code>
-   
+
    LoaderMax.activate([ImageLoader, SWFLoader, MP3Loader, DataLoader, CSSLoader]);</code><br /><br />
-   
+
    The reason all loaders aren't activated by default is to conserve file size. <br /><br />
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -913,7 +913,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function append(loader:<a href="core/LoaderCore.html">LoaderCore</a>):<a href="core/LoaderCore.html">LoaderCore</a></code><p>
    Appends a loader to the end of the queue.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -925,10 +925,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash; 
+<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash;
                         The loader that was appended.
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -950,12 +950,12 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function auditSize():void</code><p> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
-   in order to improve the accuracy of the <code>progress</code> property. Once the 
+<code>public override function auditSize():void</code><p>
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
+   in order to improve the accuracy of the <code>progress</code> property. Once the
    <code>bytesTotal</code> has been determined or the <code>auditSize()</code> attempt fails due
-   to an error (typically IO_ERROR or SECURITY_ERROR), the <code>auditedSize</code> property will be 
-   set to <code>true</code>. Auditing the size opens a URLStream that will be closed 
+   to an error (typically IO_ERROR or SECURITY_ERROR), the <code>auditedSize</code> property will be
+   set to <code>true</code>. Auditing the size opens a URLStream that will be closed
    as soon as a response is received.
    </p></div>
 <a name="empty()"></a>
@@ -967,7 +967,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function empty(disposeChildren:Boolean = true, unloadAllContent:Boolean = false):void</code><p>
    Empties the LoaderMax of all its loaders and optionally disposes/unloads them.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -999,10 +999,10 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getChildAt(index:int):*</code><p>
-   Returns the child that is at a particular position (zero-based index) in the queue. For example, 
-   <code>myLoaderMax.getChildAt(0)</code> would get the first loader in the queue. 
-   <code>myLoaderMax.getChildAt(2)</code> would get the 3rd loader in the queue. 
-   
+   Returns the child that is at a particular position (zero-based index) in the queue. For example,
+   <code>myLoaderMax.getChildAt(0)</code> would get the first loader in the queue.
+   <code>myLoaderMax.getChildAt(2)</code> would get the 3rd loader in the queue.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1014,7 +1014,7 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>*</code> &mdash; The child loader that is located at the corresponding index 
+<td width="20"></td><td><code>*</code> &mdash; The child loader that is located at the corresponding index
    </td>
 </tr>
 </table>
@@ -1039,7 +1039,7 @@ showHideInherited();
 <code>public function getChildIndex(loader:<a href="core/LoaderCore.html">LoaderCore</a>):uint</code><p>
    Finds the index position of a particular loader in the LoaderMax. Index values are always zero-based,
    meaning the first position is 0, the second is 1, the third is 2, etc.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1072,9 +1072,9 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getChildren(includeNested:Boolean = false, omitLoaderMaxes:Boolean = false):Array</code><p>
-   Returns and array of all child loaders inside the LoaderMax, optionally exposing more deeply nested 
-   instances as well (like loaders inside a child LoaderMax instance). 
-   
+   Returns and array of all child loaders inside the LoaderMax, optionally exposing more deeply nested
+   instances as well (like loaders inside a child LoaderMax instance).
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1085,7 +1085,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">omitLoaderMaxes</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If <code>true</code>, no LoaderMax instances will be returned in the array; only LoaderItems like ImageLoaders, XMLLoaders, SWFLoaders, MP3Loaders, etc. The default is <code>false</code>. 
+<td width="20px"></td><td><code><span class="label">omitLoaderMaxes</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If <code>true</code>, no LoaderMax instances will be returned in the array; only LoaderItems like ImageLoaders, XMLLoaders, SWFLoaders, MP3Loaders, etc. The default is <code>false</code>.
    </td>
 </tr>
 </table>
@@ -1118,9 +1118,9 @@ showHideInherited();
 <code>public function getChildrenByStatus(status:int, includeNested:Boolean = false):Array</code><p>
    Returns and array of child loaders that currently have a particular <code>status</code>. For example,
    to find all loaders inside the LoaderMax instance that are actively in the process of loading: <br /><br /><code>
-   
+
    loader.getChildrenByStatus(LoaderStatus.LOADING, false); </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1139,7 +1139,7 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code>Array</code> &mdash; An array of loaders that match the defined <code>status</code>. 
+<td width="20"></td><td><code>Array</code> &mdash; An array of loaders that match the defined <code>status</code>.
    </td>
 </tr>
 </table>
@@ -1163,13 +1163,13 @@ showHideInherited();
 <div class="detailBody">
 <code>public function getContent(nameOrURL:String):*</code><p>
    Finds the content of a loader based on its name or url. For example:<br /><br /><code>
-   
+
    var image:Bitmap = queue.getContent("myPhoto1");<br /><br /></code>
-   
+
    Feel free to use the static <code>LoaderMax.getContent()</code> method instead of the instance-based <code>getContent()</code>
    method because the static one will search ALL loaders (the only exception being loaders in a different security
-   sandbox, like in subloaded swfs from a different domain that didn't have a crossdomain.xml file in place granting permission). 
-   
+   sandbox, like in subloaded swfs from a different domain that didn't have a crossdomain.xml file in place granting permission).
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1196,7 +1196,7 @@ showHideInherited();
      <li><strong> CSSLoader </strong> - <code>flash.text.StyleSheet</code></li>
      <li><strong> MP3Loader </strong> - <code>flash.media.Sound</code></li>
      <li><strong> LoaderMax </strong> - an array containing the content objects from each of its child loaders.</li>
-   </ul> 
+   </ul>
    </td>
 </tr>
 </table>
@@ -1218,13 +1218,13 @@ showHideInherited();
 <div class="detailBody">
 <code>public function getLoader(nameOrURL:String):*</code><p>
    Finds a loader based on its name or url. For example:<br /><br /><code>
-   
+
    var loader:ImageLoader = queue.getLoader("myPhoto1");<br /><br /></code>
-   
+
    Feel free to use the static <code>LoaderMax.getLoader()</code> method instead of the instance-based <code>getLoader()</code>
    method because the static one will search ALL loaders (the only exception being loaders in a different security
-   sandbox, like in subloaded swfs from a different domain that didn't have a crossdomain.xml file in place granting permission). 
-   
+   sandbox, like in subloaded swfs from a different domain that didn't have a crossdomain.xml file in place granting permission).
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1259,16 +1259,16 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function insert(loader:<a href="core/LoaderCore.html">LoaderCore</a>, index:uint = 999999999):<a href="core/LoaderCore.html">LoaderCore</a></code><p>
-   Inserts a loader at a particular position in the queue. Index values are zero-based just like arrays. 
-   For example, if the LoaderMax has 10 loaders in it already and you want to insert a loader at the 3rd 
-   position (index: 2) while moving the others back in the queue (like the way <code>splice()</code> works 
+   Inserts a loader at a particular position in the queue. Index values are zero-based just like arrays.
+   For example, if the LoaderMax has 10 loaders in it already and you want to insert a loader at the 3rd
+   position (index: 2) while moving the others back in the queue (like the way <code>splice()</code> works
    in arrays), you'd do:<br /><br /><code>
-   
+
    queue.insert( new ImageLoader("img/photo.jpg"), 2);</code><br /><br />
-   
+
    When a new loader is added to the LoaderMax, the LoaderMax's status changes to <code>LoaderStatus.READY</code>
    unless it is paused or disposed. If the loader is already in the queue, it will be removed first.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1287,10 +1287,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash; 
+<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash;
                         The loader that was inserted
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -1314,9 +1314,9 @@ showHideInherited();
 <div class="detailBody">
 <code>public static function parse(data:*, vars:Object = null, childrenVars:Object = null):*</code><p>
    Analyzes a url or array of urls and attempts to automatically create the appropriate loader(s) based
-   on file extension(s) in the url(s), returning either an individual loader like an ImageLoader, 
+   on file extension(s) in the url(s), returning either an individual loader like an ImageLoader,
    SWFLoader, XMLLoader, etc or if an array is passed in, a LoaderMax will be returned containing
-   a child for each parsed url (or URLRequest) in the array. Arrays may also contain LoaderCore instances 
+   a child for each parsed url (or URLRequest) in the array. Arrays may also contain LoaderCore instances
    (not just url Strings). For example:<br />
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -1335,7 +1335,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">childrenVars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; The <code>vars</code> object that will be passed to each child loader's constructor (only applicable when the <code>data</code> parameter is an array which means <code>parse()</code> will return a LoaderMax). For example, if you <code>parse()</code> and array of video urls and want <code>autoPlay</code> set to <code>false</code> for all of them, you'd do <code>LoaderMax.parse(["1.flv","2.f4v","3.mp4"], null, {autoPlay:false});</code>. 
+<td width="20px"></td><td><code><span class="label">childrenVars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; The <code>vars</code> object that will be passed to each child loader's constructor (only applicable when the <code>data</code> parameter is an array which means <code>parse()</code> will return a LoaderMax). For example, if you <code>parse()</code> and array of video urls and want <code>autoPlay</code> set to <code>false</code> for all of them, you'd do <code>LoaderMax.parse(["1.flv","2.f4v","3.mp4"], null, {autoPlay:false});</code>.
    </td>
 </tr>
 </table>
@@ -1353,16 +1353,16 @@ showHideInherited();
 import com.greensock.loading.*;
 import com.greensock.loading.core.*;
 import com.greensock.events.LoaderEvent;
- 
+
 //activate the necessary loaders so that their file extensions can be recognized (do this once)
 LoaderMax.activate([ImageLoader, SWFLoader, XMLLoader]);
 
 //now parse a url and create the correct type of loader (an ImageLoader in this case because the file extension is ".jpg")
 var loader:LoaderCore = LoaderMax.parse("../img/photo1.jpg", {name:"parsedLoader", onComplete:completeHandler});
- 
+
 //begin loading
 loader.load();
- 
+
 function completeHandler(event:LoaderEvent):void {
  trace("finished loading " + event.target);
 }
@@ -1372,23 +1372,23 @@ function completeHandler(event:LoaderEvent):void {
    <p></p>Array example:<div class='listing'><pre>
 import com.greensock.loading.*;
 import com.greensock.events.LoaderEvent;
- 
+
 //activate the necessary loaders so that their file extensions can be recognized (do this once)
 LoaderMax.activate([ImageLoader, SWFLoader, XMLLoader, MP3Loader]);
- 
+
 var urls:Array = ["img/photo1.jpg","../../xml/data.xml","swf/main.swf","http://www.greensock.com/audio/music.mp3"];
 
 //now parse all of the urls, creating a LoaderMax that contains the correct type of loaders (an ImageLoader, XMLLoader, SWFLoader, and MP3Loader respectively)
 var loader:LoaderMax = LoaderMax.parse(urls, {name:"mainQueue", onComplete:completeHandler}) as LoaderMax;
- 
+
 //begin loading
 loader.load();
- 
+
 function completeHandler(event:LoaderEvent):void {
  trace("finished loading " + loader.numChildren + " loaders.");
 }
  </pre></div>
-   
+
    <p></p>
 </div>
 <a name="prepend()"></a>
@@ -1400,7 +1400,7 @@ function completeHandler(event:LoaderEvent):void {
 <div class="detailBody">
 <code>public function prepend(loader:<a href="core/LoaderCore.html">LoaderCore</a>):<a href="core/LoaderCore.html">LoaderCore</a></code><p>
    Prepends a loader at the beginning of the queue (<code>append()</code> adds the loader to the end whereas <code>prepend()</code> adds it to the beginning).
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1412,10 +1412,10 @@ function completeHandler(event:LoaderEvent):void {
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash; 
+<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash;
                         The loader that was prepended.
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -1441,24 +1441,24 @@ function completeHandler(event:LoaderEvent):void {
    Immediately prepends a value to the beginning of each child loader's <code>url</code>. For example,
    if the "myLoaderMax" instance contains 3 ImageLoaders with the urls "image1.jpg", "image2.jpg", and "image3.jpg"
    and you'd like to add "http://www.greensock.com/images/" to the beginning of them all, you'd do:<br /><br /><code>
-   
+
    myLoaderMax.prependURLs("http://www.greensock.com/images/", false);<br /><br /></code>
-   
+
    Now the ImageLoader urls would be "http://www.greensock.com/images/image1.jpg", "http://www.greensock.com/images/image2.jpg",
    and "http://www.greensock.com/images/image3.jpg" respectively. <br /><br />
-   
+
    <code>prependURLs()</code> permanently affects each child loader's url meaning that
    <code>LoaderMax.getContent("image1.jpg")</code> would not find the loader whose <code>url</code>
-   is now "http://www.greensock.com/images/image1.jpg" (although you could simply use its <code>name</code> 
+   is now "http://www.greensock.com/images/image1.jpg" (although you could simply use its <code>name</code>
    instead of its <code>url</code> to find it). It also means that if a single loader has been
    inserted into multiple LoaderMax instances, its <code>url</code> change affects them all. <br /><br />
-   
-   <code>prependURLs()</code> only affects loaders that are children of the LoaderMax when 
+
+   <code>prependURLs()</code> only affects loaders that are children of the LoaderMax when
    the method is called - it does <strong>not</strong> affect loaders that are inserted later. <br /><br />
-   
+
    <code>prependURLs()</code> does <strong>NOT</strong> affect any <code>alternateURL</code> values that are defined
    for each child loader.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1490,24 +1490,24 @@ function completeHandler(event:LoaderEvent):void {
 <code>public static function prioritize(nameOrURL:String, loadNow:Boolean = true):<a href="core/LoaderCore.html">LoaderCore</a></code><p>
    Immediately prioritizes a loader inside any LoaderMax instances that contain it,
    forcing it to the top position in their queue and optionally calls <code>load()</code>
-   immediately as well. If one of its parent LoaderMax instances is currently loading a 
+   immediately as well. If one of its parent LoaderMax instances is currently loading a
    different loader, that one will be temporarily cancelled. <br /><br />
-   
-   By contrast, when <code>load()</code> is called, it doesn't change the loader's position/index 
-   in any LoaderMax queues. For example, if a LoaderMax is working on loading the first object in 
-   its queue, you can call load() on the 20th item and it will honor your request without 
-   changing its index in the queue. <code>prioritize()</code>, however, affects the position 
+
+   By contrast, when <code>load()</code> is called, it doesn't change the loader's position/index
+   in any LoaderMax queues. For example, if a LoaderMax is working on loading the first object in
+   its queue, you can call load() on the 20th item and it will honor your request without
+   changing its index in the queue. <code>prioritize()</code>, however, affects the position
    in the queue and optionally loads it immediately as well.<br /><br />
-   
-   So even if your LoaderMax hasn't begun loading yet, you could <code>prioritize(false)</code> 
-   a loader and it will rise to the top of all LoaderMax instances to which it belongs, but not 
-   start loading yet. If the goal is to load something immediately, you can just use the 
+
+   So even if your LoaderMax hasn't begun loading yet, you could <code>prioritize(false)</code>
+   a loader and it will rise to the top of all LoaderMax instances to which it belongs, but not
+   start loading yet. If the goal is to load something immediately, you can just use the
    <code>load()</code> method.<br /><br />
-   
+
    For example, to immediately prioritize the loader named "myPhoto1":<br /><br /><code>
-   
+
    LoaderMax.prioritize("myPhoto1");</code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1526,10 +1526,10 @@ function completeHandler(event:LoaderEvent):void {
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash; 
+<td width="20"></td><td><code><a href="core/LoaderCore.html">LoaderCore</a></code> &mdash;
                         The loader that was prioritized. If no loader was found, <code>null</code> is returned.
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -1544,20 +1544,20 @@ function completeHandler(event:LoaderEvent):void {
 <code>public static function registerFileType(extensions:String, loaderClass:Class):void</code><p>
    By default, LoaderMax associates certain file extensions with certain types of loaders, like "jpg", "png", and "gif"
    are associated with ImageLoader and "swf" is associated with SWFLoader so that the <code>LoaderMax.parse()</code> method
-   can recognize and create the appropriate loaders for each URL passed in. If you'd like to associate additional file 
+   can recognize and create the appropriate loaders for each URL passed in. If you'd like to associate additional file
    extensions with certain loader types, you may do so with <code>registerFileType()</code>. For example, to associate
    "pdf" with BinaryDataLoader, you would do this:<br /><br /><code>
-   
+
    LoaderMax.registerFileType("pdf", BinaryDataLoader);<br /><br /></code>
-   
+
    Then, if you call <code>LoaderMax.parse("file/myFile.pdf")</code>, it would recognize the "pdf" file extension
    as being associated with BinaryDataLoader and would return a BinaryDataLoader instance accordingly. <br /><br />
-   
-   There is no reason to use <code>registerFileType()</code> unless you plan on utilizing the <code>parse()</code> 
-   method and need it to recognize a extensions that LoaderMax doesn't already recognize by default. 
-   
+
+   There is no reason to use <code>registerFileType()</code> unless you plan on utilizing the <code>parse()</code>
+   method and need it to recognize a extensions that LoaderMax doesn't already recognize by default.
+
    <b>NOTE:</b> Make sure you activate() the various loader types you want LoaderMax to recognize before calling parse() - see the documentation for <code>LoaderMax.activate()</code>)
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1588,7 +1588,7 @@ function completeHandler(event:LoaderEvent):void {
 <div class="detailBody">
 <code>public function remove(loader:<a href="core/LoaderCore.html">LoaderCore</a>):void</code><p>
    Removes a loader from the LoaderMax.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1616,29 +1616,29 @@ function completeHandler(event:LoaderEvent):void {
 <div class="detailBody">
 <code>public function replaceURLText(fromText:String, toText:String, includeNested:Boolean = false):void</code><p>
    Immediately replaces a certain substring in each child loader's <code>url</code> with another string,
-   making it simple to do something like change <code>"{imageDirectory}image1.jpg"</code> to 
+   making it simple to do something like change <code>"{imageDirectory}image1.jpg"</code> to
    <code>"http://www.greensock.com/images/image1.jpg"</code>. For example,
-   if the "myLoaderMax" instance contains 3 ImageLoaders with the urls <code>"{imageDirectory}image1.jpg", 
+   if the "myLoaderMax" instance contains 3 ImageLoaders with the urls <code>"{imageDirectory}image1.jpg",
    "{imageDirectory}image2.jpg",</code> and <code>"{imageDirectory}image3.jpg"</code>
    and you'd like to replace <code>{imageDirectory}</code> with <code>http://www.greensock.com/images/</code>
    you'd do:<br /><br /><code>
-   
+
    myLoaderMax.replaceURLText("{imageDirectory}", "http://www.greensock.com/images/", false);<br /><br /></code>
-   
+
    Now the ImageLoader urls would be "http://www.greensock.com/images/image1.jpg", "http://www.greensock.com/images/image2.jpg",
    and "http://www.greensock.com/images/image3.jpg" respectively. <br /><br />
-   
+
    <code>replaceURLText()</code> permanently affects each child loader's <code>url</code> meaning that
    <code>LoaderMax.getContent("image1.jpg")</code> would not find the loader whose <code>url</code>
-   is now "http://www.greensock.com/images/image1.jpg" (although you could simply use its <code>name</code> 
+   is now "http://www.greensock.com/images/image1.jpg" (although you could simply use its <code>name</code>
    instead of its <code>url</code> to find it). It also means that if a single loader has been
    inserted into multiple LoaderMax instances, its <code>url</code> change affects them all. <br /><br />
-   
-   <code>replaceURLText()</code> only affects loaders that are children of the LoaderMax when 
+
+   <code>replaceURLText()</code> only affects loaders that are children of the LoaderMax when
    the method is called - it does <strong>not</strong> affect loaders that are inserted later. <br /><br />
-   
-   <code>replaceURLText()</code> <strong>does</strong> affect <code>alternateURL</code> values for child loaders. 
-   
+
+   <code>replaceURLText()</code> <strong>does</strong> affect <code>alternateURL</code> values for child loaders.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

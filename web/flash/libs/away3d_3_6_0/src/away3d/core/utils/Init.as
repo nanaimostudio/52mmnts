@@ -4,12 +4,12 @@ package away3d.core.utils
     import away3d.core.base.*;
     import away3d.materials.*;
     import away3d.primitives.data.*;
-    
+
     import flash.display.*;
     import flash.geom.*;
 
 	use namespace arcane;
-	
+
     /** Convinient object initialization support */
     public class Init
     {
@@ -36,10 +36,10 @@ package away3d.core.utils
         {
             if (init == null)
                 return def;
-        
+
             if (!init.hasOwnProperty(name))
                 return def;
-        
+
             var result:int = init[name];
 
             if (bounds != null)
@@ -57,9 +57,9 @@ package away3d.core.utils
                         result = max;
                 }
             }
-        
+
             delete init[name];
-        
+
             return result;
         }
 
@@ -67,12 +67,12 @@ package away3d.core.utils
         {
             if (init == null)
                 return def;
-        
+
             if (!init.hasOwnProperty(name))
                 return def;
-        
+
             var result:Number = init[name];
-                                        
+
             if (bounds != null)
             {
                 if (bounds.hasOwnProperty("min"))
@@ -88,9 +88,9 @@ package away3d.core.utils
                         result = max;
                 }
             }
-        
+
             delete init[name];
-        
+
             return result;
         }
 
@@ -98,14 +98,14 @@ package away3d.core.utils
         {
             if (init == null)
                 return def;
-        
+
             if (!init.hasOwnProperty(name))
                 return def;
-        
+
             var result:String = init[name];
 
             delete init[name];
-        
+
             return result;
         }
 
@@ -113,14 +113,14 @@ package away3d.core.utils
         {
             if (init == null)
                 return def;
-        
+
             if (!init.hasOwnProperty(name))
                 return def;
-        
+
             var result:Boolean = init[name];
 
             delete init[name];
-        
+
             return result;
         }
 
@@ -128,10 +128,10 @@ package away3d.core.utils
         {
             if (init == null)
                 return null;
-        
+
             if (!init.hasOwnProperty(name))
                 return null;
-        
+
             var result:Object = init[name];
 
             delete init[name];
@@ -150,10 +150,10 @@ package away3d.core.utils
         {
             if (init == null)
                 return null;
-        
+
             if (!init.hasOwnProperty(name))
                 return null;
-        
+
             var result:Object = init[name];
 
             delete init[name];
@@ -205,14 +205,14 @@ package away3d.core.utils
         {
             if (init == null)
                 return [];
-        
+
             if (!init.hasOwnProperty(name))
                 return [];
-        
+
             var result:Array = init[name];
 
             delete init[name];
-        
+
             return result;
         }
 
@@ -220,49 +220,49 @@ package away3d.core.utils
         {
             if (init == null)
                 return new Init(null);
-        
+
             if (!init.hasOwnProperty(name))
                 return new Init(null);
-        
+
             var result:Init = Init.parse(init[name]);
 
             delete init[name];
-        
+
             return result;
         }
-		
+
         public function getCubeMaterials(name:String):CubeMaterialsData
         {
             if (init == null)
                 return null;
-        
+
             if (!init.hasOwnProperty(name))
                 return null;
-        	
+
         	var result:CubeMaterialsData;
-        	
+
         	if (init[name] is CubeMaterialsData)
         		result = init[name] as CubeMaterialsData;
         	else if (init[name] is Object)
         		result = new CubeMaterialsData(init[name]);
 
             delete init[name];
-        
+
             return result;
         }
-        
+
         public function getColor(name:String, def:uint):uint
         {
             if (init == null)
                 return def;
-        
+
             if (!init.hasOwnProperty(name))
                 return def;
-        
+
             var result:uint = Cast.color(init[name]);
 
             delete init[name];
-        
+
             return result;
         }
 
@@ -270,14 +270,14 @@ package away3d.core.utils
         {
             if (init == null)
                 return null;
-        
+
             if (!init.hasOwnProperty(name))
                 return null;
-        
+
             var result:BitmapData = Cast.bitmap(init[name]);
 
             delete init[name];
-        
+
             return result;
         }
 
@@ -285,14 +285,14 @@ package away3d.core.utils
         {
             if (init == null)
                 return null;
-        
+
             if (!init.hasOwnProperty(name))
                 return null;
-        
+
             var result:Material = Cast.material(init[name]);
 
             delete init[name];
-        
+
             return result;
         }
 
@@ -327,7 +327,7 @@ package away3d.core.utils
                 if (init.hasOwnProperty("dontCheckUnused"))
                     if (init["dontCheckUnused"])
                         continue;
-                        
+
                 var s:String = null;
                 for (var name:String in init)
                 {

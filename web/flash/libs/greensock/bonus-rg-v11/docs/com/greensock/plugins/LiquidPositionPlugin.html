@@ -42,46 +42,46 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- If you're using <a href="http://www.greensock.com/liquidstage/">LiquidStage</a> and you'd like to tween 
+ If you're using <a href="http://www.greensock.com/liquidstage/">LiquidStage</a> and you'd like to tween
  a DisplayObject to coordinates that are relative to a particular <code>PinPoint</code> (like the <code>CENTER</code>)
- whose position may change at any time, <code>LiquidPositionPlugin</code> makes it easy by dynamically updating the 
+ whose position may change at any time, <code>LiquidPositionPlugin</code> makes it easy by dynamically updating the
  destination values accordingly. For example, let's say you have an "mc" Sprite that should tween to the center of
  the screen, you could do:<br /><br />
- 
+
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.layout.*; <br />
    import com.greensock.plugins.*; <br />
    TweenPlugin.activate([LiquidPositionPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    var ls:LiquidStage = new LiquidStage(this.stage, 550, 400, 550, 400); <br /><br />
- 
+
    TweenLite.to(mc, 2, {liquidPosition:{pin:ls.CENTER}}); <br /><br />
  </code>
- 
- Or to tween to exactly x:100, y:200 but have that position move with the <code>TOP_RIGHT</code> PinPoint 
+
+ Or to tween to exactly x:100, y:200 but have that position move with the <code>TOP_RIGHT</code> PinPoint
  whenever it repositions (so they retain their relative distance from each other), the tween would look like this:<br /><br />
- 
+
  <code>
    TweenLite.to(mc, 2, {liquidPosition:{x:100, y:200, pin:ls.TOP_RIGHT}}); <br /><br />
  </code>
- 
- To prevent the <code>LiquidPositionPlugin</code> from controlling the object's y property, 
- simply pass <code>ignoreY:true</code> in the vars object. The same goes for the x position: 
+
+ To prevent the <code>LiquidPositionPlugin</code> from controlling the object's y property,
+ simply pass <code>ignoreY:true</code> in the vars object. The same goes for the x position:
  <code>ignoreX:true</code>.<br /><br />
- 
- By default, <code>LiquidPositionPlugin</code> will reconcile the position which means it will 
- act as though the coordinates were defined before the stage was resized (so they'd be according 
+
+ By default, <code>LiquidPositionPlugin</code> will reconcile the position which means it will
+ act as though the coordinates were defined before the stage was resized (so they'd be according
  to the original size at which the swf was built in the IDE). If you don't want it to reconcile,
  simply pass <code>reconcile:false</code> through the vars object. <br /><br />
- 
- LiquidPositionPlugin is a Club GreenSock membership benefit and requires <a href="http://www.greensock.com/liquidstage/">LiquidStage</a>. 
- You must have a valid membership to use this class without violating the terms of use. Visit 
- <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a> 
+
+ LiquidPositionPlugin is a Club GreenSock membership benefit and requires <a href="http://www.greensock.com/liquidstage/">LiquidStage</a>.
+ You must have a valid membership to use this class without violating the terms of use. Visit
+ <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a>
  to sign up or get more details.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

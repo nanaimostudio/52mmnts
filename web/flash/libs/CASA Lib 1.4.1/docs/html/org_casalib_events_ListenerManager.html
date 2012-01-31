@@ -13,12 +13,12 @@
 		<script type="text/javascript" src="../js/7_VisDoc.min.js"></script>
 	</head>
 	<body class='isShowingNavigation' id='page_org_casalib_events_ListenerManager'>
-	    <div id='page'> 
+	    <div id='page'>
 			<div id='wrapper'>
-				<div id='outer'> 
-					<div id='floatWrap'> 
+				<div id='outer'>
+					<div id='floatWrap'>
 						<div id='main'>
-							<div id='clearHeaderCenter'></div> 
+							<div id='clearHeaderCenter'></div>
 							<div id='mainContent'>
 																<h1>ListenerManager</h1>									<div class='classProperties'>
 		<table cellspacing='0'>
@@ -76,21 +76,21 @@
     CASA Lib for ActionScript 3.0
     Copyright (c) 2011, Aaron Clinger & Contributors of CASA Lib
     All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-    
+
     - Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    
+
     - Redistributions in binary form must reproduce the above copyright notice,
       this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    
+
     - Neither the name of the CASA Lib nor the names of its contributors
       may be used to endorse or promote products derived from this software
       without specific prior written permission.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
     AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
     IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -110,10 +110,10 @@ package org.casalib.events {
     import org.casalib.core.Destroyable;
     import org.casalib.events.IRemovableEventDispatcher;
     import org.casalib.util.ArrayUtil;
-    
+
     /**
-        Creates an easy way to implement {@link IRemovableEventDispatcher} when you cannot extend directly from {@link RemovableEventDispatcher}. 
-        
+        Creates an easy way to implement {@link IRemovableEventDispatcher} when you cannot extend directly from {@link RemovableEventDispatcher}.
+
         @author Aaron Clinger
         @version 02/11/10
         @example
@@ -123,52 +123,52 @@ package org.casalib.events {
                     import org.casalib.display.CasaMovieClip;
                     import org.casalib.display.CasaSprite;
                     import org.casalib.events.ListenerManager;
-                    
-                    
+
+
                     public class MyExample extends CasaMovieClip {
                         protected var _button:CasaSprite;
                         protected var _buttonListenerManager:ListenerManager;
-                        
-                        
+
+
                         public function MyExample() {
                             super();
-                            
+
                             this._button = new CasaSprite();
                             this._button.graphics.beginFill(0x00FF00);
                             this._button.graphics.drawRect(0, 0, 150, 150);
                             this._button.graphics.endFill();
-                            
+
                             this.addChild(this._button);
-                            
+
                             this._buttonListenerManager = ListenerManager.getManager(this._button);
-                            
+
                             this._buttonListenerManager.addEventListener(MouseEvent.MOUSE_OVER, this._onMouseOver);
                             this._button.addEventListener(MouseEvent.MOUSE_OVER, this._onMouseOver);
-                            
+
                             this._buttonListenerManager.addEventListener(MouseEvent.MOUSE_OUT, this._onMouseOut);
                             this._button.addEventListener(MouseEvent.MOUSE_OUT, this._onMouseOut);
-                            
+
                             this._buttonListenerManager.addEventListener(MouseEvent.CLICK, this._onClick);
                             this._button.addEventListener(MouseEvent.CLICK, this._onClick);
                         }
-                        
+
                         protected function _onMouseOver(e:MouseEvent):void {
                             trace("On mouse over.");
                         }
-                        
+
                         protected function _onMouseOut(e:MouseEvent):void {
                             trace("On mouse out.");
                         }
-                        
+
                         protected function _onClick(e:MouseEvent):void {
                             trace("On mouse clicked. No more events will fire.");
-                            
+
                             this._buttonListenerManager.removeEventListeners();
                         }
                     }
                 }
             </code>
-            
+
             To implement {@link IRemovableEventDispatcher} with out the option to extend from {@link RemovableEventDispatcher} you can use ListenerManager in this way:
             <code>
                 package {
@@ -176,52 +176,52 @@ package org.casalib.events {
                     import org.casalib.core.IDestroyable;
                     import org.casalib.events.IRemovableEventDispatcher;
                     import org.casalib.events.ListenerManager;
-                    
-                    
+
+
                     public class RemovableSprite extends Sprite implements IRemovableEventDispatcher, IDestroyable {
                         protected var _listenerManager:ListenerManager;
                         protected var _isDestroyed:Boolean;
-                        
-                        
+
+
                         public function RemovableSprite() {
                             super();
-                            
+
                             this._listenerManager = ListenerManager.getManager(this);
                         }
-                        
+
                         override public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void {
                             super.addEventListener(type, listener, useCapture, priority, useWeakReference);
                             this._listenerManager.addEventListener(type, listener, useCapture, priority, useWeakReference);
                         }
-                        
+
                         override public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
                             super.removeEventListener(type, listener, useCapture);
                             this._listenerManager.removeEventListener(type, listener, useCapture);
                         }
-                        
+
                         public function removeEventsForType(type:String):void {
                             this._listenerManager.removeEventsForType(type);
                         }
-                        
+
                         public function removeEventsForListener(listener:Function):void {
                             this._listenerManager.removeEventsForListener(listener);
                         }
-                        
+
                         public function removeEventListeners():void {
                             this._listenerManager.removeEventListeners();
                         }
-                        
+
                         public function getTotalEventListeners(type:String = null):uint {
                             return this._listenerManager.getTotalEventListeners(type);
                         }
-                        
+
                         public function get destroyed():Boolean {
                             return this._isDestroyed;
                         }
-                        
+
                         public function destroy():void {
                             this._listenerManager.destroy();
-                            
+
                             this._isDestroyed = true;
                         }
                     }
@@ -233,37 +233,37 @@ package org.casalib.events {
         protected var _eventDispatcher:IEventDispatcher;
         protected var _events:Array;
         protected var _blockRequest:Boolean;
-        
-        
+
+
         /**
             Registers a <code>IEventDispatcher</code> to be managed by ListenerManager.
-            
+
             @param eventDispatcher: The <code>IEventDispatcher</code> instance to manage.
             @return A ListenerManager instance.
         */
         public static function getManager(dispatcher:IEventDispatcher):ListenerManager {
             if (ListenerManager._proxyMap == null)
                 ListenerManager._proxyMap = new Dictionary();
-            
+
             if (!(dispatcher in ListenerManager._proxyMap))
                 ListenerManager._proxyMap[dispatcher] = new ListenerManager(new EventInfo(null, null, false), dispatcher);
-            
+
             return ListenerManager._proxyMap[dispatcher];
         }
-        
+
         /**
             @exclude
         */
         public function ListenerManager(singletonEnforcer:EventInfo, dispatcher:IEventDispatcher) {
             super();
-            
+
             this._eventDispatcher = dispatcher;
             this._events          = new Array();
         }
-        
+
         /**
             Notifies the ListenerManager instance that a listener has been added to the <code>IEventDispatcher</code>.
-            
+
             @param type: The type of event.
             @param listener: The listener function that processes the event.
             @param useCapture: Determines whether the listener works in the capture phase or the target and bubbling phases.
@@ -272,39 +272,39 @@ package org.casalib.events {
         */
         public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void {
             var info:EventInfo = new EventInfo(type, listener, useCapture);
-            
+
             var l:int = this._events.length;
             while (l--)
                 if (this._events[l].equals(info))
                     return;
-            
+
             this._events.push(info);
         }
-        
+
         /**
             @exclude
         */
         public function dispatchEvent(event:Event):Boolean {
             return this._eventDispatcher.dispatchEvent(event);
         }
-        
+
         /**
             @exclude
         */
         public function hasEventListener(type:String):Boolean {
             return this._eventDispatcher.hasEventListener(type);
         }
-        
+
         /**
             @exclude
         */
         public function willTrigger(type:String):Boolean {
             return this._eventDispatcher.willTrigger(type);
         }
-        
+
         /**
             Notifies the ListenerManager instance that a listener has been removed from the <code>IEventDispatcher</code>.
-            
+
             @param type: The type of event.
             @param listener: The listener function that processes the event.
             @param useCapture: Determines whether the listener works in the capture phase or the target and bubbling phases.
@@ -312,76 +312,76 @@ package org.casalib.events {
         public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void {
             if (this._blockRequest)
                 return;
-            
+
             var info:EventInfo = new EventInfo(type, listener, useCapture);
-            
+
             var l:int = this._events.length;
             while (l--)
                 if (this._events[l].equals(info))
                     this._events.splice(l, 1);
         }
-        
+
         public function removeEventsForType(type:String):void {
             this._blockRequest = true;
-            
+
             var l:int = this._events.length;
             var eventInfo:EventInfo;
             while (l--) {
                 eventInfo = this._events[l];
-                
+
                 if (eventInfo.type == type) {
                     this._events.splice(l, 1);
-                    
+
                     this._eventDispatcher.removeEventListener(eventInfo.type, eventInfo.listener, eventInfo.useCapture);
                 }
             }
-            
+
             this._blockRequest = false;
         }
-        
+
         public function removeEventsForListener(listener:Function):void {
             this._blockRequest = true;
-            
+
             var l:int = this._events.length;
             var eventInfo:EventInfo;
             while (l--) {
                 eventInfo = this._events[l];
-                
+
                 if (eventInfo.listener == listener) {
                     this._events.splice(l, 1);
-                    
+
                     this._eventDispatcher.removeEventListener(eventInfo.type, eventInfo.listener, eventInfo.useCapture);
                 }
             }
-            
+
             this._blockRequest = false;
         }
-        
+
         public function removeEventListeners():void {
             this._blockRequest = true;
-            
+
             var l:int = this._events.length;
             var eventInfo:EventInfo;
             while (l--) {
                 eventInfo = this._events.splice(l, 1)[0];
-                
+
                 this._eventDispatcher.removeEventListener(eventInfo.type, eventInfo.listener, eventInfo.useCapture);
             }
-            
+
             this._blockRequest = false;
         }
-        
+
         public function getTotalEventListeners(type:String = null):uint {
             return (type == null) ? this._events.length : ArrayUtil.getItemsByKey(this._events, 'type', type).length;
         }
-        
+
         override public function destroy():void {
             this.removeEventListeners();
-            
+
             delete ListenerManager._proxyMap[this._eventDispatcher];
-            
+
             this._eventDispatcher = null;
-            
+
             super.destroy();
         }
     }
@@ -390,14 +390,14 @@ class EventInfo {
     public var type:String;
     public var listener:Function;
     public var useCapture:Boolean;
-    
-    
+
+
     public function EventInfo(type:String, listener:Function, useCapture:Boolean) {
         this.type       = type;
         this.listener   = listener;
         this.useCapture = useCapture;
     }
-    
+
     public function equals(eventInfo:EventInfo):Boolean {
         return this.type == eventInfo.type && this.listener == eventInfo.listener && this.useCapture == eventInfo.useCapture;
     }
@@ -418,52 +418,52 @@ package {
     import org.casalib.display.CasaMovieClip;
     import org.casalib.display.CasaSprite;
     import org.casalib.events.ListenerManager;
-    
-    
+
+
     public class MyExample extends CasaMovieClip {
         protected <span class="codeKeyword">var</span> _button:CasaSprite;
         protected <span class="codeKeyword">var</span> _buttonListenerManager:ListenerManager;
-        
-        
+
+
         public <span class="codeKeyword">function</span> MyExample() {
             <span class="codeIdentifier">super</span>();
-            
+
             <span class="codeIdentifier">this</span>._button = <span class="codeKeyword">new</span> CasaSprite();
             <span class="codeIdentifier">this</span>._button.graphics<span class="codeIdentifier">.beginFill</span>(0x00FF00);
             <span class="codeIdentifier">this</span>._button.graphics.drawRect(<span class="codeNumber">0</span>, <span class="codeNumber">0</span>, <span class="codeNumber">150</span>, <span class="codeNumber">150</span>);
             <span class="codeIdentifier">this</span>._button.graphics<span class="codeIdentifier">.endFill</span>();
-            
+
             <span class="codeIdentifier">this</span>.addChild(<span class="codeIdentifier">this</span>._button);
-            
+
             <span class="codeIdentifier">this</span>._buttonListenerManager = ListenerManager.getManager(<span class="codeIdentifier">this</span>._button);
-            
+
             <span class="codeIdentifier">this</span>._buttonListenerManager.addEventListener(MouseEvent.MOUSE_OVER, <span class="codeIdentifier">this</span>._onMouseOver);
             <span class="codeIdentifier">this</span>._button.addEventListener(MouseEvent.MOUSE_OVER, <span class="codeIdentifier">this</span>._onMouseOver);
-            
+
             <span class="codeIdentifier">this</span>._buttonListenerManager.addEventListener(MouseEvent.MOUSE_OUT, <span class="codeIdentifier">this</span>._onMouseOut);
             <span class="codeIdentifier">this</span>._button.addEventListener(MouseEvent.MOUSE_OUT, <span class="codeIdentifier">this</span>._onMouseOut);
-            
+
             <span class="codeIdentifier">this</span>._buttonListenerManager.addEventListener(MouseEvent.CLICK, <span class="codeIdentifier">this</span>._onClick);
             <span class="codeIdentifier">this</span>._button.addEventListener(MouseEvent.CLICK, <span class="codeIdentifier">this</span>._onClick);
         }
-        
+
         protected <span class="codeKeyword">function</span> _onMouseOver(e:MouseEvent):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">trace</span>(<span class="codeString">&quot;On mouse over.&quot;</span>);
         }
-        
+
         protected <span class="codeKeyword">function</span> _onMouseOut(e:MouseEvent):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">trace</span>(<span class="codeString">&quot;On mouse out.&quot;</span>);
         }
-        
+
         protected <span class="codeKeyword">function</span> _onClick(e:MouseEvent):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">trace</span>(<span class="codeString">&quot;On mouse clicked. No more events will fire.&quot;</span>);
-            
+
             <span class="codeIdentifier">this</span>._buttonListenerManager.removeEventListeners();
         }
     }
 }
 </pre>
-			
+
 			To implement <a href="org_casalib_events_IRemovableEventDispatcher.html">IRemovableEventDispatcher</a> with out the option to extend from <a href="org_casalib_events_RemovableEventDispatcher.html">RemovableEventDispatcher</a> you can use ListenerManager in this way:
 			<pre>
 package {
@@ -471,52 +471,52 @@ package {
     import org.casalib.core.IDestroyable;
     import org.casalib.events.IRemovableEventDispatcher;
     import org.casalib.events.ListenerManager;
-    
-    
+
+
     public class RemovableSprite extends Sprite implements IRemovableEventDispatcher, IDestroyable {
         protected <span class="codeKeyword">var</span> _listenerManager:ListenerManager;
         protected <span class="codeKeyword">var</span> _isDestroyed:<span class="codeIdentifier">Boolean</span>;
-        
-        
+
+
         public <span class="codeKeyword">function</span> RemovableSprite() {
             <span class="codeIdentifier">super</span>();
-            
+
             <span class="codeIdentifier">this</span>._listenerManager = ListenerManager.getManager(<span class="codeIdentifier">this</span>);
         }
-        
+
         override public <span class="codeKeyword">function</span> addEventListener(type:<span class="codeIdentifier">String</span>, listener:<span class="codeIdentifier">Function</span>, useCapture:<span class="codeIdentifier">Boolean</span> = <span class="codeIdentifier">false</span>, priority:<span class="codeIdentifier">int</span> = <span class="codeNumber">0</span>, useWeakReference:<span class="codeIdentifier">Boolean</span> = <span class="codeIdentifier">false</span>):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">super</span>.addEventListener(type, listener, useCapture, priority, useWeakReference);
             <span class="codeIdentifier">this</span>._listenerManager.addEventListener(type, listener, useCapture, priority, useWeakReference);
         }
-        
+
         override public <span class="codeKeyword">function</span> removeEventListener(type:<span class="codeIdentifier">String</span>, listener:<span class="codeIdentifier">Function</span>, useCapture:<span class="codeIdentifier">Boolean</span> = <span class="codeIdentifier">false</span>):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">super</span>.removeEventListener(type, listener, useCapture);
             <span class="codeIdentifier">this</span>._listenerManager.removeEventListener(type, listener, useCapture);
         }
-        
+
         public <span class="codeKeyword">function</span> removeEventsForType(type:<span class="codeIdentifier">String</span>):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">this</span>._listenerManager.removeEventsForType(type);
         }
-        
+
         public <span class="codeKeyword">function</span> removeEventsForListener(listener:<span class="codeIdentifier">Function</span>):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">this</span>._listenerManager.removeEventsForListener(listener);
         }
-        
+
         public <span class="codeKeyword">function</span> removeEventListeners():<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">this</span>._listenerManager.removeEventListeners();
         }
-        
+
         public <span class="codeKeyword">function</span> getTotalEventListeners(type:<span class="codeIdentifier">String</span> = <span class="codeIdentifier">null</span>):uint {
             <span class="codeKeyword">return</span> <span class="codeIdentifier">this</span>._listenerManager.getTotalEventListeners(type);
         }
-        
+
         public <span class="codeKeyword">function</span> get destroyed():<span class="codeIdentifier">Boolean</span> {
             <span class="codeKeyword">return</span> <span class="codeIdentifier">this</span>._isDestroyed;
         }
-        
+
         public <span class="codeKeyword">function</span> destroy():<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">this</span>._listenerManager.destroy();
-            
+
             <span class="codeIdentifier">this</span>._isDestroyed = <span class="codeIdentifier">true</span>;
         }
     }
@@ -551,7 +551,7 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Class methods</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#getManager">getManager</a>
 																<span class='typeInfo'>(dispatcher:IEventDispatcher) : <a href="org_casalib_events_ListenerManager.html">ListenerManager</a></span>																<ul class='summary'>
 									<li>Registers a IEventDispatcher to be managed by ListenerManager.</li>
@@ -561,37 +561,37 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance methods</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#addEventListener">addEventListener</a>
 																<span class='typeInfo'>(type:String, listener:Function, useCapture:Boolean = false, priority:int, useWeakReference:Boolean = false) : void</span>																<ul class='summary'>
 									<li>Notifies the ListenerManager instance that a listener has been added to the IEventDispatcher.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventListener">removeEventListener</a>
 																<span class='typeInfo'>(type:String, listener:Function, useCapture:Boolean = false) : void</span>																<ul class='summary'>
 									<li>Notifies the ListenerManager instance that a listener has been removed from the IEventDispatcher.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventsForType">removeEventsForType</a>
 																<span class='typeInfo'>(type:String) : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventsForListener">removeEventsForListener</a>
 																<span class='typeInfo'>(listener:Function) : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventListeners">removeEventListeners</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#getTotalEventListeners">getTotalEventListeners</a>
 																<span class='typeInfo'>(type:String = null) : uint</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#destroy">destroy</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
@@ -670,7 +670,7 @@ package {
 									<h3>destroy</h3>											<div class='fullMemberString'>
 							<span class='code'>override function <strong>destroy</strong>() : void</span>						</div>											<div class='description'>
 																			<p><div class="inheritDoc"><div class="inheritDoc">Removes any event listeners and stops all internal processes to help allow for prompt garbage collection.
-			
+
 			<strong>Always call  before deleting last object pointer.</strong> <span class="inheritDocLink"></span></div> <span class="inheritDocLink"><a href="org_casalib_core_Destroyable.html#destroy">&rarr;</a></span></div></p>						</div>										<div class='boxWithBorder'>
 														<div class='boxedElem'>
 		<div class='contentHolder'>
@@ -772,11 +772,11 @@ package {
 
 											</div>				</div>
 					</div>
-		
+
 							</div>
 						</div>
 											<div id='sidebar'>
-		<div id='clearHeaderLeft'></div> 
+		<div id='clearHeaderLeft'></div>
 		<div id='sidebarContent'>
 				<div class="list">
 							<ul>
@@ -1144,7 +1144,7 @@ package {
 	</div>
 
 					</div>
-					<div class='clear'>&nbsp;</div> 
+					<div class='clear'>&nbsp;</div>
 				</div>
 			</div>
 			<div id='header'>

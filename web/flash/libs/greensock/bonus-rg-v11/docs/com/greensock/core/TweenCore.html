@@ -42,11 +42,11 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- TweenCore is the base class for all TweenLite, TweenMax, TimelineLite, and TimelineMax classes and 
+ TweenCore is the base class for all TweenLite, TweenMax, TimelineLite, and TimelineMax classes and
  provides core functionality and properties. There is no reason to use this class directly.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -60,7 +60,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#currentTime">currentTime</a> : Number<div class="summaryTableDescription">
-   Most recently rendered time (or frame for frames-based tweens/timelines) according to its 
+   Most recently rendered time (or frame for frames-based tweens/timelines) according to its
    <code>duration</code>.</div>
 </td><td class="summaryTableOwnerCol">TweenCore</td>
 </tr>
@@ -69,7 +69,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">TweenCore</td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#delay">delay</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#delay">delay</a> : Number<div class="summaryTableDescription">
    Length of time in seconds (or frames for frames-based tweens/timelines) before the tween should begin.</div>
 </td><td class="summaryTableOwnerCol">TweenCore</td>
 </tr>
@@ -104,7 +104,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 <tr class="">
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#totalTime">totalTime</a> : Number<div class="summaryTableDescription">
-   Most recently rendered time (or frame for frames-based tweens/timelines) according to its 
+   Most recently rendered time (or frame for frames-based tweens/timelines) according to its
    <code>totalDuration</code>.</div>
 </td><td class="summaryTableOwnerCol">TweenCore</td>
 </tr>
@@ -140,8 +140,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#invalidate()">invalidate</a>():void</div>
-<div class="summaryTableDescription"> 
-   Clears any initialization data (like starting values in tweens) which can be useful if, for example, 
+<div class="summaryTableDescription">
+   Clears any initialization data (like starting values in tweens) which can be useful if, for example,
    you want to restart it without reverting to any previously recorded starting values.</div>
 </td><td class="summaryTableOwnerCol">TweenCore</td>
 </tr>
@@ -206,13 +206,13 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>currentTime:Number</code>&nbsp;&nbsp;[read-write]<p>
-   Most recently rendered time (or frame for frames-based tweens/timelines) according to its 
-   <code>duration</code>. <code>totalTime</code>, by contrast, is based on its <code>totalDuration</code> 
-   which includes repeats and repeatDelays. Since TweenLite and TimelineLite don't offer 
-   <code>repeat</code> and <code>repeatDelay</code> functionality, <code>currentTime</code> 
-   and <code>totalTime</code> will always be the same but in TweenMax or TimelineMax, they 
-   could be different. For example, if a TimelineMax instance has a duration 
-   of 5 a repeat of 1 (meaning its <code>totalDuration</code> is 10), at the end of the second cycle, 
+   Most recently rendered time (or frame for frames-based tweens/timelines) according to its
+   <code>duration</code>. <code>totalTime</code>, by contrast, is based on its <code>totalDuration</code>
+   which includes repeats and repeatDelays. Since TweenLite and TimelineLite don't offer
+   <code>repeat</code> and <code>repeatDelay</code> functionality, <code>currentTime</code>
+   and <code>totalTime</code> will always be the same but in TweenMax or TimelineMax, they
+   could be different. For example, if a TimelineMax instance has a duration
+   of 5 a repeat of 1 (meaning its <code>totalDuration</code> is 10), at the end of the second cycle,
    <code>currentTime</code> would be 5 whereas <code>totalTime</code> would be 10. If you tracked both
    properties over the course of the tween, you'd see <code>currentTime</code> go from 0 to 5 twice (one for each
    cycle) in the same time it takes <code>totalTime</code> go from 0 to 10.
@@ -238,9 +238,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>delay:Number</code>&nbsp;&nbsp;[read-write]<p> 
-   Length of time in seconds (or frames for frames-based tweens/timelines) before the tween should begin. 
-   The tween's starting values are not determined until after the delay has expired (except in from() tweens) 
+<code>delay:Number</code>&nbsp;&nbsp;[read-write]<p>
+   Length of time in seconds (or frames for frames-based tweens/timelines) before the tween should begin.
+   The tween's starting values are not determined until after the delay has expired (except in from() tweens)
    </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get delay():Number</code>
@@ -258,8 +258,8 @@ showHideInherited();
 <code>duration:Number</code>&nbsp;&nbsp;[read-write]<p>
    Duration of the tween in seconds (or frames for frames-based tweens/timelines) not including any repeats
    or repeatDelays. <code>totalDuration</code>, by contrast, does include repeats and repeatDelays. If you alter
-   the <code>duration</code> of a tween while it is in-progress (active), its <code>startTime</code> will automatically 
-   be adjusted in order to make the transition smoothly (without a sudden skip). 
+   the <code>duration</code> of a tween while it is in-progress (active), its <code>startTime</code> will automatically
+   be adjusted in order to make the transition smoothly (without a sudden skip).
    </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get duration():Number</code>
@@ -326,8 +326,8 @@ showHideInherited();
 <div class="detailBody">
 <code>totalDuration:Number</code>&nbsp;&nbsp;[read-write]<p>
    Duration of the tween in seconds (or frames for frames-based tweens/timelines) including any repeats
-   or repeatDelays (which are only available on TweenMax and TimelineMax). <code>duration</code>, by contrast, does 
-   <b>NOT</b> include repeats and repeatDelays. So if a TweenMax's <code>duration</code> is 1 and it has a repeat of 2, 
+   or repeatDelays (which are only available on TweenMax and TimelineMax). <code>duration</code>, by contrast, does
+   <b>NOT</b> include repeats and repeatDelays. So if a TweenMax's <code>duration</code> is 1 and it has a repeat of 2,
    the <code>totalDuration</code> would be 3.
    </p><span class="label">Implementation</span>
 <br>
@@ -344,13 +344,13 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>totalTime:Number</code>&nbsp;&nbsp;[read-write]<p>
-   Most recently rendered time (or frame for frames-based tweens/timelines) according to its 
-   <code>totalDuration</code>. <code>currentTime</code>, by contrast, is based on its <code>duration</code> 
-   which does NOT include repeats and repeatDelays. Since TweenLite and TimelineLite don't offer 
-   <code>repeat</code> and <code>repeatDelay</code> functionality, <code>currentTime</code> 
-   and <code>totalTime</code> will always be the same but in TweenMax or TimelineMax, they 
-   could be different. For example, if a TimelineMax instance has a duration 
-   of 5 a repeat of 1 (meaning its <code>totalDuration</code> is 10), at the end of the second cycle, 
+   Most recently rendered time (or frame for frames-based tweens/timelines) according to its
+   <code>totalDuration</code>. <code>currentTime</code>, by contrast, is based on its <code>duration</code>
+   which does NOT include repeats and repeatDelays. Since TweenLite and TimelineLite don't offer
+   <code>repeat</code> and <code>repeatDelay</code> functionality, <code>currentTime</code>
+   and <code>totalTime</code> will always be the same but in TweenMax or TimelineMax, they
+   could be different. For example, if a TimelineMax instance has a duration
+   of 5 a repeat of 1 (meaning its <code>totalDuration</code> is 10), at the end of the second cycle,
    <code>currentTime</code> would be 5 whereas <code>totalTime</code> would be 10. If you tracked both
    properties over the course of the tween, you'd see <code>currentTime</code> go from 0 to 5 twice (one for each
    cycle) in the same time it takes <code>totalTime</code> go from 0 to 10.
@@ -402,11 +402,11 @@ showHideInherited();
 <div class="detailBody">
 <code>public function complete(skipRender:Boolean = false, suppressEvents:Boolean = false):void</code><p>
    Forces the tween/timeline to completion.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">skipRender</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; to skip rendering the final state of the tween, set skipRender to true. 
+<td width="20px"></td><td><code><span class="label">skipRender</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; to skip rendering the final state of the tween, set skipRender to true.
    </td>
 </tr>
 <tr>
@@ -425,15 +425,15 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function invalidate():void</code><p> 
-   Clears any initialization data (like starting values in tweens) which can be useful if, for example, 
-   you want to restart it without reverting to any previously recorded starting values. When you invalidate() 
-   a tween/timeline, it will be re-initialized the next time it renders and its <code>vars</code> object will be re-parsed. 
+<code>public function invalidate():void</code><p>
+   Clears any initialization data (like starting values in tweens) which can be useful if, for example,
+   you want to restart it without reverting to any previously recorded starting values. When you invalidate()
+   a tween/timeline, it will be re-initialized the next time it renders and its <code>vars</code> object will be re-parsed.
    The timing of the tween/timeline (duration, startTime, delay) will NOT be affected. Another example would be if you
-   have a <code>TweenMax(mc, 1, {x:100, y:100})</code> that ran when mc.x and mc.y were initially at 0, but now mc.x 
-   and mc.y are 200 and you want them tween to 100 again, you could simply <code>invalidate()</code> the tween and 
-   <code>restart()</code> it. Without invalidating first, restarting it would cause the values jump back to 0 immediately 
-   (where they started when the tween originally began). When you invalidate a timeline, it automatically invalidates 
+   have a <code>TweenMax(mc, 1, {x:100, y:100})</code> that ran when mc.x and mc.y were initially at 0, but now mc.x
+   and mc.y are 200 and you want them tween to 100 again, you could simply <code>invalidate()</code> the tween and
+   <code>restart()</code> it. Without invalidating first, restarting it would cause the values jump back to 0 immediately
+   (where they started when the tween originally began). When you invalidate a timeline, it automatically invalidates
    all of its children.
    </p></div>
 <a name="kill()"></a>
@@ -469,7 +469,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function restart(includeDelay:Boolean = false, suppressEvents:Boolean = true):void</code><p>
    Restarts and begins playing forward.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -480,7 +480,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">suppressEvents</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; If true, no events or callbacks will be triggered as the "virtual playhead" moves to the new position (onComplete, onUpdate, onReverseComplete, etc. of this tween/timeline and any of its child tweens/timelines won't be triggered, nor will any of the associated events be dispatched) 
+<td width="20px"></td><td><code><span class="label">suppressEvents</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; If true, no events or callbacks will be triggered as the "virtual playhead" moves to the new position (onComplete, onUpdate, onReverseComplete, etc. of this tween/timeline and any of its child tweens/timelines won't be triggered, nor will any of the associated events be dispatched)
    </td>
 </tr>
 </table>
@@ -505,7 +505,7 @@ showHideInherited();
    it will play backwards, exactly opposite from its forward orientation, meaning that, for example, a
    tween's easing equation will appear reversed as well. If a tween/timeline plays for 2 seconds and gets
    reversed, it will play for another 2 seconds to return to the beginning.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

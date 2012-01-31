@@ -46,46 +46,46 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  and angle of movement in 2D (x/y). This creates a much more realistic effect than a standard BlurFilter for
  several reasons:
  <ol>
-   <li>A regular BlurFilter is limited to blurring horizontally and/or vertically whereas the motionBlur 
+   <li>A regular BlurFilter is limited to blurring horizontally and/or vertically whereas the motionBlur
       gets applied at the angle at which the object is moving.</li>
- 
+
    <li>A BlurFilter tween has static start/end values whereas a motionBlur tween dynamically adjusts the
     values on-the-fly during the tween based on the velocity of the object. So if you use a <code>Strong.easeInOut</code>
-    for example, the strength of the blur will start out low, then increase as the object moves faster, and 
+    for example, the strength of the blur will start out low, then increase as the object moves faster, and
     reduce again towards the end of the tween.</li>
  </ol>
- 
+
  motionBlur even works on bezier/bezierThrough tweens!<br /><br />
- 
- To accomplish the effect, MotionBlurPlugin creates a Bitmap that it places over the original object, changing 
- alpha of the original to [almost] zero during the course of the tween. The original DisplayObject still follows the 
- course of the tween, so MouseEvents are properly dispatched. You shouldn't notice any loss of interactivity. 
- The DisplayObject can also have animated contents - MotionBlurPlugin automatically updates on every frame. 
- Be aware, however, that as with most filter effects, MotionBlurPlugin is somewhat CPU-intensive, so it is not 
+
+ To accomplish the effect, MotionBlurPlugin creates a Bitmap that it places over the original object, changing
+ alpha of the original to [almost] zero during the course of the tween. The original DisplayObject still follows the
+ course of the tween, so MouseEvents are properly dispatched. You shouldn't notice any loss of interactivity.
+ The DisplayObject can also have animated contents - MotionBlurPlugin automatically updates on every frame.
+ Be aware, however, that as with most filter effects, MotionBlurPlugin is somewhat CPU-intensive, so it is not
  recommended that you tween large quantities of objects simultaneously. You can activate <code>fastMode</code>
  to significantly speed up rendering if the object's contents and size/color doesn't need to change during the
  course of the tween. <br /><br />
- 
+
  motionBlur recognizes the following properties:
  <ul>
    <li><b>strength : Number</b> - Determines the strength of the blur. The default is 1. For a more powerful
         blur, increase the number. Or reduce it to make the effect more subtle.</li>
- 
+
    <li><b>fastMode : Boolean</b> - Setting fastMode to <code>true</code> will significantly improve rendering
-       performance but it is only appropriate for situations when the target object's contents, 
+       performance but it is only appropriate for situations when the target object's contents,
        size, color, filters, etc. do not need to change during the course of the tween. It works
        by essentially taking a BitmapData snapshot of the target object at the beginning of the
        tween and then reuses that throughout the tween, blurring it appropriately. The default
        value for <code>fastMode</code> is <code>false</code>.</li>
- 
-   <li><b>quality : int</b> - The lower the quality, the less CPU-intensive the effect will be. Options 
+
+   <li><b>quality : int</b> - The lower the quality, the less CPU-intensive the effect will be. Options
         are 1, 2, or 3. The default is 2.</li>
- 
+
    <li><b>padding : int</b> - padding controls the amount of space around the edges of the target object that is included
-       in the BitmapData capture (the default is 10 pixels). If the target object has filters applied to 
+       in the BitmapData capture (the default is 10 pixels). If the target object has filters applied to
        it like a GlowFilter or DropShadowFilter that extend beyond the bounds of the object itself,
        you might need to increase the padding to accommodate the filters. </li>
- 
+
    <li><b>containerClass : Class</b> - MotionBlurPlugin must add a container to the target's parent's display list
        to hold the blurred image during the tween (it gets removed when it's done). By default, a Sprite
        is used unless it senses the presense of the Flex framework (checking <code>getDefinitionByName("mx.managers.SystemManager")</code>)
@@ -95,32 +95,32 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
        are some extremely rare circumstances under which it may be useful to define the class yourself.
        That's precisely what <code>containerClass</code> is for. Example: <code>containerClass:Sprite</code></li>
  </ul>
- 
+
  You can optionally set motionBlur to the Boolean value of <code>true</code> in order to use the defaults. (see below for examples)<br /><br />
- 
+
  Also note that due to a bug in Flash, if you apply motionBlur to an object that was masked in the Flash IDE it won't work
  properly - you must apply the mask via ActionScript instead (and set both the mask's and the masked object's cacheAsBitmap
- property to true). And another bug in Flash prevents motionBlur from working on objects that have 3D properties applied, 
+ property to true). And another bug in Flash prevents motionBlur from working on objects that have 3D properties applied,
  like <code>z, rotationY, rotationX,</code> or <code>rotationZ</code>.<br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.*; <br />
    import com.greensock.plugins.*; <br />
    TweenPlugin.activate([MotionBlurPlugin]); //only do this once in your SWF to activate the plugin <br /><br />
- 
+
    TweenMax.to(mc, 2, {x:400, y:300, motionBlur:{strength:1.5, fastMode:true, padding:15}}); <br /><br />
- 
+
    //or to use the default values, you can simply pass in the Boolean "true" instead: <br />
    TweenMax.to(mc, 2, {x:400, y:300, motionBlur:true}); <br /><br />
  </code>
- 
- MotionBlurPlugin is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit. 
- You must have a valid membership to use this class without violating the terms of use. Visit 
+
+ MotionBlurPlugin is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit.
+ You must have a valid membership to use this class without violating the terms of use. Visit
  <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a> to sign up or get more details.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

@@ -39,24 +39,24 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- Can be used instead of a generic Object to define the <code>vars</code> parameter of a VideoLoader's constructor. <br /><br /> 
- 
+ Can be used instead of a generic Object to define the <code>vars</code> parameter of a VideoLoader's constructor. <br /><br />
+
  There are 2 primary benefits of using a VideoLoaderVars instance to define your VideoLoader variables:
   <ol>
   <li> In most code editors, code hinting will be activated which helps remind you which special properties are available in VideoLoader</li>
   <li> It enables strict data typing for improved debugging (ensuring, for example, that you don't define a Boolean value for <code>onComplete</code> where a Function is expected).</li>
   </ol><br />
- 
+
  The down side, of course, is that the code is more verbose and the VideoLoaderVars class adds slightly more kb to your swf.
   <b>USAGE:</b><br /><br />
  Note that each method returns the VideoLoaderVars instance, so you can reduce the lines of code by method chaining (see example below).<br /><br />
- 
+
  <b>Without VideoLoaderVars:</b><br /><code>
  new VideoLoader("video.flv", {name:"video", estimatedBytes:111500, container:this, width:200, height:100, onComplete:completeHandler, onProgress:progressHandler})</code><br /><br />
- 
+
  <b>With VideoLoaderVars</b><br /><code>
  new VideoLoader("video.flv", new VideoLoaderVars().name("video").estimatedBytes(111500).container(this).width(200).height(100).onComplete(completeHandler).onProgress(progressHandler))</code><br /><br />
- 
+
  <b>NOTES:</b><br />
  <ul>
  <li> To get the generic vars object that VideoLoaderVars builds internally, simply access its "vars" property.
@@ -65,9 +65,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  <li> Using VideoLoaderVars is completely optional. If you prefer the shorter synatax with the generic Object, feel
     free to use it. The purpose of this class is simply to enable code hinting and to allow for strict data typing.</li>
  </ul>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -97,7 +97,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#VideoLoaderVars()">VideoLoaderVars</a>(vars:Object = null)</div>
 <div class="summaryTableDescription">
-   Constructor 
+   Constructor
    </div>
 </td><td class="summaryTableOwnerCol">VideoLoaderVars</td>
 </tr>
@@ -258,7 +258,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#hAlign()">hAlign</a>(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a>
 </div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    When a <code>width</code> and <code>height</code> is defined, the <code>hAlign</code> determines how the image is horizontally aligned within that area.</div>
 </td><td class="summaryTableOwnerCol">VideoLoaderVars</td>
 </tr>
@@ -428,7 +428,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#scaleMode()">scaleMode</a>(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a>
 </div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    When a <code>width</code> and <code>height</code> are defined, the <code>scaleMode</code> controls how the loaded image will be scaled to fit the area.</div>
 </td><td class="summaryTableOwnerCol">VideoLoaderVars</td>
 </tr>
@@ -461,7 +461,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="#vAlign()">vAlign</a>(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a>
 </div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    When a <code>width</code> and <code>height</code> is defined, the <code>vAlign</code> determines how the image is vertically aligned within that area.</div>
 </td><td class="summaryTableOwnerCol">VideoLoaderVars</td>
 </tr>
@@ -544,7 +544,7 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function VideoLoaderVars(vars:Object = null)</code><p>
-   Constructor 
+   Constructor
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -961,7 +961,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function hAlign(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p> 
+<code>public function hAlign(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p>
    When a <code>width</code> and <code>height</code> is defined, the <code>hAlign</code> determines how the image is horizontally aligned within that area. The following values are recognized (you may use the <code>com.greensock.layout.AlignMode</code> constants if you prefer):
    <ul>
      <li><code>"center"</code> (the default) - The image will be centered horizontally in the area</li>
@@ -1263,15 +1263,15 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function prop(property:String, value:*):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p>
-   Adds a dynamic property to the vars object containing any value you want. This can be useful 
+   Adds a dynamic property to the vars object containing any value you want. This can be useful
    in situations where you need to associate certain data with a particular loader. Just make sure
    that the property name is a valid variable name (starts with a letter or underscore, no special characters, etc.)
-   and that it doesn't use a reserved property name like "name" or "onComplete", etc. 
-   
+   and that it doesn't use a reserved property name like "name" or "onComplete", etc.
+
    For example, to set an "index" property to 5, do:
-   
+
    <code>prop("index", 5);</code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1427,7 +1427,7 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function scaleMode(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p> 
+<code>public function scaleMode(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p>
    When a <code>width</code> and <code>height</code> are defined, the <code>scaleMode</code> controls how the loaded image will be scaled to fit the area. The following values are recognized (you may use the <code>com.greensock.layout.ScaleMode</code> constants if you prefer):
    <ul>
      <li><code>"stretch"</code> (the default) - The image will fill the width/height exactly. </li>
@@ -1436,7 +1436,7 @@ showHideInherited();
      <li><code>"widthOnly"</code> - Only the width of the image will be adjusted to fit.</li>
      <li><code>"heightOnly"</code> - Only the height of the image will be adjusted to fit.</li>
      <li><code>"none"</code> - No scaling of the image will occur. </li>
-   </ul> 
+   </ul>
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1521,13 +1521,13 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function vAlign(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p> 
+<code>public function vAlign(value:String):<a href="../data/VideoLoaderVars.html">VideoLoaderVars</a></code><p>
    When a <code>width</code> and <code>height</code> is defined, the <code>vAlign</code> determines how the image is vertically aligned within that area. The following values are recognized (you may use the <code>com.greensock.layout.AlignMode</code> constants if you prefer):
    <ul>
      <li><code>"center"</code> (the default) - The image will be centered vertically in the area</li>
      <li><code>"top"</code> - The image will be aligned with the top of the area</li>
      <li><code>"bottom"</code> - The image will be aligned with the bottom of the area</li>
-   </ul> 
+   </ul>
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

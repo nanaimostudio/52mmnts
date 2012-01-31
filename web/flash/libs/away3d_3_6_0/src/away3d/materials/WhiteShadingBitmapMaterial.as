@@ -6,14 +6,14 @@ package away3d.materials
 	import away3d.core.utils.*;
 	import away3d.core.vos.*;
 	import away3d.lights.*;
-	
+
 	import flash.display.*;
 	import flash.filters.*;
 	import flash.geom.*;
 	import flash.utils.*;
 
     use namespace arcane;
-    
+
     /**
     * Bitmap material with flat white lighting
     */
@@ -28,16 +28,16 @@ package away3d.materials
         			directional.setDiffuseTransform(source);
         			_materialDirty = true;
         		}
-        		
+
         		if (!directional.specularTransform[source])
         			directional.specularTransform[source] = new Dictionary(true);
-        		
+
         		if (!directional.specularTransform[source][view] || view._updatedObjects[source] || view.updated) {
         			directional.setSpecularTransform(source, view);
         			_materialDirty = true;
         		}
         	}
-        	
+
         	var _source_scene_pointLights:Array = source.scene.pointLights;
         	for each (var point:PointLight3D in _source_scene_pointLights) {
         		if (!point.viewPositions[view] || view._updatedObjects[source] || view.updated) {
@@ -45,7 +45,7 @@ package away3d.materials
         			_materialDirty = true;
         		}
         	}
-        	
+
         	super.updateMaterial(source, view);
         }
     	/** @private */
@@ -54,20 +54,20 @@ package away3d.materials
         	_source = viewSourceObject.source;
 			_session = renderer._session;
             _view = renderer._view;
-        	
+
         	_startIndex = renderer.primitiveProperties[uint(priIndex*9)];
         	_endIndex = renderer.primitiveProperties[uint(priIndex*9+1)];
         	_faceVO = renderer.primitiveElements[priIndex] as FaceVO;
 			_uvs = renderer.primitiveUVs[priIndex];
 			_generated = renderer.primitiveGenerated[priIndex];
-        	
+
         	_screenVertices = viewSourceObject.screenVertices;
 			_screenIndices = viewSourceObject.screenIndices;
 			_screenUVTs = viewSourceObject.screenUVTs;
-			
+
         	var shade:FaceNormalShaderVO = shader.getTriangleShade(priIndex, viewSourceObject, renderer, shininess);
             br = (shade.kar + shade.kag + shade.kab + shade.kdr + shade.kdg + shade.kdb + shade.ksr + shade.ksg + shade.ksb)/3;
-			
+
 			if ((br < 1) && (blackrender || ((step < 16) && (!_bitmap.transparent))))
             {
             	_session.renderTriangleBitmap(bitmap, getUVData(priIndex, viewSourceObject, renderer), viewSourceObject.screenVertices, viewSourceObject.screenIndices, _startIndex, _endIndex, smooth, repeat);
@@ -96,7 +96,7 @@ package away3d.materials
                 _session.renderTriangleBitmap(bitmap, getUVData(priIndex, viewSourceObject, renderer), viewSourceObject.screenVertices, viewSourceObject.screenIndices, _startIndex, _endIndex, smooth, repeat);
             }
         }
-        
+
         private var blackrender:Boolean;
         private var whiterender:Boolean;
         private var whitek:Number = 0.2;
@@ -106,13 +106,13 @@ package away3d.materials
         private var step:int = 1;
 		private var br:Number;
 		private var shader:FaceNormalShader = new FaceNormalShader();
-		
+
         private function doubleStepTo(limit:int):void
         {
             if (step < limit)
                 step *= 2;
         }
-         
+
         private function ladder(v:Number):Number
         {
             if (v < 1/0xFF)
@@ -121,37 +121,37 @@ package away3d.materials
                 v = 0xFF;
             return Math.exp(Math.round(Math.log(v)*step)/step);
         }
-    	
+
         protected override function invalidateFaces(source:Object3D = null, view:View3D = null):void
         {
         	super.invalidateFaces(source, view);
-        	
+
         	CacheStore.whiteShadingCache[_bitmap] = new Dictionary(true);
         }
-        
+
         /**
         * Coefficient for shininess level
         */
         public var shininess:Number;
-        
+
 		/**
 		 * Creates a new <code>WhiteShadingBitmapMaterial</code> object.
-		 * 
+		 *
 		 * @param	bitmap				The bitmapData object to be used as the material's texture.
 		 * @param	init	[optional]	An initialisation object for specifying default instance properties.
 		 */
         public function WhiteShadingBitmapMaterial(bitmap:BitmapData, init:Object = null)
         {
             super(bitmap, init);
-            
+
             if (!CacheStore.whiteShadingCache[_bitmap])
             	CacheStore.whiteShadingCache[_bitmap] = new Dictionary(true);
-            	
+
             cache = CacheStore.whiteShadingCache[_bitmap];
-            
+
             shininess = ini.getNumber("shininess", 20);
         }
-        
+
         /**
         * Clear the cached bitmaps used for shading
         */

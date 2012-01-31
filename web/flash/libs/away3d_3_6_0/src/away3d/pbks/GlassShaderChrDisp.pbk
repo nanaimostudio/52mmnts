@@ -13,7 +13,7 @@ kernel GlassShader
 	input image3 positionMap;
 	input image3 fresnelMap;
 	output pixel4 dst;
-	
+
 	parameter float alpha
 	<
 		minValue: float(0.0);
@@ -29,7 +29,7 @@ kernel GlassShader
 		defaultValue: float3(1.0);
 		description: "The color of the glass";
 	>;
-	
+
 	parameter float envMapDim
 	<
 		minValue: float(0.0);
@@ -45,14 +45,14 @@ kernel GlassShader
 		defaultValue: float3x3(0.0);
 		description: "The transformation matrix that transforms the normalmap to scene coordinates";
 	>;
-	
+
 	parameter float4x4 positionTransformation
 	<
 		minValue: float4x4(-8000.0);
 		maxValue: float4x4(8000.0);
 		defaultValue: float4x4(0.0);
 	>;
-	
+
 	parameter float3 viewPos
 	<
 		minValue: float3(0.0);
@@ -60,7 +60,7 @@ kernel GlassShader
 		defaultValue: float3(0.0);
 		description: "The position of the camera";
 	>;
-	
+
 	parameter float refractionRatio
 	<
 		minValue: float(0.0);
@@ -75,7 +75,7 @@ kernel GlassShader
         maxValue: float3(1.0);
         defaultValue: float3(1.0);
     >;
-	
+
 	void evaluatePixel()
 	{
         float2 texCoord = outCoord();

@@ -13,12 +13,12 @@
 		<script type="text/javascript" src="../js/7_VisDoc.min.js"></script>
 	</head>
 	<body class='isShowingNavigation' id='page_org_casalib_events_StageEventProxy'>
-	    <div id='page'> 
+	    <div id='page'>
 			<div id='wrapper'>
-				<div id='outer'> 
-					<div id='floatWrap'> 
+				<div id='outer'>
+					<div id='floatWrap'>
 						<div id='main'>
-							<div id='clearHeaderCenter'></div> 
+							<div id='clearHeaderCenter'></div>
 							<div id='mainContent'>
 																<h1>StageEventProxy</h1>									<div class='classProperties'>
 		<table cellspacing='0'>
@@ -76,21 +76,21 @@
     CASA Framework for ActionScript 3.0
     Copyright (c) 2011, Contributors of CASA Framework
     All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-    
+
     - Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    
+
     - Redistributions in binary form must reproduce the above copyright notice,
       this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    
+
     - Neither the name of the CASA Framework nor the names of its contributors
       may be used to endorse or promote products derived from this software
       without specific prior written permission.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
     AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
     IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -110,11 +110,11 @@ package org.casalib.events {
     import org.casalib.util.StageReference;
     import flash.display.Stage;
     import flash.events.Event;
-    
-    
+
+
     /**
         Created an event proxy between the Stage that implements {@link IRemovableEventDispatcher} and {@link IDestroyable}.
-        
+
         @author Aaron Clinger
         @version 03/31/10
         @usageNote You must first initialize {@link StageReference} before using this class.
@@ -125,32 +125,32 @@ package org.casalib.events {
                     import org.casalib.display.CasaMovieClip;
                     import org.casalib.events.StageEventProxy;
                     import org.casalib.util.StageReference;
-                    
-                    
+
+
                     public class MyExample extends CasaMovieClip {
                         protected var _stageEventProxy:StageEventProxy;
-                        
-                        
+
+
                         public function MyExample() {
                             super();
-                            
+
                             StageReference.setStage(this.stage);
-                            
+
                             this._stageEventProxy = new StageEventProxy();
                             this._stageEventProxy.addEventListener(KeyboardEvent.KEY_DOWN, this._onKeyDown);
                             this._stageEventProxy.addEventListener(KeyboardEvent.KEY_UP, this._onKeyUp);
                         }
-                        
+
                         protected function _onKeyDown(e:KeyboardEvent):void {
                             trace("Key down " + e.keyCode);
-                            
+
                             if (e.keyCode == 65) {
                                 trace("a key pressed!");
-                                
+
                                 this._stageEventProxy.removeEventListeners();
                             }
                         }
-                        
+
                         protected function _onKeyUp(e:KeyboardEvent):void {
                             trace("Key up " + e.keyCode);
                         }
@@ -162,31 +162,31 @@ package org.casalib.events {
         public static const STAGE_DEFAULT:String = 'stageDefault';
         protected var _listenerManager:ListenerManager;
         protected var _stage:Stage;
-        
-        
+
+
         /**
             Created a new StageEventProxy.
-            
+
             @param stageId: An identifier that corresponds to a stored Stage in {@link StageReference}.
             @usageNote You must first initialize {@link StageReference} before using this class.
         */
         public function StageEventProxy(stageId:String = StageEventProxy.STAGE_DEFAULT) {
             super();
-            
+
             this._stage           = StageReference.getStage(stageId);
             this._listenerManager = ListenerManager.getManager(this._stage);
         }
-        
+
         /**
             @see "IEventDispatcher documention for this method."
         */
         public function dispatchEvent(event:Event):Boolean {
             if (this._stage.willTrigger(event.type))
                 return this._stage.dispatchEvent(event);
-            
+
             return true;
         }
-        
+
         /**
             @see "IEventDispatcher documention for this method."
         */
@@ -194,7 +194,7 @@ package org.casalib.events {
             this._stage.addEventListener(type, listener, useCapture, priority, useWeakReference);
             this._listenerManager.addEventListener(type, listener, useCapture, priority, useWeakReference);
         }
-        
+
         /**
             @see "IEventDispatcher documention for this method."
         */
@@ -202,40 +202,40 @@ package org.casalib.events {
             this._stage.removeEventListener(type, listener, useCapture);
             this._listenerManager.removeEventListener(type, listener, useCapture);
         }
-        
+
         /**
             @see "IEventDispatcher documention for this method."
         */
         public function hasEventListener(type:String):Boolean {
             return this._stage.hasEventListener(type);
         }
-        
+
         /**
             @see "IEventDispatcher documention for this method."
         */
         public function willTrigger(type:String):Boolean {
             return this._stage.willTrigger(type);
         }
-        
+
         public function removeEventsForType(type:String):void {
             this._listenerManager.removeEventsForType(type);
         }
-        
+
         public function removeEventsForListener(listener:Function):void {
             this._listenerManager.removeEventsForListener(listener);
         }
-        
+
         public function removeEventListeners():void {
             this._listenerManager.removeEventListeners();
         }
-        
+
         public function getTotalEventListeners(type:String = null):uint {
             return this._listenerManager.getTotalEventListeners(type);
         }
-        
+
         override public function destroy():void {
             this._listenerManager.destroy();
-            
+
             super.destroy();
         }
     }
@@ -256,32 +256,32 @@ package {
     import org.casalib.display.CasaMovieClip;
     import org.casalib.events.StageEventProxy;
     import org.casalib.util.StageReference;
-    
-    
+
+
     public class MyExample extends CasaMovieClip {
         protected <span class="codeKeyword">var</span> _stageEventProxy:StageEventProxy;
-        
-        
+
+
         public <span class="codeKeyword">function</span> MyExample() {
             <span class="codeIdentifier">super</span>();
-            
+
             StageReference.setStage(<span class="codeIdentifier">this</span>.stage);
-            
+
             <span class="codeIdentifier">this</span>._stageEventProxy = <span class="codeKeyword">new</span> StageEventProxy();
             <span class="codeIdentifier">this</span>._stageEventProxy.addEventListener(KeyboardEvent.KEY_DOWN, <span class="codeIdentifier">this</span>._onKeyDown);
             <span class="codeIdentifier">this</span>._stageEventProxy.addEventListener(KeyboardEvent.KEY_UP, <span class="codeIdentifier">this</span>._onKeyUp);
         }
-        
+
         protected <span class="codeKeyword">function</span> _onKeyDown(e:KeyboardEvent):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">trace</span>(<span class="codeString">&quot;Key down &quot;</span> + e.keyCode);
-            
+
             <span class="codeKeyword">if</span> (e.keyCode == <span class="codeNumber">65</span>) {
                 <span class="codeIdentifier">trace</span>(<span class="codeString">&quot;a key pressed!&quot;</span>);
-                
+
                 <span class="codeIdentifier">this</span>._stageEventProxy.removeEventListeners();
             }
         }
-        
+
         protected <span class="codeKeyword">function</span> _onKeyUp(e:KeyboardEvent):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">trace</span>(<span class="codeString">&quot;Key up &quot;</span> + e.keyCode);
         }
@@ -323,7 +323,7 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Constructor</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#StageEventProxy">StageEventProxy</a>
 																<span class='typeInfo'>(stageId:String = <a href="org_casalib_events_StageEventProxy.html">StageEventProxy</a>.STAGE_DEFAULT)</span>																<ul class='summary'>
 									<li>Created a new StageEventProxy.</li>
@@ -333,7 +333,7 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Constants</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#STAGE_DEFAULT">STAGE_DEFAULT</a>
 																<span class='typeInfo'> : String</span>															</li>
 											</ul>
@@ -341,42 +341,42 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance methods</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#dispatchEvent">dispatchEvent</a>
 																<span class='typeInfo'>(event:Event) : Boolean</span>															</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#addEventListener">addEventListener</a>
 																<span class='typeInfo'>(type:String, listener:Function, useCapture:Boolean = false, priority:int, useWeakReference:Boolean = false) : void</span>															</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventListener">removeEventListener</a>
 																<span class='typeInfo'>(type:String, listener:Function, useCapture:Boolean = false) : void</span>															</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#hasEventListener">hasEventListener</a>
 																<span class='typeInfo'>(type:String) : Boolean</span>															</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#willTrigger">willTrigger</a>
 																<span class='typeInfo'>(type:String) : Boolean</span>															</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventsForType">removeEventsForType</a>
 																<span class='typeInfo'>(type:String) : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventsForListener">removeEventsForListener</a>
 																<span class='typeInfo'>(listener:Function) : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#removeEventListeners">removeEventListeners</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#getTotalEventListeners">getTotalEventListeners</a>
 																<span class='typeInfo'>(type:String = null) : uint</span>																<ul class='summary'>
 									<li><div</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#destroy">destroy</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
@@ -445,7 +445,7 @@ package {
 									<h3>destroy</h3>											<div class='fullMemberString'>
 							<span class='code'>override function <strong>destroy</strong>() : void</span>						</div>											<div class='description'>
 																			<p><div class="inheritDoc"><div class="inheritDoc">Removes any event listeners and stops all internal processes to help allow for prompt garbage collection.
-			
+
 			<strong>Always call  before deleting last object pointer.</strong> <span class="inheritDocLink"></span></div> <span class="inheritDocLink"><a href="org_casalib_core_Destroyable.html#destroy">&rarr;</a></span></div></p>						</div>										<div class='boxWithBorder'>
 														<div class='boxedElem'>
 		<div class='contentHolder'>
@@ -585,11 +585,11 @@ package {
 
 											</div>				</div>
 					</div>
-		
+
 							</div>
 						</div>
 											<div id='sidebar'>
-		<div id='clearHeaderLeft'></div> 
+		<div id='clearHeaderLeft'></div>
 		<div id='sidebarContent'>
 				<div class="list">
 							<ul>
@@ -957,7 +957,7 @@ package {
 	</div>
 
 					</div>
-					<div class='clear'>&nbsp;</div> 
+					<div class='clear'>&nbsp;</div>
 				</div>
 			</div>
 			<div id='header'>

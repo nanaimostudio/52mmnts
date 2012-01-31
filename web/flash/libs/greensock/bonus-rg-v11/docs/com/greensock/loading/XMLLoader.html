@@ -43,18 +43,18 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
  Loads an XML file and automatically searches it for LoaderMax-related nodes like <code>&lt;LoaderMax&gt;,
- &lt;ImageLoader&gt;, &lt;SWFLoader&gt;, &lt;XMLLoader&gt;, &lt;DataLoader&gt; &lt;CSSLoader&gt;, &lt;MP3Loader&gt;</code>, 
+ &lt;ImageLoader&gt;, &lt;SWFLoader&gt;, &lt;XMLLoader&gt;, &lt;DataLoader&gt; &lt;CSSLoader&gt;, &lt;MP3Loader&gt;</code>,
  etc.; if it finds any, it will create the necessary instances and begin loading them if they have a <code>load="true"</code>
- attribute. The XMLLoader's <code>progress</code> will automatically factor in the dynamically-created 
- loaders that have the <code>load="true"</code> attribute and it won't dispatch its <code>COMPLETE</code> event 
- until those loaders have completed as well (unless <code>integrateProgress:false</code> is passed to the constructor). 
+ attribute. The XMLLoader's <code>progress</code> will automatically factor in the dynamically-created
+ loaders that have the <code>load="true"</code> attribute and it won't dispatch its <code>COMPLETE</code> event
+ until those loaders have completed as well (unless <code>integrateProgress:false</code> is passed to the constructor).
  For example, let's say the XML file contains the following XML:
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
 <br>Example XML code:<div class='listing'><pre>
-&lt;?xml version="1.0" encoding="iso-8859-1"?&gt; 
+&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
 &lt;data&gt;
    &lt;widget name="myWidget1" id="10"&gt;
     &lt;ImageLoader name="widget1" url="img/widget1.jpg" estimatedBytes="2000" /&gt;
@@ -70,42 +70,42 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    &lt;/LoaderMax&gt;
 &lt;/data&gt;
  </pre></div>
- 
+
  Once the XML has been loaded and parsed, the XMLLoader will recognize the 7 LoaderMax-related nodes
- (assuming you activated the various types of loaders - see the <code>activate()</code> method for details) 
- and it will create instances dynamically. Then it will start loading the ones that had a <code>load="true"</code> 
- attribute which in this case means all but the first loader will be loaded in the order they were defined in the XML. 
- Notice the loaders nested inside the <code>&lt;LoaderMax&gt;</code> don't have <code>load="true"</code> but 
- they will be loaded anyway because their parent LoaderMax has the <code>load="true"</code> attribute. 
- After the XMLLoader's <code>INIT</code> event is dispatched, you can get any loader by name or URL with the 
- <code>LoaderMax.getLoader()</code> method and monitor its progress or control it as you please. 
- And after the XMLLoader's <code>COMPLETE</code> event is dispatched, you can use <code>LoaderMax.getContent()</code> 
+ (assuming you activated the various types of loaders - see the <code>activate()</code> method for details)
+ and it will create instances dynamically. Then it will start loading the ones that had a <code>load="true"</code>
+ attribute which in this case means all but the first loader will be loaded in the order they were defined in the XML.
+ Notice the loaders nested inside the <code>&lt;LoaderMax&gt;</code> don't have <code>load="true"</code> but
+ they will be loaded anyway because their parent LoaderMax has the <code>load="true"</code> attribute.
+ After the XMLLoader's <code>INIT</code> event is dispatched, you can get any loader by name or URL with the
+ <code>LoaderMax.getLoader()</code> method and monitor its progress or control it as you please.
+ And after the XMLLoader's <code>COMPLETE</code> event is dispatched, you can use <code>LoaderMax.getContent()</code>
  to get content based on the name or URL of any of the loaders that had <code>load="true"</code> defined
  in the XML. For example:
- 
+
  <p></p>Example AS3 code:<div class='listing'><pre>
 var loader:XMLLoader = new XMLLoader("xml/doc.xml", {name:"xmlDoc", onComplete:completeHandler});
 
 function completeHandler(event:LoaderEvent):void {
- 
+
   //get the content from the "photo1" ImageLoader that was defined inside the XML
   var photo:ContentDisplay = LoaderMax.getContent("photo1");
-  
-  //add it to the display list 
+
+  //add it to the display list
   addChild(photo);
-  
+
   //fade it in
   TweenLite.from(photo, 1, {alpha:0});
 }
 </pre></div>
- 
- You do <strong>not</strong> need to put loader-related nodes in your XML files. It is a convenience that is completely 
- optional. XMLLoader does a great job of loading plain XML data even without the fancy automatic parsing of 
+
+ You do <strong>not</strong> need to put loader-related nodes in your XML files. It is a convenience that is completely
+ optional. XMLLoader does a great job of loading plain XML data even without the fancy automatic parsing of
  loader data. <br /><br />
- 
+
  You may put extra data in the LoaderMax-related nodes that you'd like associated with that particular
- loader. XMLLoader will put all of the attributes from the XML node into the <code>vars</code> object of 
- the resulting loader as well as an extra <code>rawXML</code> property which will contain the raw XML 
+ loader. XMLLoader will put all of the attributes from the XML node into the <code>vars</code> object of
+ the resulting loader as well as an extra <code>rawXML</code> property which will contain the raw XML
  for that node. For example, if this node is in your XML document: <br /><div class='listing'><pre>
 ...
 &lt;VideoLoader url="video.flv" name="video1" description="Hidden dangers of steel wool" autoPlay="false"&gt;
@@ -116,7 +116,7 @@ function completeHandler(event:LoaderEvent):void {
 &lt;/VideoLoader&gt;
 ...
 </pre></div>
- 
+
  Notice the "description" attribute which isn't a LoaderMax-specific property. XMLLoader will still
  put that value into the VideoLoader's <code>vars</code> property and create a <code>rawXML</code>
  property there that contains the whole XML node (including the children) so that you can easily get
@@ -129,9 +129,9 @@ function completeHandler(event:LoaderEvent):void {
  trace("first link url: " + xml.links[0].link[0].&#64;url); //traces "first link url: http://www.greensock.com"
 }
 </pre></div>
- 
+
  <strong>OPTIONAL VARS PROPERTIES</strong><br />
- The following special properties can be passed into the XMLLoader constructor via its <code>vars</code> 
+ The following special properties can be passed into the XMLLoader constructor via its <code>vars</code>
  parameter which can be either a generic object or an <code><a href="data/XMLLoaderVars.html">XMLLoaderVars</a></code> object:<br />
  <ul>
    <li><strong> name : String</strong> - A name that is used to identify the XMLLoader instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
@@ -146,7 +146,7 @@ function completeHandler(event:LoaderEvent):void {
    <li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
    <li><strong> skipFailed : Boolean</strong> - By default, XMLLoader will parse any LoaderMax-related loaders in the XML and load any that have their "load" attribute set to "true" and then if any fail to load, they will simply be skipped. But if you prefer to have the XMLLoader fail immediately if one of the parsed loaders fails to load, set <code>skipFailed</code> to <code>false</code> (it is <code>true</code> by default).</li>
    <li><strong> recursivePrependURLs : String</strong> - A String that should be recursively prepended to all parsed LoaderMax-related loader URLs (from nodes like &lt;ImageLoader&gt;, &lt;XMLLoader&gt;, etc.). The functionality is identical to <code>prependURLs</code> except that it is recursive, affecting all parsed loaders in subloaded XMLLoaders (other XML files that this one loads too). For example, if your XML has the following node: <code>&lt;XMLLoader url="doc2.xml" /&gt;</code> and <code>recursivePrependURLs</code> is set to "../xml/", then the nested XMLLoader's URL will end up being "../xml/doc2.xml". Since it is recursive, parsed loaders inside doc2.xml <i>and</i> any other XML files that it loads will <i>all</i> have their URLs prepended. So if you load doc1.xml which loads doc2.xml which loads doc3.xml (due to <code>&lt;XMLLoader&gt;</code> nodes discovered in each XML file), <code>recursivePrependURLs</code> will affect all of the parsed LoaderMax-related URLs in all 3 documents. If you'd prefer to <i>only</i> have the URLs affected that are in the XML file that this XMLLoader is loading, use <code>prependURLs</code> instead of <code>recursivePrependURLs</code>.
- 
+
    <br /><br />----EVENT HANDLER SHORTCUTS----</li>
    <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onRawLoad : Function</strong> - A handler function for <code>XMLLoader.RAW_LOAD</code> events which are dispatched when the loader finishes loading the XML but has <b>NOT</b> parsed the XML yet. This can be useful in rare situations when you want to alter the XML before it is parsed by XMLLoader (for identifying LoaderMax-related nodes like <code>&lt;ImageLoader&gt;</code>, etc.). Make sure your onRawLoad function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
@@ -165,15 +165,15 @@ function completeHandler(event:LoaderEvent):void {
    <li><strong> onChildCancel : Function</strong> - A handler function for <code>LoaderEvent.CHILD_CANCEL</code> events which are dispatched each time loading is aborted on any nested LoaderMax-related loaders that were defined in the XML due to either an error or because another loader was prioritized in the queue or because <code>cancel()</code> was manually called on the child loader. Make sure your onChildCancel function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onChildFail : Function</strong> - A handler function for <code>LoaderEvent.CHILD_FAIL</code> events which are dispatched each time any nested LoaderMax-related loaders that were defined in the XML fails (and its <code>status</code> chances to <code>LoaderStatus.FAILED</code>). Make sure your onChildFail function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  </ul><br />
- 
- <strong>Note:</strong> Using a <code><a href="data/XMLLoaderVars.html">XMLLoaderVars</a></code> instance 
- instead of a generic object to define your <code>vars</code> is a bit more verbose but provides 
+
+ <strong>Note:</strong> Using a <code><a href="data/XMLLoaderVars.html">XMLLoaderVars</a></code> instance
+ instead of a generic object to define your <code>vars</code> is a bit more verbose but provides
  code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.<br /><br />
- 
- <strong>Note:</strong> If you don't want the fancy auto-parsing capabilities of XMLLoader, you can just use a 
- <a href="DataLoader.html">DataLoader </a> instead of XMLLoader. Then make the content into XML like: 
+
+ <strong>Note:</strong> If you don't want the fancy auto-parsing capabilities of XMLLoader, you can just use a
+ <a href="DataLoader.html">DataLoader </a> instead of XMLLoader. Then make the content into XML like:
  <code>var xml:XML = new XML(myDataLoader.content);</code><br /><br />
- 
+
  XMLLoader recognizes a few additional attributes for dynamically-created loaders that are defined in the XML:
  <ul>
    <li><strong>load="true | false"</strong> - If <code>load</code> is <code>"true"</code>, the loader will be loaded by the XMLLoader and its progress will be integrated with the XMLLoader's overall progress.</li>
@@ -182,53 +182,53 @@ function completeHandler(event:LoaderEvent):void {
    <li><strong>childrenVars</strong> (&lt;LoaderMax&gt; nodes only) - To apply a common set of special properties to all the children of a particular &lt;LoaderMax&gt; node, use <code>childrenVars</code> and define a comma-delimited list of values like <code>&lt;LoaderMax name="mainQueue" childrenVars="width:200,height:100,scaleMode:proportionalOutside,crop:true"&gt;&lt;ImageLoader url="image1.jpg" /&gt;&lt;ImageLoader url="image2.jpg" /&gt;&lt;/LoaderMax&gt;</code>. Values that are defined directly in one of the child nodes will override any value(s) in the childrenVars, making things very flexible. So if you want the <code>width</code> of all of the children to be 200 except one which should be 500, just use <code>childrenVars="width:200"</code> and then in the child that should be 500 pixels wide, set that in the node like <code>&lt;ImageLoader url="1.jpg" width="500" /&gt;</code> (new in version 1.88)</li>
    <li><strong>context="child | separate | own"</strong> - Only valid for <code>&lt;SWFLoader&gt;</code> loaders. It defines the LoaderContext's ApplicationDomain (see Adobe's <code>LoaderContext</code> docs for details). <code>"child"</code> is the default.</li>
  </ul><br />
- 
+
  <code>content</code> data type: <strong><code>XML</code></strong><br /><br />
- 
+
  <p></p>Example AS3 code:<div class='listing'><pre>
  import com.greensock.loading.*;
  import com.greensock.loading.display.*;
  import com.greensock.events.LoaderEvent;
- 
+
  //we know the XML contains ImageLoader, SWFLoader, DataLoader, and MP3Loader data, so we need to activate those classes once in the swf so that the XMLLoader can recognize them.
  LoaderMax.activate([ImageLoader, SWFLoader, DataLoader, MP3Loader]);
- 
+
  //create an XMLLoader
  var loader:XMLLoader = new XMLLoader("xml/doc.xml", {name:"xmlDoc", requireWithRoot:this.root, estimatedBytes:1400});
- 
+
  //begin loading
  loader.load();
- 
+
  //Or you could put the XMLLoader into a LoaderMax. Create one first...
  var queue:LoaderMax = new LoaderMax({name:"mainQueue", onProgress:progressHandler, onComplete:completeHandler, onError:errorHandler});
- 
+
  //append the XMLLoader and several other loaders
  queue.append( loader );
  queue.append( new SWFLoader("swf/main.swf", {name:"mainSWF", estimatedBytes:4800}) );
  queue.append( new ImageLoader("img/photo1.jpg", {name:"photo1"}) );
- 
+
  //begin loading queue
  queue.load();
- 
+
  function progressHandler(event:LoaderEvent):void {
   trace("progress: " + event.target.progress);
  }
- 
+
  function completeHandler(event:LoaderEvent):void {
   trace("load complete. XML content: " + LoaderMax.getContent("xmlDoc"));
- 
+
  //Assuming there was an <ImageLoader name="image1" url="img/image1.jpg" load="true" /> node in the XML, get the associated image...
  var image:ContentDisplay = LoaderMax.getContent("image1");
  addChild(image);
  }
- 
+
  function errorHandler(event:LoaderEvent):void {
   trace("error occured with " + event.target + ": " + event.text);
  }
  </pre></div>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <p>
 <span class="classHeaderTableLabel">See also</span>
@@ -255,7 +255,7 @@ function completeHandler(event:LoaderEvent):void {
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -276,7 +276,7 @@ function completeHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#content">content</a> : *<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#content">content</a> : *<div class="summaryTableDescription">
    The content that was loaded by the loader which varies by the type of loader:
    <ul>
      <li><strong> ImageLoader </strong> - A <code>com.greensock.loading.display.ContentDisplay</code> (a Sprite) which contains the ImageLoader's <code>rawContent</code> (a <code>flash.display.Bitmap</code> unless script access was denied in which case <code>rawContent</code> will be a <code>flash.display.Loader</code> to avoid security errors).</div>
@@ -287,8 +287,8 @@ function completeHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderItem.html">LoaderItem</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription"> 
-   The number of seconds that elapsed between when the loader began and when it either completed, failed, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription">
+   The number of seconds that elapsed between when the loader began and when it either completed, failed,
    or was canceled.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -353,7 +353,7 @@ function completeHandler(event:LoaderEvent):void {
 <a class="signatureLink" href="#XMLLoader()">XMLLoader</a>(urlOrRequest:*, vars:Object = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">XMLLoader</td>
 </tr>
@@ -368,8 +368,8 @@ function completeHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderItem.html#auditSize()">auditSize</a>():void</div>
-<div class="summaryTableDescription"> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
+<div class="summaryTableDescription">
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
    in order to improve the accuracy of the <code>progress</code> property.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderItem.html">LoaderItem</a></td>
 </tr>
@@ -377,8 +377,8 @@ function completeHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#cancel()">cancel</a>():void</div>
-<div class="summaryTableDescription"> 
-   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled 
+<div class="summaryTableDescription">
+   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled
    immediately and its status will change to <code>LoaderStatus.READY</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -386,7 +386,7 @@ function completeHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#dispose()">dispose</a>(flushContent:Boolean = false):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Disposes of the loader and releases it internally for garbage collection.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -403,7 +403,7 @@ function completeHandler(event:LoaderEvent):void {
 <div class="summarySignature">
 <a class="signatureLink" href="#getContent()">getContent</a>(nameOrURL:String):*</div>
 <div class="summaryTableDescription">
-   Finds a particular loader's <code>content</code> from inside any loaders that were dynamically 
+   Finds a particular loader's <code>content</code> from inside any loaders that were dynamically
    generated based on the xml data.</div>
 </td><td class="summaryTableOwnerCol">XMLLoader</td>
 </tr>
@@ -428,8 +428,8 @@ function completeHandler(event:LoaderEvent):void {
 <div class="summarySignature">
 <a class="signatureLink" href="#parseLoaders()">parseLoaders</a>(xml:XML, all:<a href="LoaderMax.html">LoaderMax</a>, toLoad:<a href="LoaderMax.html">LoaderMax</a> = null):void</div>
 <div class="summaryTableDescription">[static]
-   Parses an XML object and finds all activated loader types (like LoaderMax, ImageLoader, SWFLoader, DataLoader, 
-   CSSLoader, MP3Loader, etc.), creates the necessary instances, and appends them to the LoaderMax that is defined 
+   Parses an XML object and finds all activated loader types (like LoaderMax, ImageLoader, SWFLoader, DataLoader,
+   CSSLoader, MP3Loader, etc.), creates the necessary instances, and appends them to the LoaderMax that is defined
    in the 2nd parameter.</div>
 </td><td class="summaryTableOwnerCol">XMLLoader</td>
 </tr>
@@ -444,7 +444,7 @@ function completeHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#prioritize()">prioritize</a>(loadNow:Boolean = true):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Immediately prioritizes the loader inside any LoaderMax instances that contain it,
    forcing it to the top position in their queue and optionally calls <code>load()</code>
    immediately as well.</div>
@@ -468,7 +468,7 @@ function completeHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#unload()">unload</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Removes any content that was loaded and sets <code>bytesLoaded</code> back to zero.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -662,7 +662,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function XMLLoader(urlOrRequest:*, vars:Object = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -674,7 +674,7 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object containing optional configuration details. For example: <code>new XMLLoader("xml/data.xml", {name:"data", onComplete:completeHandler, onProgress:progressHandler})</code>.<br /><br />
-   
+
    The following special properties can be passed into the constructor via the <code>vars</code> parameter
    which can be either a generic object or an <code><a href="data/XMLLoaderVars.html">XMLLoaderVars</a></code> object:<br />
    <ul>
@@ -690,7 +690,7 @@ showHideInherited();
      <li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
      <li><strong> skipFailed : Boolean</strong> - By default, XMLLoader will parse any LoaderMax-related loaders in the XML and load any that have their "load" attribute set to "true" and then if any fail to load, they will simply be skipped. But if you prefer to have the XMLLoader fail immediately if one of the parsed loaders fails to load, set <code>skipFailed</code> to <code>false</code> (it is <code>true</code> by default).</li>
      <li><strong> recursivePrependURLs : String</strong> - A String that should be recursively prepended to all parsed LoaderMax-related loader URLs (from nodes like &lt;ImageLoader&gt;, &lt;XMLLoader&gt;, etc.). The functionality is identical to <code>prependURLs</code> except that it is recursive, affecting all parsed loaders in subloaded XMLLoaders (other XML files that this one loads too). For example, if your XML has the following node: <code>&lt;XMLLoader url="doc2.xml" /&gt;</code> and <code>recursivePrependURLs</code> is set to "../xml/", then the nested XMLLoader's URL will end up being "../xml/doc2.xml". Since it is recursive, parsed loaders inside doc2.xml <i>and</i> any other XML files that it loads will <i>all</i> have their URLs prepended. So if you load doc1.xml which loads doc2.xml which loads doc3.xml (due to <code>&lt;XMLLoader&gt;</code> nodes discovered in each XML file), <code>recursivePrependURLs</code> will affect all of the parsed LoaderMax-related URLs in all 3 documents. If you'd prefer to <i>only</i> have the URLs affected that are in the XML file that this XMLLoader is loading, use <code>prependURLs</code> instead of <code>recursivePrependURLs</code>.
-   
+
      <br /><br />----EVENT HANDLER SHORTCUTS----</li>
      <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
      <li><strong> onRawLoad : Function</strong> - A handler function for <code>XMLLoader.RAW_LOAD</code> events which are dispatched when the loader finishes loading the XML but has <b>NOT</b> parsed the XML yet. This can be useful in rare situations when you want to alter the XML before it is parsed by XMLLoader (for identifying LoaderMax-related nodes like <code>&lt;ImageLoader&gt;</code>, etc.). Make sure your onRawLoad function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
@@ -729,20 +729,20 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getChildren(includeNested:Boolean = false, omitLoaderMaxes:Boolean = false):Array</code><p>
-   Returns and array of all LoaderMax-related loaders (if any) that were found inside the XML. 
+   Returns and array of all LoaderMax-related loaders (if any) that were found inside the XML.
    For example, if the following XML was in the document, a child loader would be created for it
    immediately before the INIT event is dispatched: <br /><br /><code>
-   
+
    &lt;ImageLoader url="1.jpg" name="image1" /&gt;<br /><br /></code>
-   
+
    Don't forget to use <code>LoaderMax.activate()</code> to activate the types of loaders
-   that you want XMLLoader to recognize (you only need to activate() them once in your swf). 
+   that you want XMLLoader to recognize (you only need to activate() them once in your swf).
    Like <code>LoaderMax.activate([ImageLoader, SWFLoader]);</code> to ensure that XMLLoader
    recognizes &lt;ImageLoader&gt; and &lt;SWFLoader&gt; nodes. <br /><br />
-   
-   No child loader can be found until the XMLLoader's INIT event is dispatched, meaning the 
-   XML has been loaded and parsed. 
-   
+
+   No child loader can be found until the XMLLoader's INIT event is dispatched, meaning the
+   XML has been loaded and parsed.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -753,7 +753,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">omitLoaderMaxes</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If <code>true</code>, no LoaderMax instances will be returned in the array; only LoaderItems like ImageLoaders, XMLLoaders, SWFLoaders, MP3Loaders, etc. The default is <code>false</code>. 
+<td width="20px"></td><td><code><span class="label">omitLoaderMaxes</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; If <code>true</code>, no LoaderMax instances will be returned in the array; only LoaderItems like ImageLoaders, XMLLoaders, SWFLoaders, MP3Loaders, etc. The default is <code>false</code>.
    </td>
 </tr>
 </table>
@@ -774,17 +774,17 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getContent(nameOrURL:String):*</code><p>
-   Finds a particular loader's <code>content</code> from inside any loaders that were dynamically 
+   Finds a particular loader's <code>content</code> from inside any loaders that were dynamically
    generated based on the xml data. For example:<br /><br /><code>
-   
+
    var loader:XMLLoader = new XMLLoader("xml/doc.xml", {name:"xmlDoc", onComplete:completeHandler});<br />
    function completeHandler(event:Event):void {<br />
       var subloadedImage:Bitmap = loader.getContent("imageInXML");<br />
       addChild(subloadedImage);<br />
    }<br /><br /></code>
-   
+
    The static <code>LoaderMax.getContent()</code> method can be used instead which searches all loaders.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -815,17 +815,17 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getLoader(nameOrURL:String):*</code><p>
-   Finds a particular loader inside any LoaderMax instances that were discovered in the xml content. 
+   Finds a particular loader inside any LoaderMax instances that were discovered in the xml content.
    For example:<br /><br /><code>
-   
+
    var xmlLoader:XMLLoader = new XMLLoader("xml/doc.xml", {name:"xmlDoc", onComplete:completeHandler});<br />
    function completeHandler(event:Event):void {<br />
       var imgLoader:ImageLoader = xmlLoader.getLoader("imageInXML") as ImageLoader;<br />
       addChild(imgLoader.content);<br />
    }<br /><br /></code>
-   
+
    The static <code>LoaderMax.getLoader()</code> method can be used instead which searches all loaders.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -850,13 +850,13 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public static function parseLoaders(xml:XML, all:<a href="LoaderMax.html">LoaderMax</a>, toLoad:<a href="LoaderMax.html">LoaderMax</a> = null):void</code><p>
-   Parses an XML object and finds all activated loader types (like LoaderMax, ImageLoader, SWFLoader, DataLoader, 
-   CSSLoader, MP3Loader, etc.), creates the necessary instances, and appends them to the LoaderMax that is defined 
-   in the 2nd parameter. Don't forget to make sure you <code>activate()</code> the necessary loader types that you 
+   Parses an XML object and finds all activated loader types (like LoaderMax, ImageLoader, SWFLoader, DataLoader,
+   CSSLoader, MP3Loader, etc.), creates the necessary instances, and appends them to the LoaderMax that is defined
+   in the 2nd parameter. Don't forget to make sure you <code>activate()</code> the necessary loader types that you
    want XMLLoader to recognize in the XML, like:<br /><br /><code>
-   
+
    LoaderMax.activate([ImageLoader, SWFLoader]); //or whatever types you're using.</code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

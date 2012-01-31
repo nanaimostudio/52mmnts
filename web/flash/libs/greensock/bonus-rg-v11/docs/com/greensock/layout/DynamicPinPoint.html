@@ -42,29 +42,29 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- Sometimes it's useful to have a PinPoint base its coordinates on some custom criteria, like the 
+ Sometimes it's useful to have a PinPoint base its coordinates on some custom criteria, like the
  edge of another DisplayObject or the center of an object whose width/height changes frequently, so
  DynamicPinPoint allows you to associate a function (one you define) that returns a Point instance
  that will determine the DynamicPinPoint's x/y values. For example, to make the DynamicPinPoint
- position itself at the center bottom of the "video_mc" object and then attach a "mc" object, 
+ position itself at the center bottom of the "video_mc" object and then attach a "mc" object,
  you could do this: <br /><br /><code>
- 
+
  var pin:DynamicPinPoint = new DynamicPinPoint(video_mc, getBottomCenter); <br />
  pin.attach(mc);<br />
  function getBottomCenter():Point {<br />
    var bounds:Rectangle = video_mc.getBounds(video_mc);<br />
    return new Point(bounds.x + bounds.width / 2, bounds.y + bounds.height);<br />
  }<br /><br />
- 
+
  //if you want to initially position the "mc" object directly on the DynamicPinPoint, you could add this:<br />
  var p:Point = pin.toLocal(mc.parent);<br />
  mc.x = p.x;<br />
  mc.y = p.y;<br />
- 
+
  <br /><br /></code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -103,7 +103,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#DynamicPinPoint()">DynamicPinPoint</a>(target:DisplayObject, getter:Function, liquidStage:<a href="LiquidStage.html">LiquidStage</a> = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">DynamicPinPoint</td>
 </tr>
@@ -120,7 +120,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <div class="summarySignature">
 <a class="signatureLink" href="PinPoint.html#attach()">attach</a>(target:DisplayObject, strict:Boolean = false, reconcile:Boolean = true, tweenDuration:Number = 0, tweenVars:Object = null, roundPosition:Boolean = false):void</div>
 <div class="summaryTableDescription">
-   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the 
+   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the
    PinPoint will also affect the relative position of the DisplayObject.</div>
 </td><td class="summaryTableOwnerCol"><a href="PinPoint.html">PinPoint</a></td>
 </tr>
@@ -223,7 +223,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function DynamicPinPoint(target:DisplayObject, getter:Function, liquidStage:<a href="LiquidStage.html">LiquidStage</a> = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

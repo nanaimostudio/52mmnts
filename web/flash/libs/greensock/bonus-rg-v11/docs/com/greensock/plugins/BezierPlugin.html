@@ -47,14 +47,14 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  Bezier tweening allows you to tween in a non-linear way. For example, you may want to tween
  a MovieClip's position from the origin (0,0) 500 pixels to the right (500,0) but curve downwards
- through the middle of the tween. Simply pass as many objects in the bezier Array as you'd like, 
+ through the middle of the tween. Simply pass as many objects in the bezier Array as you'd like,
  one for each "control point" (see documentation on Flash's curveTo() drawing method for more
  about how control points work).<br /><br />
- 
+
  Keep in mind that you can bezier tween ANY properties, not just x/y. <br /><br />
- 
- Also, if you'd like to rotate the target in the direction of the bezier path, 
- use the <code>orientToBezier</code> special property. In order to alter a rotation property accurately, 
+
+ Also, if you'd like to rotate the target in the direction of the bezier path,
+ use the <code>orientToBezier</code> special property. In order to alter a rotation property accurately,
  TweenLite/Max needs 5 pieces of information: <br />
  <ol>
    <li> Position property 1 (typically <code>"x"</code>)</li>
@@ -63,26 +63,26 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li> Number of degrees to add (optional - makes it easy to orient your MovieClip properly)</li>
    <li> Tolerance (default is 0.01, but increase this if the rotation seems to jitter during the tween)</li>
  </ol><br />
- 
- The <code>orientToBezier</code> property should be an Array containing one Array for each set of these values. 
- For maximum flexibility, you can pass in any number of arrays inside the container array, one 
+
+ The <code>orientToBezier</code> property should be an Array containing one Array for each set of these values.
+ For maximum flexibility, you can pass in any number of arrays inside the container array, one
  for each rotational property. This can be convenient when working in 3D because you can rotate
- on multiple axis. If you're doing a standard 2D x/y tween on a bezier, you can simply pass 
- in a Boolean value of true and TweenLite/Max will use a typical setup, <code>[["x", "y", "rotation", 0, 0.01]]</code>. 
+ on multiple axis. If you're doing a standard 2D x/y tween on a bezier, you can simply pass
+ in a Boolean value of true and TweenLite/Max will use a typical setup, <code>[["x", "y", "rotation", 0, 0.01]]</code>.
  Hint: Don't forget the container Array (notice the double outer brackets)<br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.BezierPlugin; <br />
    TweenPlugin.activate([BezierPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 3, {bezier:[{x:250, y:50}, {x:500, y:0}]}); //makes my_mc travel through 250,50 and end up at 500,0. <br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -162,11 +162,11 @@ showHideInherited();
 <div class="detailBody">
 <code>public static function parseBeziers(props:Object, through:Boolean = false):Object</code><p>
    Helper method for translating control points into bezier information.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">props</span>:Object</code> &mdash; Object containing a property corresponding to each one you'd like bezier paths for. Each property's value should be a single Array with the numeric point values (i.e. <code>props.x = [12,50,80]</code> and <code>props.y = [50,97,158]</code>). 
+<td width="20px"></td><td><code><span class="label">props</span>:Object</code> &mdash; Object containing a property corresponding to each one you'd like bezier paths for. Each property's value should be a single Array with the numeric point values (i.e. <code>props.x = [12,50,80]</code> and <code>props.y = [50,97,158]</code>).
    </td>
 </tr>
 <tr>
