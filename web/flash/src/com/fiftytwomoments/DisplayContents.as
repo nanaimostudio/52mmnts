@@ -768,6 +768,7 @@ package com.fiftytwomoments
 				contents.unshift(content);
 			}
 			
+			TraceUtility.debug(this, "onFeatureMomentsScrollComplete weekInView: " + weekInView + " - content.week: " + content.week);
 			updateFeaturedPhotoContentForWeek(content, content.week);
 			
 			//trace("current week: " + currentWeek + " " + content.week);
@@ -821,11 +822,12 @@ package com.fiftytwomoments
 		
 		private function updateFeaturedPhotoContentForWeek(content:PhotoContent, week:int):void 
 		{
-			TraceUtility.debug(this, "updateFeaturedPhotoContentForWeek " + checkShowImageForWeek(week));
+			TraceUtility.debug(this, "updateFeaturedPhotoContentForWeek: " + week + " - show image: " + checkShowImageForWeek(week));
 			if (currentViewState == VIEWSTATE_LANDING)
 			{
 				if (checkShowImageForWeek(week))
 				{
+					TraceUtility.debug(this, "week:  " + week + " currentWeek: " + currentWeek);
 					// show coming soon message
 					if (week == currentWeek + 1)
 					{
@@ -837,6 +839,12 @@ package com.fiftytwomoments
 						
 						weekValue += String(week);
 						content.setText("moment " + weekValue + " is coming " + _data.comingSoonDate);
+						if (content.hasPhoto())
+						{
+							content.removePhoto();
+						}
+						
+						content.clearCaption();
 					}
 					else
 					{
@@ -845,7 +853,7 @@ package com.fiftytwomoments
 						var featuredMoment:FeaturedMoment = _data.getMomentsDataForWeek(week);
 						if (featuredMoment != null)
 						{
-							trace("setFeaturedPhoto: " + featuredMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
+							TraceUtility.debug(this, "setFeaturedPhoto: " + featuredMoment.photo + " set photo for weekIndex: " + week + " week in view: " + weekInView + " currentWeek: " + currentWeek);
 							content.setFeaturedPhoto(featuredMoment.photo, week, featuredMoment.description);
 						}
 					}
@@ -856,6 +864,8 @@ package com.fiftytwomoments
 					{
 						content.removePhoto();
 					}
+					
+					content.clearCaption();
 				}
 			}
 		}

@@ -103,8 +103,8 @@ package
 			
 			// Parse flashvars
 			// for testing
-			appData.currentWeek = 2;
-			appData.comingSoonDate = "Jan 27";
+			appData.currentWeek = 5;
+			appData.comingSoonDate = "Feb 14";
 			if (FlashVarUtil.hasKey("currentWeek"))
 			{
 				appData.currentWeek = int(FlashVarUtil.getValue("currentWeek"));
