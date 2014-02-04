@@ -42,26 +42,26 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- Loads an FLV, F4V, or MP4 video file using a NetStream and also provides convenient playback methods 
- and properties like <code>pauseVideo(), playVideo(), gotoVideoTime(), bufferProgress, playProgress, volume, 
- duration, videoPaused, metaData, </code> and <code>videoTime</code>. Just like ImageLoader and SWFLoader, 
- VideoLoader's <code>content</code> property refers to a <code>ContentDisplay</code> object (Sprite) that 
+ Loads an FLV, F4V, or MP4 video file using a NetStream and also provides convenient playback methods
+ and properties like <code>pauseVideo(), playVideo(), gotoVideoTime(), bufferProgress, playProgress, volume,
+ duration, videoPaused, metaData, </code> and <code>videoTime</code>. Just like ImageLoader and SWFLoader,
+ VideoLoader's <code>content</code> property refers to a <code>ContentDisplay</code> object (Sprite) that
  gets created immediately so that you can position/scale/rotate it or add ROLL_OVER/ROLL_OUT/CLICK listeners
- before (or while) the video loads. Use the VideoLoader's <code>content</code> property to get the ContentDisplay 
- Sprite, or use the <code>rawContent</code> property to get the <code>Video</code> object that is used inside the 
- ContentDisplay to display the video. If a <code>container</code> is defined in the <code>vars</code> object, 
+ before (or while) the video loads. Use the VideoLoader's <code>content</code> property to get the ContentDisplay
+ Sprite, or use the <code>rawContent</code> property to get the <code>Video</code> object that is used inside the
+ ContentDisplay to display the video. If a <code>container</code> is defined in the <code>vars</code> object,
  the ContentDisplay will immediately be added to that container).<br /><br />
- 
- You don't need to worry about creating a NetConnection, a Video object, attaching the NetStream, or any 
- of the typical hassles. VideoLoader can even scale the video into the area you specify using scaleModes 
- like <code>"stretch", "proportionalInside", "proportionalOutside",</code> and more. A VideoLoader will 
- dispatch useful events like <code>VIDEO_COMPLETE, VIDEO_PAUSE, VIDEO_PLAY, VIDEO_BUFFER_FULL, 
- VIDEO_BUFFER_EMPTY, NET_STATUS, VIDEO_CUE_POINT</code>, and <code>PLAY_PROGRESS</code> in addition 
- to the typical loader events, making it easy to hook up your own control interface. It packs a 
+
+ You don't need to worry about creating a NetConnection, a Video object, attaching the NetStream, or any
+ of the typical hassles. VideoLoader can even scale the video into the area you specify using scaleModes
+ like <code>"stretch", "proportionalInside", "proportionalOutside",</code> and more. A VideoLoader will
+ dispatch useful events like <code>VIDEO_COMPLETE, VIDEO_PAUSE, VIDEO_PLAY, VIDEO_BUFFER_FULL,
+ VIDEO_BUFFER_EMPTY, NET_STATUS, VIDEO_CUE_POINT</code>, and <code>PLAY_PROGRESS</code> in addition
+ to the typical loader events, making it easy to hook up your own control interface. It packs a
  surprising amount of functionality into a very small amount of kb.<br /><br />
- 
+
  <strong>OPTIONAL VARS PROPERTIES</strong><br />
- The following special properties can be passed into the VideoLoader constructor via its <code>vars</code> 
+ The following special properties can be passed into the VideoLoader constructor via its <code>vars</code>
  parameter which can be either a generic object or a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> object:<br />
  <ul>
    <li><strong> name : String</strong> - A name that is used to identify the VideoLoader instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
@@ -118,7 +118,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li><strong> requireWithRoot : DisplayObject</strong> - LoaderMax supports <i>subloading</i>, where an object can be factored into a parent's loading progress. If you want LoaderMax to require this VideoLoader as part of its parent SWFLoader's progress, you must set the <code>requireWithRoot</code> property to your swf's <code>root</code>. For example, <code>var loader:VideoLoader = new VideoLoader("myScript.php", {name:"textData", requireWithRoot:this.root});</code></li>
    <li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
    <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
-   
+
    <br /><br />----EVENT HANDLER SHORTCUTS----</li>
    <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onInit : Function</strong> - A handler function for <code>Event.INIT</code> events which will be called when the video's metaData has been received and the video is placed into the <code>ContentDisplay</code>. Make sure your onInit function accepts a single parameter of type <code>Event</code> (flash.events.Event).</li>
@@ -129,31 +129,31 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li><strong> onFail : Function</strong> - A handler function for <code>LoaderEvent.FAIL</code> events which are dispatched whenever the loader fails and its <code>status</code> changes to <code>LoaderStatus.FAILED</code>. Make sure your onFail function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
    <li><strong> onIOError : Function</strong> - A handler function for <code>LoaderEvent.IO_ERROR</code> events which will also call the onError handler, so you can use that as more of a catch-all whereas <code>onIOError</code> is specifically for LoaderEvent.IO_ERROR events. Make sure your onIOError function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  </ul><br />
- 
- <strong>Note:</strong> Using a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> instance 
- instead of a generic object to define your <code>vars</code> is a bit more verbose but provides 
+
+ <strong>Note:</strong> Using a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> instance
+ instead of a generic object to define your <code>vars</code> is a bit more verbose but provides
  code hinting and improved debugging because it enforces strict data typing. Use whichever one you prefer.<br /><br />
- 
- <strong>Note:</strong> To avoid garbage collection issues in the Flash player, the <code>netStream</code> 
- object that VideoLoader employs must get recreated internally anytime the VideoLoader is unloaded or its loading 
+
+ <strong>Note:</strong> To avoid garbage collection issues in the Flash player, the <code>netStream</code>
+ object that VideoLoader employs must get recreated internally anytime the VideoLoader is unloaded or its loading
  is cancelled, so if you need to directly access the <code>netStream</code>, it is best to do so <strong>after</strong>
- the <code>COMPLETE</code> event has been dispatched. Otherwise, if you store a reference to the VideoLoader's 
- <code>netStream</code> before or during a load and it gets cancelled or unloaded for some reason, it won't reference 
+ the <code>COMPLETE</code> event has been dispatched. Otherwise, if you store a reference to the VideoLoader's
+ <code>netStream</code> before or during a load and it gets cancelled or unloaded for some reason, it won't reference
  the one that was used to load the video.<br /><br />
- 
- <strong>Note:</strong> There is a bug/inconsistency in Adobe's NetStream class that causes relative URLs 
+
+ <strong>Note:</strong> There is a bug/inconsistency in Adobe's NetStream class that causes relative URLs
  to use the swf's location as the base path instead of the HTML page's location like all other loaders. Therefore,
- it would be wise to use the "base" attribute of the &lt;OBJECT&gt; and &lt;EMBED&gt; tags in the HTML to 
+ it would be wise to use the "base" attribute of the &lt;OBJECT&gt; and &lt;EMBED&gt; tags in the HTML to
  make sure all relative paths are consistent. See <a href="http://kb2.adobe.com/cps/041/tn_04157.html" target="_blank">http://kb2.adobe.com/cps/041/tn_04157.html</a>
  for details.<br /><br />
- 
+
  <strong>Note:</strong> In order to minimize memory usage, VideoLoader doesn't attach the NetStream to its Video
  object (the <code>rawContent</code>) until it is added to the display list. Therefore, if your VideoLoader's content
- isn't somewhere on the stage, the NetStream's visual content won't be fully decoded into memory (that's a good thing). 
- The only time this could be of consequence is if you are trying to do a BitmapData.draw() of the VideoLoader's content 
- or rawContent when it isn't on the stage. In that case, you'd just need to attach the NetStream manually before doing 
+ isn't somewhere on the stage, the NetStream's visual content won't be fully decoded into memory (that's a good thing).
+ The only time this could be of consequence is if you are trying to do a BitmapData.draw() of the VideoLoader's content
+ or rawContent when it isn't on the stage. In that case, you'd just need to attach the NetStream manually before doing
  your BitmapData.draw() like <code>myVideoLoader.rawContent.attachNetStream(myVideoLoader.netStream)</code>. <br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -162,13 +162,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  import com.greensock.loading.display.*;
  import com.greensock.*;
  import com.greensock.events.LoaderEvent;
- 
+
 //create a VideoLoader
 var video:VideoLoader = new VideoLoader("assets/video.flv", {name:"myVideo", container:this, width:400, height:300, scaleMode:"proportionalInside", bgColor:0x000000, autoPlay:false, volume:0, requireWithRoot:this.root, estimatedBytes:75000});
 
 //start loading
 video.load();
- 
+
 //add a CLICK listener to a button that causes the video to toggle its paused state.
 button.addEventListener(MouseEvent.CLICK, togglePause);
 function togglePause(event:MouseEvent):void {
@@ -193,7 +193,7 @@ function progressHandler(event:LoaderEvent):void {
 function completeHandler(event:LoaderEvent):void {
  //play the video
  video.playVideo();
- 
+
  //tween the volume up to 1 over the course of 2 seconds.
  TweenLite.to(video, 2, {volume:1});
 }
@@ -202,9 +202,9 @@ function errorHandler(event:LoaderEvent):void {
  trace("error occured with " + event.target + ": " + event.text);
 }
  </pre></div>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <p>
 <span class="classHeaderTableLabel">See also</span>
@@ -231,7 +231,7 @@ function errorHandler(event:LoaderEvent):void {
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -252,11 +252,11 @@ function errorHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
 <tr class="">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bufferMode">bufferMode</a> : Boolean<div class="summaryTableDescription"> 
-   When <code>bufferMode</code> is <code>true</code>, the loader will report its progress only in terms of the 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a class="signatureLink" href="#bufferMode">bufferMode</a> : Boolean<div class="summaryTableDescription">
+   When <code>bufferMode</code> is <code>true</code>, the loader will report its progress only in terms of the
    video's buffer instead of its overall file loading progress which has the following effects:
    <ul>
-     <li>The <code>bytesTotal</code> will be calculated based on the NetStream's <code>duration</code>, <code>bufferLength</code>, and <code>bufferTime</code> meaning it may fluctuate in order to accurately reflect the overall <code>progress</code> ratio.</li> 
+     <li>The <code>bytesTotal</code> will be calculated based on the NetStream's <code>duration</code>, <code>bufferLength</code>, and <code>bufferTime</code> meaning it may fluctuate in order to accurately reflect the overall <code>progress</code> ratio.</li>
      <li>Its <code>COMPLETE</code> event will be dispatched as soon as the buffer is full, so if the VideoLoader is nested in a LoaderMax, the LoaderMax will move on to the next loader in its queue at that point.</div>
 </td><td class="summaryTableOwnerCol">VideoLoader</td>
 </tr>
@@ -285,8 +285,8 @@ function errorHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderItem.html">LoaderItem</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription"> 
-   The number of seconds that elapsed between when the loader began and when it either completed, failed, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription">
+   The number of seconds that elapsed between when the loader began and when it either completed, failed,
    or was canceled.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -375,7 +375,7 @@ function errorHandler(event:LoaderEvent):void {
 <a class="signatureLink" href="#VideoLoader()">VideoLoader</a>(urlOrRequest:*, vars:Object = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">VideoLoader</td>
 </tr>
@@ -398,8 +398,8 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#auditSize()">auditSize</a>():void</div>
-<div class="summaryTableDescription">  
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
+<div class="summaryTableDescription">
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
    in order to improve the accuracy of the <code>progress</code> property.</div>
 </td><td class="summaryTableOwnerCol">VideoLoader</td>
 </tr>
@@ -407,8 +407,8 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#cancel()">cancel</a>():void</div>
-<div class="summaryTableDescription"> 
-   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled 
+<div class="summaryTableDescription">
+   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled
    immediately and its status will change to <code>LoaderStatus.READY</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -416,7 +416,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#dispose()">dispose</a>(flushContent:Boolean = false):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Disposes of the loader and releases it internally for garbage collection.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -441,7 +441,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#gotoVideoTime()">gotoVideoTime</a>(time:Number, forcePlay:Boolean = false, skipCuePoints:Boolean = true):Number</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Attempts to jump to a certain time in the video.</div>
 </td><td class="summaryTableOwnerCol">VideoLoader</td>
 </tr>
@@ -464,7 +464,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#pauseVideo()">pauseVideo</a>(event:Event = null):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Pauses playback of the video.</div>
 </td><td class="summaryTableOwnerCol">VideoLoader</td>
 </tr>
@@ -472,7 +472,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#playVideo()">playVideo</a>(event:Event = null):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Plays the video (if the buffer isn't full yet, playback will wait until the buffer is full).</div>
 </td><td class="summaryTableOwnerCol">VideoLoader</td>
 </tr>
@@ -480,7 +480,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#prioritize()">prioritize</a>(loadNow:Boolean = true):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Immediately prioritizes the loader inside any LoaderMax instances that contain it,
    forcing it to the top position in their queue and optionally calls <code>load()</code>
    immediately as well.</div>
@@ -512,7 +512,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#unload()">unload</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Removes any content that was loaded and sets <code>bytesLoaded</code> back to zero.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -694,17 +694,17 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>bufferMode:Boolean</code>&nbsp;&nbsp;[read-write]<p> 
-   When <code>bufferMode</code> is <code>true</code>, the loader will report its progress only in terms of the 
+<code>bufferMode:Boolean</code>&nbsp;&nbsp;[read-write]<p>
+   When <code>bufferMode</code> is <code>true</code>, the loader will report its progress only in terms of the
    video's buffer instead of its overall file loading progress which has the following effects:
    <ul>
-     <li>The <code>bytesTotal</code> will be calculated based on the NetStream's <code>duration</code>, <code>bufferLength</code>, and <code>bufferTime</code> meaning it may fluctuate in order to accurately reflect the overall <code>progress</code> ratio.</li> 
+     <li>The <code>bytesTotal</code> will be calculated based on the NetStream's <code>duration</code>, <code>bufferLength</code>, and <code>bufferTime</code> meaning it may fluctuate in order to accurately reflect the overall <code>progress</code> ratio.</li>
      <li>Its <code>COMPLETE</code> event will be dispatched as soon as the buffer is full, so if the VideoLoader is nested in a LoaderMax, the LoaderMax will move on to the next loader in its queue at that point. However, the VideoLoader's NetStream will continue to load in the background, using up bandwidth.</li>
    </ul>
-   
+
    This can be very convenient if, for example, you want to display loading progress based on the video's buffer
    or if you want to load a series of loaders in a LoaderMax and have it fire its <code>COMPLETE</code> event
-   when the buffer is full (as opposed to waiting for the entire video to load). 
+   when the buffer is full (as opposed to waiting for the entire video to load).
    </p><span class="label">Implementation</span>
 <br>
 <code>&nbsp;&nbsp;&nbsp;&nbsp;public function get bufferMode():Boolean</code>
@@ -847,7 +847,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function VideoLoader(urlOrRequest:*, vars:Object = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -859,7 +859,7 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object containing optional configuration details. For example: <code>new VideoLoader("video/video.flv", {name:"myVideo", onComplete:completeHandler, onProgress:progressHandler})</code>.<br /><br />
-   
+
    The following special properties can be passed into the constructor via the <code>vars</code> parameter
    which can be either a generic object or a <code><a href="data/VideoLoaderVars.html">VideoLoaderVars</a></code> object:<br />
    <ul>
@@ -917,7 +917,7 @@ showHideInherited();
      <li><strong> requireWithRoot : DisplayObject</strong> - LoaderMax supports <i>subloading</i>, where an object can be factored into a parent's loading progress. If you want LoaderMax to require this VideoLoader as part of its parent SWFLoader's progress, you must set the <code>requireWithRoot</code> property to your swf's <code>root</code>. For example, <code>var loader:VideoLoader = new VideoLoader("myScript.php", {name:"textData", requireWithRoot:this.root});</code></li>
      <li><strong> allowMalformedURL : Boolean</strong> - Normally, the URL will be parsed and any variables in the query string (like "?name=test&amp;state=il&amp;gender=m") will be placed into a URLVariables object which is added to the URLRequest. This avoids a few bugs in Flash, but if you need to keep the entire URL intact (no parsing into URLVariables), set <code>allowMalformedURL:true</code>. For example, if your URL has duplicate variables in the query string like <code>http://www.greensock.com/?c=S&amp;c=SE&amp;c=SW</code>, it is technically considered a malformed URL and a URLVariables object can't properly contain all the duplicates, so in this case you'd want to set <code>allowMalformedURL</code> to <code>true</code>.</li>
      <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError, onInit). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> - it is essentially destroyed but its content is not unloaded (you must call <code>unload()</code> or <code>dispose(true)</code> to unload its content). The default <code>autoDispose</code> value is <code>false</code>.
-     
+
      <br /><br />----EVENT HANDLER SHORTCUTS----</li>
      <li><strong> onOpen : Function</strong> - A handler function for <code>LoaderEvent.OPEN</code> events which are dispatched when the loader begins loading. Make sure your onOpen function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
      <li><strong> onInit : Function</strong> - A handler function for <code>Event.INIT</code> events which will be called when the video's metaData has been received and the video is placed into the <code>ContentDisplay</code>. Make sure your onInit function accepts a single parameter of type <code>Event</code> (flash.events.Event).</li>
@@ -965,19 +965,19 @@ showHideInherited();
    Adds an ActionScript cue point. Cue points are only triggered when the video is playing and passes
    the cue point's position in the video (in the forwards direction - they are not triggered when you skip
    to a previous time in the video with <code>gotoVideoTime()</code>). <br /><br />
-   
+
    For example, to add a cue point named "coolPart" at the 5-second point of the video, do:<br /><br /><code>
-   
+
    myVideoLoader.addASCuePoint(5, "coolPart", {message:"This is a cool part.", id:5}); <br />
    myVideoLoader.addEventListener(VideoLoader.VIDEO_CUE_POINT, cuePointHandler); <br />
    function cuePointHandler(event:LoaderEvent):void { <br />
        trace("hit cue point " + event.data.name + ", message: " + event.data.parameters.message); <br />
    }</code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; The time (in seconds) at which the cue point should be placed in the video. 
+<td width="20px"></td><td><code><span class="label">time</span>:Number</code> &mdash; The time (in seconds) at which the cue point should be placed in the video.
    </td>
 </tr>
 <tr>
@@ -1059,12 +1059,12 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function auditSize():void</code><p>  
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
-   in order to improve the accuracy of the <code>progress</code> property. Once the 
+<code>public override function auditSize():void</code><p>
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
+   in order to improve the accuracy of the <code>progress</code> property. Once the
    <code>bytesTotal</code> has been determined or the <code>auditSize()</code> attempt fails due
-   to an error (typically IO_ERROR or SECURITY_ERROR), the <code>auditedSize</code> property will be 
-   set to <code>true</code>. Auditing the size opens a URLStream that will be closed 
+   to an error (typically IO_ERROR or SECURITY_ERROR), the <code>auditedSize</code> property will be
+   set to <code>true</code>. Auditing the size opens a URLStream that will be closed
    as soon as a response is received.
    </p></div>
 <a name="getCuePointTime()"></a>
@@ -1075,10 +1075,10 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getCuePointTime(name:String):Number</code><p>
-   Finds a cue point by name and returns its corresponding time (where it is positioned in the video). 
+   Finds a cue point by name and returns its corresponding time (where it is positioned in the video).
    All cue points will be included in the search (cue points embedded into the video when it was encoded
    as well as cue points that were added with <code>addASCuePoint()</code>).
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1114,13 +1114,13 @@ showHideInherited();
 <div class="detailBody">
 <code>public function gotoVideoCuePoint(name:String, forcePlay:Boolean = false, skipCuePoints:Boolean = true):Number</code><p>
    Attempts to jump to a certain cue point (either a cue point that was embedded in the
-   video itself when it was encoded or a cue point that was added via <code>addASCuePoint()</code>). 
-   If the video hasn't downloaded enough to get to the cue point or if there is no keyframe at that 
+   video itself when it was encoded or a cue point that was added via <code>addASCuePoint()</code>).
+   If the video hasn't downloaded enough to get to the cue point or if there is no keyframe at that
    point in the video, it will get as close as possible. For example, to jump to a cue point
    named "highlight1" and play from there:<br /><br /><code>
-   
+
    loader.gotoVideoCuePoint("highlight1", true);<br /><br /></code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1138,7 +1138,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">skipCuePoints</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; If <code>true</code> (the default), any cue points that are positioned between the current videoTime and the destination cue point will be ignored when moving to the new videoTime. In other words, it is like a record player that has its needle picked up, moved, and dropped into a new position rather than dragging it across the record, triggering the various cue points (if any exist there). IMPORTANT: cue points are only triggered when the time advances in the forward direction; they are never triggered when rewinding or restarting. 
+<td width="20px"></td><td><code><span class="label">skipCuePoints</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; If <code>true</code> (the default), any cue points that are positioned between the current videoTime and the destination cue point will be ignored when moving to the new videoTime. In other words, it is like a record player that has its needle picked up, moved, and dropped into a new position rather than dragging it across the record, triggering the various cue points (if any exist there). IMPORTANT: cue points are only triggered when the time advances in the forward direction; they are never triggered when rewinding or restarting.
    </td>
 </tr>
 </table>
@@ -1168,16 +1168,16 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function gotoVideoTime(time:Number, forcePlay:Boolean = false, skipCuePoints:Boolean = true):Number</code><p> 
+<code>public function gotoVideoTime(time:Number, forcePlay:Boolean = false, skipCuePoints:Boolean = true):Number</code><p>
    Attempts to jump to a certain time in the video. If the video hasn't downloaded enough to get to
    the new time or if there is no keyframe at that time value, it will get as close as possible.
    For example, to jump to exactly 3-seconds into the video and play from there:<br /><br /><code>
-   
+
    loader.gotoVideoTime(3, true);<br /><br /></code>
-   
-   The VideoLoader's <code>videoTime</code> will immediately reflect the new time, but <code>PLAY_PROGRESS</code> 
+
+   The VideoLoader's <code>videoTime</code> will immediately reflect the new time, but <code>PLAY_PROGRESS</code>
    event won't be dispatched until the NetStream's <code>time</code> renders at that spot (which can take a frame or so).<br /><br />
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -1195,7 +1195,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">skipCuePoints</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; If <code>true</code> (the default), any cue points that are positioned between the current videoTime and the destination time (defined by the <code>time</code> parameter) will be ignored when moving to the new videoTime. In other words, it is like a record player that has its needle picked up, moved, and dropped into a new position rather than dragging it across the record, triggering the various cue points (if any exist there). IMPORTANT: cue points are only triggered when the time advances in the forward direction; they are never triggered when rewinding or restarting. 
+<td width="20px"></td><td><code><span class="label">skipCuePoints</span>:Boolean</code> (default = <code>true</code>)<code></code> &mdash; If <code>true</code> (the default), any cue points that are positioned between the current videoTime and the destination time (defined by the <code>time</code> parameter) will be ignored when moving to the new videoTime. In other words, it is like a record player that has its needle picked up, moved, and dropped into a new position rather than dragging it across the record, triggering the various cue points (if any exist there). IMPORTANT: cue points are only triggered when the time advances in the forward direction; they are never triggered when rewinding or restarting.
    </td>
 </tr>
 </table>
@@ -1226,14 +1226,14 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function pauseVideo(event:Event = null):void</code><p> 
-   Pauses playback of the video. 
-   
+<code>public function pauseVideo(event:Event = null):void</code><p>
+   Pauses playback of the video.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; An optional Event which simply makes it easier to use the method as a handler for mouse clicks or other events.
-   
+
    </td>
 </tr>
 </table>
@@ -1259,14 +1259,14 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function playVideo(event:Event = null):void</code><p> 
+<code>public function playVideo(event:Event = null):void</code><p>
    Plays the video (if the buffer isn't full yet, playback will wait until the buffer is full).
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
 <td width="20px"></td><td><code><span class="label">event</span>:Event</code> (default = <code>null</code>)<code></code> &mdash; An optional Event which simply makes it easier to use the method as a handler for mouse clicks or other events.
-   
+
    </td>
 </tr>
 </table>
@@ -1294,13 +1294,13 @@ showHideInherited();
 <div class="detailBody">
 <code>public function removeASCuePoint(timeNameOrCuePoint:*):Object</code><p>
    Removes an ActionScript cue point that was added with <code>addASCuePoint()</code>. If multiple ActionScript
-   cue points match the search criteria, only one is removed. To remove all, call this function repeatedly in a 
-   loop with the same parameters until it returns null. 
-   
+   cue points match the search criteria, only one is removed. To remove all, call this function repeatedly in a
+   loop with the same parameters until it returns null.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20px"></td><td><code><span class="label">timeNameOrCuePoint</span>:*</code> &mdash; The time, name or cue point object that should be removed. The method removes the first cue point that matches the criteria. 
+<td width="20px"></td><td><code><span class="label">timeNameOrCuePoint</span>:*</code> &mdash; The time, name or cue point object that should be removed. The method removes the first cue point that matches the criteria.
    </td>
 </tr>
 </table>

@@ -2,9 +2,9 @@ package away3d.core.base
 {
     import away3d.arcane;
     import away3d.core.utils.*;
-    
+
     use namespace arcane;
-    
+
 	/**
 	 * Texture coordinates value object.
 	 * Properties u and v represent the horizontal and vertical texture axes.
@@ -26,7 +26,7 @@ package away3d.core.base
         }
 		/** @private */
         arcane static function weighted(a:UV, b:UV, aw:Number, bw:Number):UV
-        {                
+        {
             if (a == null)
                 return null;
             if (b == null)
@@ -36,12 +36,12 @@ package away3d.core.base
             var bk:Number = bw / d;
             return new UV(a._u*ak+b._u*bk, a._v*ak + b._v*bk);
         }
-        
+
     	/**
     	 * An optional untyped object that can contain used-defined properties.
     	 */
         public var extra:Object;
-		
+
 		/**
 		 * Defines the vertical corrdinate of the texture value.
 		 */
@@ -59,7 +59,7 @@ package away3d.core.base
 
             notifyChange();
         }
-		
+
 		/**
 		 * Defines the horizontal corrdinate of the texture value.
 		 */
@@ -77,7 +77,7 @@ package away3d.core.base
 
             notifyChange();
         }
-    	
+
 		/**
 		 * Creates a new <code>UV</code> object.
 		 *
@@ -89,20 +89,20 @@ package away3d.core.base
             _u = u;
             _v = v;
         }
-		
+
 		/**
 		 * Duplicates the vertex properties to another <code>Vertex</code> object
-		 * 
+		 *
 		 * @return	The new vertex instance with duplicated properties applied
 		 */
         public function clone():UV
         {
             return new UV(_u, _v);
         }
-		
+
 		/**
 		 * Used to trace the values of a uv object.
-		 * 
+		 *
 		 * @return A string representation of the uv object.
 		 */
         public override function toString():String

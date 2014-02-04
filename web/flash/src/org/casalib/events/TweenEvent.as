@@ -2,21 +2,21 @@
 	CASA Lib for ActionScript 3.0
 	Copyright (c) 2011, Aaron Clinger & Contributors of CASA Lib
 	All rights reserved.
-	
+
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
-	
+
 	- Redistributions of source code must retain the above copyright notice,
 	  this list of conditions and the following disclaimer.
-	
+
 	- Redistributions in binary form must reproduce the above copyright notice,
 	  this list of conditions and the following disclaimer in the documentation
 	  and/or other materials provided with the distribution.
-	
+
 	- Neither the name of the CASA Lib nor the names of its contributors
 	  may be used to endorse or promote products derived from this software
 	  without specific prior written permission.
-	
+
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -32,10 +32,10 @@
 package org.casalib.events {
 	import flash.events.Event;
 	import org.casalib.math.Percent;
-	
+
 	/**
 		An event dispatched from {@link Tween}.
-		
+
 		@author Mike Creighton
 		@author Aaron Clinger
 		@version 10/27/08
@@ -48,11 +48,11 @@ package org.casalib.events {
 		public static const UPDATE:String   = 'update';
 		protected var _position:Number;
 		protected var _progress:Percent;
-		
-		
+
+
 		/**
 			Creates a new TweenEvent.
-			
+
 			@param type: The type of event.
 			@param bubbles: Determines whether the Event object participates in the bubbling stage of the event flow.
 			@param cancelable: Determines whether the Event object can be canceled.
@@ -60,36 +60,36 @@ package org.casalib.events {
 		public function TweenEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false) {
 			super(type, bubbles, cancelable);
 		}
-		
+
 		/**
 			The current position of the tween.
 		*/
 		public function get position():Number {
 			return this._position;
 		}
-		
+
 		public function set position(value:Number):void {
 			this._position = value;
 		}
-		
+
 		/**
 			The percent completed of the tween's duration.
 		*/
 		public function get progress():Percent {
 			return this._progress.clone();
 		}
-		
+
 		public function set progress(percent:Percent):void {
 			this._progress = percent.clone();
 		}
-		
+
 		/**
 			@return A string containing all the properties of the event.
 		*/
 		override public function toString():String {
 			return formatToString('TweenEvent', 'type', 'bubbles', 'cancelable', 'position', 'progress');
 		}
-		
+
 		/**
 			@return Duplicates an instance of the event.
 		*/
@@ -97,7 +97,7 @@ package org.casalib.events {
 			var e:TweenEvent = new TweenEvent(this.type, this.bubbles, this.cancelable);
 			e.position       = this.position;
 			e.progress       = this.progress;
-			
+
 			return e;
 		}
 	}

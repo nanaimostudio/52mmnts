@@ -34,19 +34,19 @@ package nochump.util.zip {
 	 * This class represents a Zip archive.  You can ask for the contained
 	 * entries, or get an input stream for a file entry.  The entry is
 	 * automatically decompressed.
-	 * 
+	 *
 	 * @author David Chang
 	 */
 	public class ZipFile extends EventDispatcher {
-		
+
 		private var buf:ByteArray; // data from which zip entries are read.
 		private var entryList:Array;
 		private var entryTable:Dictionary;
 		private var locOffsetTable:Dictionary;
-		
+
 		/**
 		 * Opens a Zip file reading the given data.
-		 * 
+		 *
 		 * @param data
 		 */
 		public function ZipFile(data:IDataInput) {
@@ -55,21 +55,21 @@ package nochump.util.zip {
 			data.readBytes(buf);
 			readEntries();
 		}
-		
+
 		/**
 		 * Returns an array of all Zip entries in this Zip file.
 		 */
 		public function get entries():Array {
 			return entryList;
 		}
-		
+
 		/**
 		 * Returns the number of entries in this zip file.
 		 */
 		public function get size():uint {
 			return entryList.length;
 		}
-		
+
 		/**
 		 * Searches for a zip entry in this archive with the given name.
 		 *
@@ -80,12 +80,12 @@ package nochump.util.zip {
 		public function getEntry(name:String):ZipEntry {
 			return entryTable[name];
 		}
-		
+
 		/**
 		 * Creates a byte array reading the given zip entry as
 		 * uncompressed data.  Normally zip entry should be an entry
 		 * returned by getEntry() or entries().
-		 * 
+		 *
 		 * @param entry the entry to create a byte array for.
 		 * @return the byte array, or null if the requested entry does not exist.
 		 */
@@ -198,7 +198,7 @@ package nochump.util.zip {
 			    locOffsetTable[e.name] = tmpbuf.readUnsignedInt();
 			}
 		}
-		
+
 		/**
 		 * Reads the total number of entries in the central dir and
 		 * positions buf at the start of the central directory.
@@ -213,7 +213,7 @@ package nochump.util.zip {
 			b.position = ZipConstants.ENDOFF;
 			buf.position = b.readUnsignedInt();
 		}
-		
+
 		private function findEND():uint {
 			var i:uint = buf.length - ZipConstants.ENDHDR;
 			var n:uint = Math.max(0, i - 0xffff); // 0xffff is max zip file comment length
@@ -226,7 +226,7 @@ package nochump.util.zip {
 			throw new ZipError("invalid zip");
 			return 0;
 		}
-		
+
 	}
-	
+
 }

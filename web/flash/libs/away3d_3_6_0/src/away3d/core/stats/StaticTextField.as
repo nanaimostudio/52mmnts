@@ -24,4 +24,3 @@ package away3d.core.stats
 		}
 	}
 }
-	

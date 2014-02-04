@@ -45,35 +45,35 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- AutoFitArea allows you to define a rectangular area and then <code>attach()</code> DisplayObjects 
- so that they automatically fill the area, scaling/stretching in any of the following modes: <code>STRETCH, 
- PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, NONE, WIDTH_ONLY,</code> or <code>HEIGHT_ONLY</code>. Horizontally 
+ AutoFitArea allows you to define a rectangular area and then <code>attach()</code> DisplayObjects
+ so that they automatically fill the area, scaling/stretching in any of the following modes: <code>STRETCH,
+ PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, NONE, WIDTH_ONLY,</code> or <code>HEIGHT_ONLY</code>. Horizontally
  align the attached DisplayObjects left, center, or right. Vertically align them top, center, or bottom.
- AutoFitArea extends the <code>Shape</code> class, so you can alter the width/height/scaleX/scaleY/x/y 
- properties of the AutoFitArea and then all of the attached objects will automatically be affected. 
+ AutoFitArea extends the <code>Shape</code> class, so you can alter the width/height/scaleX/scaleY/x/y
+ properties of the AutoFitArea and then all of the attached objects will automatically be affected.
  Attach as many DisplayObjects as you want. To make visualization easy, you can set the <code>previewColor</code>
  to any color and set the <code>preview</code> property to true in order to see the area on the stage
- (or simply use it like a regular Shape by adding it to the display list with <code>addChild()</code>, but the 
- <code>preview</code> property makes it simpler because it automatically ensures that it is behind 
+ (or simply use it like a regular Shape by adding it to the display list with <code>addChild()</code>, but the
+ <code>preview</code> property makes it simpler because it automatically ensures that it is behind
  all of its attached DisplayObjects in the stacking order).
  <br /><br />
- 
+
  When you <code>attach()</code> a DisplayObject, you can define a minimum and maximum width and height.
  AutoFitArea doesn't require that the DisplayObject's registration point be in its upper left corner
  either. You can even set the <code>calculateVisible</code> parameter to true when attaching an object
- so that AutoFitArea will ignore masked areas inside the DisplayObject (this is more processor-intensive, 
+ so that AutoFitArea will ignore masked areas inside the DisplayObject (this is more processor-intensive,
  so beware).<br /><br />
- 
+
  For scaling, AutoFitArea alters the DisplayObject's <code>width</code> and/or <code>height</code>
- properties unless it is rotated in which case it alters the DisplayObject's <code>transform.matrix</code> 
+ properties unless it is rotated in which case it alters the DisplayObject's <code>transform.matrix</code>
  directly so that accurate stretching/skewing can be accomplished. <br /><br />
- 
- There is also a <code>LiquidArea</code> class that extends AutoFitArea and integrates with 
- <a href="http://www.greensock.com/liquidstage/">LiquidStage</a> so that it automatically 
- adjusts its size whenever the stage is resized. This makes it simple to create things like 
- a background that proportionally fills the stage or a bar that always stretches horizontally 
+
+ There is also a <code>LiquidArea</code> class that extends AutoFitArea and integrates with
+ <a href="http://www.greensock.com/liquidstage/">LiquidStage</a> so that it automatically
+ adjusts its size whenever the stage is resized. This makes it simple to create things like
+ a background that proportionally fills the stage or a bar that always stretches horizontally
  to fill the stage but stays stuck to the bottom, etc.<br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -88,7 +88,7 @@ area.attach(myImage, {scaleMode:ScaleMode.PROPORTIONAL_OUTSIDE, crop:true});
 
 //if you'd like to preview the area visually, set preview to true (by default previewColor is red)
 area.preview = true;
- 
+
 //attach a CHANGE event listener to the area
 area.addEventListener(Event.CHANGE, onAreaUpdate);
 function onAreaUpdate(event:Event):void {
@@ -99,9 +99,9 @@ function onAreaUpdate(event:Event):void {
 var area:AutoFitArea = AutoFitArea.createAround(myImage);
 
 </pre></div>
-  
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the license that came with your Club GreenSock membership and is <b>ONLY</b> to be used by corporate or "Shockingly Green" Club GreenSock members. To learn more about Club GreenSock, visit <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a>.
- 
+
  <p></p>
 <br>
 <hr>
@@ -164,7 +164,7 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 <a class="signatureLink" href="#AutoFitArea()">AutoFitArea</a>(parent:DisplayObjectContainer, x:Number = 0, y:Number = 0, width:Number = 100, height:Number = 100, previewColor:uint = 0xFF0000)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">AutoFitArea</td>
 </tr>
@@ -182,7 +182,7 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 <a class="signatureLink" href="#attach()">attach</a>(target:DisplayObject, vars:Object = null, ... args):void</div>
 <div class="summaryTableDescription">
    Attaches a DisplayObject, causing it to automatically scale to fit the area in one of the
-   following ScaleModes: <code>STRETCH, PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, NONE, WIDTH_ONLY,</code> 
+   following ScaleModes: <code>STRETCH, PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, NONE, WIDTH_ONLY,</code>
    or <code>HEIGHT_ONLY</code>.</div>
 </td><td class="summaryTableOwnerCol">AutoFitArea</td>
 </tr>
@@ -206,10 +206,10 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#disableTweenMode()">disableTweenMode</a>():void</div>
-<div class="summaryTableDescription"> 
-   Disables the area's tween mode; normally, any changes to the area's transform properties like 
-   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate 
-   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code> 
+<div class="summaryTableDescription">
+   Disables the area's tween mode; normally, any changes to the area's transform properties like
+   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate
+   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code>
    is suspended.</div>
 </td><td class="summaryTableOwnerCol">AutoFitArea</td>
 </tr>
@@ -217,10 +217,10 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#enableTweenMode()">enableTweenMode</a>():void</div>
-<div class="summaryTableDescription"> 
-   Enables the area's tween mode; normally, any changes to the area's transform properties like 
-   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate 
-   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code> 
+<div class="summaryTableDescription">
+   Enables the area's tween mode; normally, any changes to the area's transform properties like
+   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate
+   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code>
    is suspended.</div>
 </td><td class="summaryTableOwnerCol">AutoFitArea</td>
 </tr>
@@ -244,7 +244,7 @@ var area:AutoFitArea = AutoFitArea.createAround(myImage);
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#update()">update</a>(event:Event = null):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Forces the area to update, making any necessary adjustments to the scale/position of attached objects.</div>
 </td><td class="summaryTableOwnerCol">AutoFitArea</td>
 </tr>
@@ -380,7 +380,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function AutoFitArea(parent:DisplayObjectContainer, x:Number = 0, y:Number = 0, width:Number = 100, height:Number = 100, previewColor:uint = 0xFF0000)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -435,7 +435,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public override function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void</code><p>
    Allows you to add an <code>Event.CHANGE</code> event listener.
-    
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -481,10 +481,10 @@ showHideInherited();
 <div class="detailBody">
 <code>public function attach(target:DisplayObject, vars:Object = null, ... args):void</code><p>
    Attaches a DisplayObject, causing it to automatically scale to fit the area in one of the
-   following ScaleModes: <code>STRETCH, PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, NONE, WIDTH_ONLY,</code> 
+   following ScaleModes: <code>STRETCH, PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, NONE, WIDTH_ONLY,</code>
    or <code>HEIGHT_ONLY</code>. Horizontally and vertically align the object within the area as well.
    When the area resizes, all attached DisplayObjects will automatically be moved/scaled accordingly.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -495,7 +495,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object used for defining various optional parameters (see below for list) - this is more readable and concise than defining 11 or more normal arguments. 
+<td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object used for defining various optional parameters (see below for list) - this is more readable and concise than defining 11 or more normal arguments.
          For example, <code>attach(mc, {scaleMode:"proportionalOutside", crop:true});</code> instead of <code>attach(mc, "proportionalOutside", "center", "center", true, 0, 99999999, 0, 99999999, false, NaN, false);</code>.
          The following optional parameters are recognized:
        <ul>
@@ -532,7 +532,7 @@ showHideInherited();
 <code>public static function createAround(target:DisplayObject, vars:Object = null, ... args):<a href="../layout/AutoFitArea.html">AutoFitArea</a></code><p>
    Creates an AutoFitArea with its initial dimensions fit precisely around a target DisplayObject. It also attaches
    the target DisplayObject immediately.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -543,7 +543,7 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object used for defining various optional parameters (see below for list) - this is more readable and concise than defining 11 or more normal arguments. 
+<td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object used for defining various optional parameters (see below for list) - this is more readable and concise than defining 11 or more normal arguments.
          For example, <code>createAround(mc, {scaleMode:"proportionalOutside", crop:true});</code> instead of <code>createAround(mc, "proportionalOutside", "center", "center", true, 0, 99999999, 0, 99999999, false, NaN, false);</code>.
          The following optional parameters are recognized:
        <ul>
@@ -574,10 +574,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../layout/AutoFitArea.html">AutoFitArea</a></code> &mdash; 
+<td width="20"></td><td><code><a href="../layout/AutoFitArea.html">AutoFitArea</a></code> &mdash;
                         An AutoFitArea instance
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -597,18 +597,18 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function disableTweenMode():void</code><p> 
-   Disables the area's tween mode; normally, any changes to the area's transform properties like 
-   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate 
-   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code> 
-   is suspended. This effects perfomance because if, for example, you tween the area's <code>x, y, width</code>, 
-   and <code>height</code> properties simultaneously, <code>update()</code> would get called 4 times 
-   each frame (once for each property) even though it only really needs to be called once after all 
-   properties were updated inside the tween. So to maximize performance during a tween, it is best 
-   to use the tween's <code>onStart</code> to call <code>enableTweenMode()</code> at the beginning 
-   of the tween, use the tween's <code>onUpdate</code> to call the area's <code>update()</code> method, 
+<code>public function disableTweenMode():void</code><p>
+   Disables the area's tween mode; normally, any changes to the area's transform properties like
+   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate
+   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code>
+   is suspended. This effects perfomance because if, for example, you tween the area's <code>x, y, width</code>,
+   and <code>height</code> properties simultaneously, <code>update()</code> would get called 4 times
+   each frame (once for each property) even though it only really needs to be called once after all
+   properties were updated inside the tween. So to maximize performance during a tween, it is best
+   to use the tween's <code>onStart</code> to call <code>enableTweenMode()</code> at the beginning
+   of the tween, use the tween's <code>onUpdate</code> to call the area's <code>update()</code> method,
    and then the tween's <code>onComplete</code> to call <code>disableTweenMode()</code> like so:<br /><br /><code>
-   
+
    TweenLite.to(myArea, 3, {x:100, y:50, width:300, height:250, onStart:myArea.enableTweenMode, onUpdate:myArea.update, onComplete:myArea.disableTweenMode});</code>
    </p></div>
 <a name="enableTweenMode()"></a>
@@ -618,18 +618,18 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function enableTweenMode():void</code><p> 
-   Enables the area's tween mode; normally, any changes to the area's transform properties like 
-   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate 
-   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code> 
-   is suspended. This effects perfomance because if, for example, you tween the area's <code>x, y, width</code>, 
-   and <code>height</code> properties simultaneously, <code>update()</code> would get called 4 times 
-   each frame (once for each property) even though it only really needs to be called once after all 
-   properties were updated inside the tween. So to maximize performance during a tween, it is best 
-   to use the tween's <code>onStart</code> to call <code>enableTweenMode()</code> at the beginning 
-   of the tween, use the tween's <code>onUpdate</code> to call the area's <code>update()</code> method, 
+<code>public function enableTweenMode():void</code><p>
+   Enables the area's tween mode; normally, any changes to the area's transform properties like
+   <code>x, y, scaleX, scaleY, width,</code> or <code>height</code> will force an immediate
+   <code>update()</code> call but when the area is in tween mode, that automatic <code>update()</code>
+   is suspended. This effects perfomance because if, for example, you tween the area's <code>x, y, width</code>,
+   and <code>height</code> properties simultaneously, <code>update()</code> would get called 4 times
+   each frame (once for each property) even though it only really needs to be called once after all
+   properties were updated inside the tween. So to maximize performance during a tween, it is best
+   to use the tween's <code>onStart</code> to call <code>enableTweenMode()</code> at the beginning
+   of the tween, use the tween's <code>onUpdate</code> to call the area's <code>update()</code> method,
    and then the tween's <code>onComplete</code> to call <code>disableTweenMode()</code> like so:<br /><br /><code>
-   
+
    TweenLite.to(myArea, 3, {x:100, y:50, width:300, height:250, onStart:myArea.enableTweenMode, onUpdate:myArea.update, onComplete:myArea.disableTweenMode});</code>
    </p></div>
 <a name="getAttachedObjects()"></a>
@@ -641,7 +641,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function getAttachedObjects():Array</code><p>
    Returns an Array of all attached DisplayObjects.
-   
+
    </p><p></p>
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
@@ -660,7 +660,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function release(target:DisplayObject):Boolean</code><p>
    Releases control of an attached DisplayObject.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -684,8 +684,8 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function update(event:Event = null):void</code><p> 
-   Forces the area to update, making any necessary adjustments to the scale/position of attached objects. 
+<code>public function update(event:Event = null):void</code><p>
+   Forces the area to update, making any necessary adjustments to the scale/position of attached objects.
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

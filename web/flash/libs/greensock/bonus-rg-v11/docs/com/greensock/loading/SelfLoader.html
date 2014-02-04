@@ -46,25 +46,25 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  the <code>loaderInfo</code>'s progress). SelfLoader is only useful in situations where you want to factor
  the current swf's loading progress into a LoaderMax queue or maybe display a progress bar for the current
  swf or fire an event when loading has finished.<br /><br />
- 
+
  <strong>OPTIONAL VARS PROPERTIES</strong><br />
  The following special properties can be passed into the SelfLoader constructor via its <code>vars</code> parameter:<br />
  <ul>
    <li><strong> name : String</strong> - A name that is used to identify the loader instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
    <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code>. The default <code>autoDispose</code> value is <code>false</code>.
-   
+
    <br /><br />----EVENT HANDLER SHORTCUTS----</li>
    <li><strong> onProgress : Function</strong> - A handler function for <code>LoaderEvent.PROGRESS</code> events which are dispatched whenever the <code>bytesLoaded</code> changes. Make sure your onProgress function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>). You can use the LoaderEvent's <code>target.progress</code> to get the loader's progress value or use its <code>target.bytesLoaded</code> and <code>target.bytesTotal</code>.</li>
    <li><strong> onComplete : Function</strong> - A handler function for <code>LoaderEvent.COMPLETE</code> events which are dispatched when the loader has finished loading successfully. Make sure your onComplete function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>
  </ul><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
 <br>Example AS3 code:<div class='listing'><pre>
  import com.greensock.loading.*;
  import com.greensock.events.LoaderEvent;
- 
+
 //create a SelfLoader
 var loader:SelfLoader = new SelfLoader(this, {name:"self", onProgress:progressHandler, onComplete:completeHandler});
 
@@ -91,9 +91,9 @@ function errorHandler(event:LoaderEvent):void {
  trace("error occured with " + event.target + ": " + event.text);
 }
  </pre></div>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -114,7 +114,7 @@ function errorHandler(event:LoaderEvent):void {
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -135,7 +135,7 @@ function errorHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#content">content</a> : *<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#content">content</a> : *<div class="summaryTableDescription">
    The content that was loaded by the loader which varies by the type of loader:
    <ul>
      <li><strong> ImageLoader </strong> - A <code>com.greensock.loading.display.ContentDisplay</code> (a Sprite) which contains the ImageLoader's <code>rawContent</code> (a <code>flash.display.Bitmap</code> unless script access was denied in which case <code>rawContent</code> will be a <code>flash.display.Loader</code> to avoid security errors).</div>
@@ -146,8 +146,8 @@ function errorHandler(event:LoaderEvent):void {
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderItem.html">LoaderItem</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription"> 
-   The number of seconds that elapsed between when the loader began and when it either completed, failed, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="core/LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription">
+   The number of seconds that elapsed between when the loader began and when it either completed, failed,
    or was canceled.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -208,7 +208,7 @@ function errorHandler(event:LoaderEvent):void {
 <a class="signatureLink" href="#SelfLoader()">SelfLoader</a>(self:DisplayObject, vars:Object = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">SelfLoader</td>
 </tr>
@@ -223,8 +223,8 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderItem.html#auditSize()">auditSize</a>():void</div>
-<div class="summaryTableDescription"> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
+<div class="summaryTableDescription">
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
    in order to improve the accuracy of the <code>progress</code> property.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderItem.html">LoaderItem</a></td>
 </tr>
@@ -232,8 +232,8 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#cancel()">cancel</a>():void</div>
-<div class="summaryTableDescription"> 
-   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled 
+<div class="summaryTableDescription">
+   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled
    immediately and its status will change to <code>LoaderStatus.READY</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -241,7 +241,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#dispose()">dispose</a>(flushContent:Boolean = false):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Disposes of the loader and releases it internally for garbage collection.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -264,7 +264,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#prioritize()">prioritize</a>(loadNow:Boolean = true):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Immediately prioritizes the loader inside any LoaderMax instances that contain it,
    forcing it to the top position in their queue and optionally calls <code>load()</code>
    immediately as well.</div>
@@ -288,7 +288,7 @@ function errorHandler(event:LoaderEvent):void {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="core/LoaderCore.html#unload()">unload</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Removes any content that was loaded and sets <code>bytesLoaded</code> back to zero.</div>
 </td><td class="summaryTableOwnerCol"><a href="core/LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -383,7 +383,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function SelfLoader(self:DisplayObject, vars:Object = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -395,12 +395,12 @@ showHideInherited();
 </tr>
 <tr>
 <td width="20px"></td><td><code><span class="label">vars</span>:Object</code> (default = <code>null</code>)<code></code> &mdash; An object containing optional configuration details. For example: <code>new SelfLoader(this, {name:"self", onComplete:completeHandler, onProgress:progressHandler})</code>.<br /><br />
-   
+
    The following special properties can be passed into the constructor via the <code>vars</code> parameter:<br />
    <ul>
      <li><strong> name : String</strong> - A name that is used to identify the loader instance. This name can be fed to the <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code> methods or traced at any time. Each loader's name should be unique. If you don't define one, a unique name will be created automatically, like "loader21".</li>
      <li><strong> autoDispose : Boolean</strong> - When <code>autoDispose</code> is <code>true</code>, the loader will be disposed immediately after it completes (it calls the <code>dispose()</code> method internally after dispatching its <code>COMPLETE</code> event). This will remove any listeners that were defined in the vars object (like onComplete, onProgress, onError). Once a loader is disposed, it can no longer be found with <code>LoaderMax.getLoader()</code> or <code>LoaderMax.getContent()</code>. The default <code>autoDispose</code> value is <code>false</code>.
-     
+
      <br /><br />----EVENT HANDLER SHORTCUTS----</li>
      <li><strong> onProgress : Function</strong> - A handler function for <code>LoaderEvent.PROGRESS</code> events which are dispatched whenever the <code>bytesLoaded</code> changes. Make sure your onProgress function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>). You can use the LoaderEvent's <code>target.progress</code> to get the loader's progress value or use its <code>target.bytesLoaded</code> and <code>target.bytesTotal</code>.</li>
      <li><strong> onComplete : Function</strong> - A handler function for <code>LoaderEvent.COMPLETE</code> events which are dispatched when the loader has finished loading successfully. Make sure your onComplete function accepts a single parameter of type <code>LoaderEvent</code> (<code>com.greensock.events.LoaderEvent</code>).</li>

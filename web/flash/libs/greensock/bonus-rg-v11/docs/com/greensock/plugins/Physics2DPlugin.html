@@ -44,70 +44,70 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  Provides simple physics functionality for tweening a DisplayObject's x and y coordinates based on a
  combination of velocity, angle, gravity, acceleration, accelerationAngle, and/or friction. It is not intended
- to replace a full-blown physics engine and does not offer collision detection, but serves 
+ to replace a full-blown physics engine and does not offer collision detection, but serves
  as a way to easily create interesting physics-based effects with the GreenSock tweening platform. Parameters
- are not intended to be dynamically updateable, but one unique convenience is that everything is reverseable. 
+ are not intended to be dynamically updateable, but one unique convenience is that everything is reverseable.
  So if you spawn a bunch of particle tweens, for example, and throw them into a TimelineLite, you could
- simply call reverse() on the timeline to watch the particles retrace their steps right back to the beginning. 
+ simply call reverse() on the timeline to watch the particles retrace their steps right back to the beginning.
  Keep in mind that any easing equation you define for your tween will be completely ignored for these properties.
   <ul>
-   <li><b>velocity : Number</b> - the initial velocity of the object measured in pixels per time 
-         unit (usually seconds, but for tweens where useFrames is true, it would 
+   <li><b>velocity : Number</b> - the initial velocity of the object measured in pixels per time
+         unit (usually seconds, but for tweens where useFrames is true, it would
          be measured in frames). The default is zero.</li>
    <li><b>angle : Number</b> - the initial angle (in degrees) at which the object is traveling. Only
-         pertinent when a velocity is defined. For example, if the object should 
+         pertinent when a velocity is defined. For example, if the object should
          start out traveling at -60 degrees (towards the upper right), the angle
          would be -60. The default is zero.</li>
    <li><b>gravity : Number</b> - the amount of downwards acceleration applied to the object, measured
-         in pixels per time unit (usually seconds, but for tweens where useFrames 
+         in pixels per time unit (usually seconds, but for tweens where useFrames
          is true, it would be measured in frames). You can <b>either</b> use <code>gravity</code>
          <b>or</b> <code>acceleration</code>, not both because gravity is the same thing
          as acceleration applied at an <code>accelerationAngle</code> of 90. Think of <code>gravity</code>
-         as a convenience property that automatically sets the <code>accelerationAngle</code> 
+         as a convenience property that automatically sets the <code>accelerationAngle</code>
          for you.</li>
    <li><b>acceleration : Number</b> - the amount of acceleration applied to the object, measured
-         in pixels per time unit (usually seconds, but for tweens where useFrames 
+         in pixels per time unit (usually seconds, but for tweens where useFrames
          is true, it would be measured in frames). To apply the acceleration in a specific
          direction that is different than the <code>angle</code>, use the <code>accelerationAngle</code>
          property. You can <b>either</b> use <code>gravity</code>
          <b>or</b> <code>acceleration</code>, not both because gravity is the same thing
          as acceleration applied at an <code>accelerationAngle</code> of 90.</li>
-   <li><b>accelerationAngle : Number</b> - the angle at which acceleration is applied (if any), measured in degrees. 
+   <li><b>accelerationAngle : Number</b> - the angle at which acceleration is applied (if any), measured in degrees.
          So if, for example, you want the object to accelerate towards the left side of the
          screen, you'd use an <code>accelerationAngle</code> of 180. If you define a
          <code>gravity</code> value, it will automatically set the <code>accelerationAngle</code>
          to 90 (downwards).</li>
    <li><b>friction : Number</b> - a value between 0 and 1 where 0 is no friction, 0.08 is a small amount of
-         friction, and 1 will completely prevent any movement. This is not meant to be precise or 
+         friction, and 1 will completely prevent any movement. This is not meant to be precise or
          scientific in any way, but rather serves as an easy way to apply a friction-like
          physics effect to your tween. Generally it is best to experiment with this number a bit.
          Also note that friction requires more processing than physics tweens without any friction.</li>
   </ul><br />
- 
- 
+
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.Physics2DPlugin; <br />
    TweenPlugin.activate([Physics2DPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 2, {physics2D:{velocity:300, angle:-60, gravity:400}}); <br /><br />
-   
+
    //--OR--<br /><br />
- 
+
    TweenLite.to(mc, 2, {physics2D:{velocity:300, angle:-60, friction:0.1}}); <br /><br />
-   
+
    //--OR--<br /><br />
- 
+
    TweenLite.to(mc, 2, {physics2D:{velocity:300, angle:-60, acceleration:50, accelerationAngle:180}}); <br /><br />
  </code>
- 
+
  Physics2DPlugin is a Club GreenSock membership benefit. You must have a valid membership to use this class
  without violating the terms of use. Visit http://www.greensock.com/club/ to sign up or get more details.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

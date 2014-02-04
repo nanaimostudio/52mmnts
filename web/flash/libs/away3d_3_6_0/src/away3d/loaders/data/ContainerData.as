@@ -10,7 +10,7 @@ package away3d.loaders.data
 		 * An array containing the child 3d objects of the container.
 		 */
 		public var children:Array = [];
-		
+
 		/**
 		 * Reference to the 3d container object of the resulting container.
 		 */

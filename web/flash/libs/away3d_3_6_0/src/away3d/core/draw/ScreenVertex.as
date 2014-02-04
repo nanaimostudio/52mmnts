@@ -1,7 +1,7 @@
 package away3d.core.draw
 {
     import away3d.core.geom.*;
-    
+
     import flash.geom.*;
 
     /**
@@ -18,24 +18,24 @@ package away3d.core.draw
 		private var dy:Number;
 
 		public var vectorInstructionType:String = PathCommand.LINE;
-		
+
     	/**
     	 * The view x position of the vertex in the view.
     	 */
         public var vx:Number;
-        
+
     	/**
     	 * The view y position of the vertex in the view.
     	 */
         public var vy:Number;
-        
+
         /**
         * Indicates whether the vertex is visible after projection.
         */
         public var visible:Boolean;
-    	
+
     	public var viewTimer:int;
-    	
+
 		/**
 		 * Creates a new <code>PrimitiveQuadrantTreeNode</code> object.
 		 *
@@ -48,23 +48,23 @@ package away3d.core.draw
             this.x = x;
             this.y = y;
             this.z = z;
-    
+
             this.visible = false;
         }
-		
+
 		/**
 		 * Used to trace the values of a vertex.
-		 * 
+		 *
 		 * @return A string representation of the vertex object.
 		 */
         public override function toString(): String
         {
             return "new ScreenVertex("+x+', '+y+', '+z+")";
         }
-		
+
 		/**
 		 * Calculates the squared distance between two screen vertex objects.
-		 * 
+		 *
 		 * @param	b	The screen vertex object to use for the calcation.
 		 * @return		The squared scalar value of the vector between this and the given scren vertex.
 		 */
@@ -72,10 +72,10 @@ package away3d.core.draw
         {
             return (ax - bx)*(ax - bx) + (ay - by)*(ay - by);
         }
-		
+
 		/**
 		 * Calculates the distance between two screen vertex objects.
-		 * 
+		 *
 		 * @param	b	The second screen vertex object to use for the calcation.
 		 * @return		The scalar value of the vector between this and the given screen vertex.
 		 */
@@ -83,12 +83,12 @@ package away3d.core.draw
         {
             return Math.sqrt((x - b.x)*(x - b.x) + (y - b.y)*(y - b.y));
         }
-		
+
 		/**
 		 * Calculates affine distortion present at the midpoint between two screen vertex objects.
-		 * 
+		 *
 		 * @param	b		The second screen vertex object to use for the calcation.
-		 * @param	focus	The focus value used for the distortion calulations. 
+		 * @param	focus	The focus value used for the distortion calulations.
 		 * @return			The scalar value of the vector between this and the given screen vertex.
 		 */
         public function distortSqr(b:ScreenVertex, focus:Number):Number
@@ -104,10 +104,10 @@ package away3d.core.draw
 
             return 50*(dx*dx + dy+dy); // (distort*10)^2
         }
-		
+
 		/**
 		 * Returns a screen vertex with values given by a weighted mean calculation.
-		 * 
+		 *
 		 * @param	a		The first screen vertex to use for the calculation.
 		 * @param	b		The second screen vertex to use for the calculation.
 		 * @param	aw		The first screen vertex weighting.
@@ -150,10 +150,10 @@ package away3d.core.draw
 
             return new ScreenVertex(x, y, (da*a.z + db*b.z) / det);
         }
-		
+
 		/**
 		 * Creates the median screen vertex between the two given screen vertex objects.
-		 * 
+		 *
 		 * @param	a					The index of the first screen vertex to use for the calculation.
 		 * @param	b					The index of the second screen vertex to use for the calculation.
 		 * @param	screenVertices		The Array of screen vertices to use for the calculation.
@@ -166,18 +166,18 @@ package away3d.core.draw
         	var ax:Number = screenVertices[avertex];
         	var ay:Number = screenVertices[uint(avertex+1)];
         	var az:Number = uvts[uint(screenIndices[aindex]*3+2)];
-        	
+
         	var bvertex:int = screenIndices[bindex]*2;
         	var bx:Number = screenVertices[bvertex];
         	var by:Number = screenVertices[uint(bvertex+1)];
         	var bz:Number = uvts[uint(screenIndices[bindex]*3+2)];
-        	
+
             var mz:Number = (1/az + 1/bz) / 2;
-			
+
             var faz:Number = 1/az;
             var fbz:Number = 1/bz;
             var ifmz:Number = 1 / mz / 2;
-			
+
 			screenVertices[screenVertices.length] = (ax*faz + bx*fbz)*ifmz;
 			screenVertices[screenVertices.length] = (ay*faz + by*fbz)*ifmz;
 			uvts.push(0, 0, 1/mz);

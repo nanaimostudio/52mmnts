@@ -18,7 +18,7 @@ package away3d.core.base
         {
             this.vertices = vertices;
         }
-		
+
 		/**
 		 * resets all vertex objects to 0,0,0
 		 */
@@ -31,19 +31,19 @@ package away3d.core.base
                 v.reset();
             }
         }
-		
+
 		/**
 		 * interpolates the vertex objects position values between the current vertex positions and the external vertex positions
-		 * 
+		 *
 		 * @param	comp	The external mesh used for interpolating values
-		 * @param	k		The increment used on the weighting value 
+		 * @param	k		The increment used on the weighting value
 		 */
         public function mix(comp:Mesh, k:Number):void
         {
             weight += k;
             _vertices = vertices.geometry.vertices;
             _verticesComp = comp.geometry.vertices;
-            
+
             var length:int = _vertices.length;
             for (var i:int = 0; i < length; ++i)
             {
@@ -52,10 +52,10 @@ package away3d.core.base
                 _vertices[i].z += _verticesComp[i].z * k;
             }
         }
-		
+
 		/**
 		 * resets all vertex objects to the external mesh positions
-		 * 
+		 *
 		 * @param	comp	The external mesh used for vertex values
 		 */
         public function finish(comp:Mesh):void

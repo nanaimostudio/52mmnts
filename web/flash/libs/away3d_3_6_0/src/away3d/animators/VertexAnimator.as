@@ -1,17 +1,17 @@
-package away3d.animators 
+package away3d.animators
 {
 	import away3d.arcane;
 	import away3d.core.base.*;
 	import away3d.core.utils.*;
-	
+
 	import flash.geom.*;
-	
+
 	use namespace arcane;
-	
+
 	/**
 	 * @author robbateman
 	 */
-	public class VertexAnimator extends Animator 
+	public class VertexAnimator extends Animator
 	{
 		private var _frames:Vector.<Vector.<Vector3D>> = new Vector.<Vector.<Vector3D>>();
 		private var _cframe:Vector.<Vector3D>;
@@ -19,25 +19,25 @@ package away3d.animators
 		private var _vertices:Vector.<Vertex> = new Vector.<Vertex>();
 		private var _cPosition:Vector3D;
 		private var _nPosition:Vector3D;
-		
+
         protected override function updateTarget():void
         {
         }
-		
+
         protected override function getDefaultFps():Number
 		{
 			return 10;
 		}
-		
+
         protected override function updateProgress(val:Number):void
         {
         	super.updateProgress(val);
-        	
+
         	if (_currentFrame == _frames.length) {
         		_cframe = _nframe = _frames[uint(_currentFrame-1)];
         	} else {
 	        	_cframe = _frames[_currentFrame];
-	        	
+
 	        	if (_currentFrame == _frames.length - 1) {
 	        		if (loop)
 	        			_nframe = _frames[uint(0)];
@@ -47,7 +47,7 @@ package away3d.animators
 	        		_nframe = _frames[uint(_currentFrame+1)];
 	        	}
         	}
-        	
+
         	//update vertices
         	var i:uint = _vertices.length;
 			if (interpolate) {
@@ -63,15 +63,15 @@ package away3d.animators
 	        	}
         	}
 		}
-        
+
 		public function get frames():Vector.<Vector.<Vector3D>>
 		{
 			return _frames;
 		}
-				
+
 		/**
 		 * Creates a new <code>VertexAnimator</code>
-		 * 
+		 *
 		 * @param	target		[optional]	Defines the 3d object to which the animation is applied.
 		 * @param	init		[optional]	An initialisation object for specifying default instance properties.
 		 */
@@ -80,13 +80,13 @@ package away3d.animators
 			super(target, init);
 			Debug.trace(" + VertexAnimator");
 		}
-        
+
 		public function addFrame(frame:Vector.<Vector3D>):void
 		{
 			_frames.push(frame);
 			_totalFrames = _frames.length;
 		}
-		
+
 		public function addVertex(vertex:Vertex):void
 		{
 			_vertices.push(vertex);

@@ -1,10 +1,10 @@
-package away3d.core.utils 
+package away3d.core.utils
 {
 
 	/**
 	 * @author robbateman
 	 */
-	public class FaceNormalShaderVO 
+	public class FaceNormalShaderVO
 	{
 		public var kar:Number;
 		public var kag:Number;
@@ -15,7 +15,7 @@ package away3d.core.utils
 		public var ksr:Number;
 		public var ksg:Number;
 		public var ksb:Number;
-		
+
 		public function FaceNormalShaderVO(kar:Number, kag:Number, kab:Number, kdr:Number, kdg:Number, kdb:Number, ksr:Number, ksg:Number, ksb:Number)
 		{
 			this.kar = kar;

@@ -6,15 +6,15 @@
     /**
     * QTVR-style 360 panorama renderer that is initialized with one solid image.
     * A skybox contains six sides that are arranged like the inside of a cube.
-    */ 
+    */
     public class Skybox6 extends Mesh
     {
-    	
+
 		/**
 		 * Creates a new <code>Skybox6</code> object.
 		 *
 		 * @param	material		The material to use for generating all six skybox sides.
-		 * 
+		 *
 		 */
         public function Skybox6(material:Material)
         {
@@ -34,14 +34,14 @@
             var height:Number = 800000;
             var depth:Number = 800000;
 
-            var v000:Vertex = new Vertex(-width/2, -height/2, -depth/2); 
-            var v001:Vertex = new Vertex(-width/2, -height/2, +depth/2); 
-            var v010:Vertex = new Vertex(-width/2, +height/2, -depth/2); 
-            var v011:Vertex = new Vertex(-width/2, +height/2, +depth/2); 
-            var v100:Vertex = new Vertex(+width/2, -height/2, -depth/2); 
-            var v101:Vertex = new Vertex(+width/2, -height/2, +depth/2); 
-            var v110:Vertex = new Vertex(+width/2, +height/2, -depth/2); 
-            var v111:Vertex = new Vertex(+width/2, +height/2, +depth/2); 
+            var v000:Vertex = new Vertex(-width/2, -height/2, -depth/2);
+            var v001:Vertex = new Vertex(-width/2, -height/2, +depth/2);
+            var v010:Vertex = new Vertex(-width/2, +height/2, -depth/2);
+            var v011:Vertex = new Vertex(-width/2, +height/2, +depth/2);
+            var v100:Vertex = new Vertex(+width/2, -height/2, -depth/2);
+            var v101:Vertex = new Vertex(+width/2, -height/2, +depth/2);
+            var v110:Vertex = new Vertex(+width/2, +height/2, -depth/2);
+            var v111:Vertex = new Vertex(+width/2, +height/2, +depth/2);
 
             var uvrighta:UV = new UV(0/3, 1/2+vdelta);
             var uvrightb:UV = new UV(1/3, 1/2+vdelta);
@@ -96,10 +96,10 @@
             quarterFaces();
 
             mouseEnabled = false;
-			
+
 			type = "Skybox6";
         	url = "primitive";
         }
     }
-    
+
 }

@@ -9,17 +9,17 @@ package away3d.core.utils
         public static function clear():void
         {
         }
-        
+
         public static function delimiter():void
         {
         }
-        
+
         public static function trace(message:Object):void
         {
         	if (active)
            		dotrace(message);
         }
-        
+
         public static function warning(message:Object):void
         {
             if (warningsAsErrors)
@@ -29,7 +29,7 @@ package away3d.core.utils
             }
             trace("WARNING: "+message);
         }
-        
+
         public static function error(message:Object):void
         {
             trace("ERROR: "+message);

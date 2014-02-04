@@ -43,21 +43,21 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
  A CirclePath2D defines a circular path on which a PathFollower can be placed, making it simple to tween objects
- along a circle or oval (make an oval by altering the width/height/scaleX/scaleY properties). A PathFollower's 
- position along the path is described using its <code>progress</code> property, a value between 0 and 1 where 
- 0 is at the beginning of the path, 0.5 is in the middle, and 1 is at the very end of the path. So to tween a 
- PathFollower along the path, you can simply tween its <code>progress</code> property. To tween ALL of the 
- followers on the path at once, you can tween the CirclePath2D's <code>progress</code> property. PathFollowers 
- automatically wrap so that if the <code>progress</code> value exceeds 1 or drops below 0, it shows up on 
+ along a circle or oval (make an oval by altering the width/height/scaleX/scaleY properties). A PathFollower's
+ position along the path is described using its <code>progress</code> property, a value between 0 and 1 where
+ 0 is at the beginning of the path, 0.5 is in the middle, and 1 is at the very end of the path. So to tween a
+ PathFollower along the path, you can simply tween its <code>progress</code> property. To tween ALL of the
+ followers on the path at once, you can tween the CirclePath2D's <code>progress</code> property. PathFollowers
+ automatically wrap so that if the <code>progress</code> value exceeds 1 or drops below 0, it shows up on
  the other end of the path.<br /><br />
-  
+
  Since CirclePath2D extends the Shape class, you can add an instance to the display list to see a line representation
- of the path drawn which can be helpful especially during the production phase. Use <code>lineStyle()</code> 
- to adjust the color, thickness, and other attributes of the line that is drawn (or set the CirclePath2D's 
- <code>visible</code> property to false or don't add it to the display list if you don't want to see the line 
- at all). You can also adjust all of its properties like <code>radius, scaleX, scaleY, rotation, width, height, x,</code> 
+ of the path drawn which can be helpful especially during the production phase. Use <code>lineStyle()</code>
+ to adjust the color, thickness, and other attributes of the line that is drawn (or set the CirclePath2D's
+ <code>visible</code> property to false or don't add it to the display list if you don't want to see the line
+ at all). You can also adjust all of its properties like <code>radius, scaleX, scaleY, rotation, width, height, x,</code>
  and <code>y</code>. That means you can tween those values as well to achieve very dynamic, complex effects with ease.<br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -81,7 +81,7 @@ this.addChild(circle);
 
 
 //--- Instead of using the plugin, you could manually manage followers and tween their "progress" property...
- 
+
 //make the MovieClip "mc2" follow the circle and start at a position of 90 degrees (this returns a PathFollower instance)
 var follower:PathFollower = circle.addFollower(mc2, circle.angleToProgress(90));
 
@@ -91,16 +91,16 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 315, Directio
 //tween the follower counter-clockwise to 200 degrees and add an extra revolution
 TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Direction.COUNTER_CLOCKWISE, 1)});
 </pre></div>
- 
+
  <b>NOTES</b><br />
  <ul>
    <li>All followers's positions are automatically updated when you alter the MotionPath that they're following.</li>
-   <li>To tween all followers along the path at once, simply tween the MotionPath's <code>progress</code> 
+   <li>To tween all followers along the path at once, simply tween the MotionPath's <code>progress</code>
     property which will provide better performance than tweening each follower independently.</li>
  </ul>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -129,7 +129,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#progress">progress</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#progress">progress</a> : Number<div class="summaryTableDescription">
    A value between 0 and 1 that can be used to move all followers along the path.</div>
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
@@ -138,7 +138,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription">
    Identical to <code>progress</code> except that the value is not re-interpolated between 0 and 1.</div>
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
@@ -197,7 +197,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <a class="signatureLink" href="#CirclePath2D()">CirclePath2D</a>(x:Number, y:Number, radius:Number)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -215,7 +215,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <div class="summarySignature">
 <a class="signatureLink" href="#anglesToProgressChange()">anglesToProgressChange</a>(startAngle:Number, endAngle:Number, direction:String = "clockwise", extraRevolutions:uint = 0, useRadians:Boolean = false):Number</div>
 <div class="summaryTableDescription">
-   Returns the amount of <code>progress</code> change between two angles on the CirclePath2D, allowing special 
+   Returns the amount of <code>progress</code> change between two angles on the CirclePath2D, allowing special
    parameters like direction and extraRevolutions.</div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -224,7 +224,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <div class="summarySignature">
 <a class="signatureLink" href="#angleToProgress()">angleToProgress</a>(angle:Number, useRadians:Boolean = false):Number</div>
 <div class="summaryTableDescription">
-   Translates an angle (in degrees or radians) to the associated progress value 
+   Translates an angle (in degrees or radians) to the associated progress value
    on the CirclePath2D.</div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -241,7 +241,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <div class="summarySignature">
 <a class="signatureLink" href="#followerTween()">followerTween</a>(follower:*, endAngle:Number, direction:String = "clockwise", extraRevolutions:uint = 0, useRadians:Boolean = false):String</div>
 <div class="summaryTableDescription">
-   Simplifies tweening by determining a relative change in the progress value of a follower based on the 
+   Simplifies tweening by determining a relative change in the progress value of a follower based on the
    endAngle, direction, and extraRevolutions that you define.</div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -268,7 +268,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <div class="summarySignature">
 <a class="signatureLink" href="#progressToAngle()">progressToAngle</a>(progress:Number, useRadians:Boolean = false):Number</div>
 <div class="summaryTableDescription">
-   Translates a progress value (typically between 0 and 1 where 0 is the beginning of the path, 
+   Translates a progress value (typically between 0 and 1 where 0 is the beginning of the path,
    0.5 is in the middle, and 1 is at the end) to the associated angle on the CirclePath2D.</div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -291,7 +291,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#renderObjectAt()">renderObjectAt</a>(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Positions any object with x and y properties on the path at a specific progress position.</div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -299,7 +299,7 @@ TweenLite.to(follower, 2, {progress:circle.followerTween(follower, 200, Directio
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#update()">update</a>(event:Event = null):void</div>
-<div class="summaryTableDescription">  
+<div class="summaryTableDescription">
    Forces the MotionPath to re-render itself and all of its followers.</div>
 </td><td class="summaryTableOwnerCol">CirclePath2D</td>
 </tr>
@@ -337,7 +337,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function CirclePath2D(x:Number, y:Number, radius:Number)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -370,9 +370,9 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function anglesToProgressChange(startAngle:Number, endAngle:Number, direction:String = "clockwise", extraRevolutions:uint = 0, useRadians:Boolean = false):Number</code><p>
-   Returns the amount of <code>progress</code> change between two angles on the CirclePath2D, allowing special 
-   parameters like direction and extraRevolutions. 
-   
+   Returns the amount of <code>progress</code> change between two angles on the CirclePath2D, allowing special
+   parameters like direction and extraRevolutions.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -425,14 +425,14 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function angleToProgress(angle:Number, useRadians:Boolean = false):Number</code><p>
-   Translates an angle (in degrees or radians) to the associated progress value 
+   Translates an angle (in degrees or radians) to the associated progress value
    on the CirclePath2D. For example, to position <code>mc</code> on the CirclePath2D at 90 degrees
    (bottom), you'd do:<br /><br /><code>
-   
+
    var follower:PathFollower = myCircle.addFollower(mc, myCircle.angleToProgress(90));<br />
-   
+
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -464,14 +464,14 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function followerTween(follower:*, endAngle:Number, direction:String = "clockwise", extraRevolutions:uint = 0, useRadians:Boolean = false):String</code><p>
-   Simplifies tweening by determining a relative change in the progress value of a follower based on the 
+   Simplifies tweening by determining a relative change in the progress value of a follower based on the
    endAngle, direction, and extraRevolutions that you define. For example, to tween <code>myFollower</code>
-   from wherever it is currently to the position at 315 degrees, moving in the COUNTER_CLOCKWISE direction 
+   from wherever it is currently to the position at 315 degrees, moving in the COUNTER_CLOCKWISE direction
    and going 2 extra revolutions, you could do:<br /><br /><code>
-   
+
    TweenLite.to(myFollower, 2, {progress:myCircle.followerTween(myFollower, 315, Direction.COUNTER_CLOCKWISE, 2)});
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -524,14 +524,14 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function progressToAngle(progress:Number, useRadians:Boolean = false):Number</code><p>
-   Translates a progress value (typically between 0 and 1 where 0 is the beginning of the path, 
-   0.5 is in the middle, and 1 is at the end) to the associated angle on the CirclePath2D. 
+   Translates a progress value (typically between 0 and 1 where 0 is the beginning of the path,
+   0.5 is in the middle, and 1 is at the end) to the associated angle on the CirclePath2D.
    For example, to find out what angle a particular PathFollower is at, you'd do:<br /><br /><code>
-   
+
    var angle:Number = myCircle.progressToAngle(myFollower.progress, false);<br />
-   
+
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -562,20 +562,20 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function renderObjectAt(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</code><p> 
-   Positions any object with x and y properties on the path at a specific progress position. 
+<code>public override function renderObjectAt(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</code><p>
+   Positions any object with x and y properties on the path at a specific progress position.
    For example, to position <code>mc</code> in the middle of the path, you would do:<br /><br /><code>
-   
+
    myPath.renderObjectAt(mc, 0.5);</code><br /><br />
-   
+
    Some paths have methods to translate other meaningful information into a progress value, like
    for a <code>CirclePath2D</code> you can get the progress associated with the 90-degree position with the
    <code>angleToPosition()</code> method like this:<br /><br /><code>
-   
+
    myCircle.renderObjectAt(mc, myCircle.angleToProgress(90));
-   
+
    </code><br />
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -612,9 +612,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function update(event:Event = null):void</code><p>  
+<code>public override function update(event:Event = null):void</code><p>
    Forces the MotionPath to re-render itself and all of its followers.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

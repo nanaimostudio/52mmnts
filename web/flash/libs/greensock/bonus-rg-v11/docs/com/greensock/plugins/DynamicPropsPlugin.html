@@ -44,10 +44,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <p></p>
  If you'd like to tween something to a destination value that may change at any time,
  DynamicPropsPlugin allows you to simply associate a function with a property so that
- every time the tween is rendered, it calls that function to get the new destination value 
+ every time the tween is rendered, it calls that function to get the new destination value
  for the associated property. For example, if you want a MovieClip to tween to wherever the
  mouse happens to be, you could do:<br /><br /><code>
-  
+
   TweenLite.to(mc, 3, {dynamicProps:{x:getMouseX, y:getMouseY}}); <br />
   function getMouseX():Number {<br />
    return this.mouseX;<br />
@@ -55,32 +55,32 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
   function getMouseY():Number {<br />
    return this.mouseY;<br />
   }<br /><br /></code>
-  
+
  Of course you can get as complex as you want inside your custom function, as long as
- it returns the destination value, TweenLite/Max will take care of adjusting things 
+ it returns the destination value, TweenLite/Max will take care of adjusting things
  on the fly.<br /><br />
- 
- You can optionally pass any number of parameters to functions using the "params" 
+
+ You can optionally pass any number of parameters to functions using the "params"
  special property like so:<br /><br /><code>
- 
+
  TweenLite.to(mc, 3, {dynamicProps:{x:myFunction, y:myFunction, params:{x:[mc2, "x"], y:[mc2, "y"]}}}); <br />
   function myFunction(object:MovieClip, propName:String):Number {<br />
    return object[propName];<br />
   }<br /><br /></code>
- 
- DynamicPropsPlugin is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit. 
- You must have a valid membership to use this class without violating the terms of use. 
- Visit <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a> to sign up or get 
+
+ DynamicPropsPlugin is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit.
+ You must have a valid membership to use this class without violating the terms of use.
+ Visit <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a> to sign up or get
  more details. <br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.*; <br />
    TweenPlugin.activate([DynamicPropsPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(my_mc, 3, {dynamicProps:{x:getMouseX, y:getMouseY}}); <br /><br />
-    
+
    function getMouseX():Number {<br />
     return this.mouseX;<br />
    }<br />
@@ -88,9 +88,9 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
     return this.mouseY;<br />
    } <br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

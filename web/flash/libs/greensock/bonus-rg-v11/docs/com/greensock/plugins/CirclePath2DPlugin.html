@@ -46,41 +46,41 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  The plugin recognizes the following properties:
  <ul>
    <li><b>path</b> : CirclePath2D -  The CirclePath2D instance to follow (com.greensock.motionPaths.CirclePath2D)</li>
-   <li><b>startAngle</b> : Number - The position at which the target should begin its rotation (described 
-           in degrees unless useRadians is true in which case it is described in radians). 
+   <li><b>startAngle</b> : Number - The position at which the target should begin its rotation (described
+           in degrees unless useRadians is true in which case it is described in radians).
            For example, to begin at the top of the circle, use 270 or -90 as the startAngle.</li>
    <li><b>endAngle</b> : Number - The position at which the target should end its rotation (described in
          degrees unless useRadians is true in which case it is described in radians).
          For example, to end at the bottom of the circle, use 90 as the endAngle</li>
-   <li><b>autoRotate</b> : Boolean - When <code>autoRotate</code> is <code>true</code>, the target will automatically 
-        be rotated so that it is oriented to the angle of the path. To offset this value (like to always add 
+   <li><b>autoRotate</b> : Boolean - When <code>autoRotate</code> is <code>true</code>, the target will automatically
+        be rotated so that it is oriented to the angle of the path. To offset this value (like to always add
         90 degrees for example), use the <code>rotationOffset</code> property.</li>
-   <li><b>rotationOffset</b> : Number - When <code>autoRotate</code> is <code>true</code>, this value will always 
+   <li><b>rotationOffset</b> : Number - When <code>autoRotate</code> is <code>true</code>, this value will always
         be added to the resulting <code>rotation</code> of the target.</li>
    <li><b>direction</b> : String - The direction in which the target should travel around the path. Options are
           <code>Direction.CLOCKWISE</code> ("clockwise"), <code>Direction.COUNTER_CLOCKWISE</code>
          ("counterClockwise"), or <code>Direction.SHORTEST</code> ("shortest").</li>
    <li><b>extraRevolutions</b> : uint - If instead of going directly to the endAngle, you want the target to
-           travel one or more extra revolutions around the path before going to the endAngle, 
+           travel one or more extra revolutions around the path before going to the endAngle,
            define that number of revolutions here. </li>
    <li><b>useRadians</b> : Boolean - If you prefer to define values in radians instead of degrees, set useRadians to true.</li>
  </ul>
- 
+
  <br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.*; <br />
    import com.greensock.plugins.*; <br />
    import com.greensock.motionPaths.*<br />
    TweenPlugin.activate([CirclePath2DPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    var circle:CirclePath2D = new CirclePath2D(150, 150, 100);
    TweenLite.to(mc, 2, {circlePath2D:{path:circle, startAngle:90, endAngle:270, direction:Direction.CLOCKWISE, extraRevolutions:2}}); <br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

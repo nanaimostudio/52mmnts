@@ -4,23 +4,23 @@ package away3d.cameras.lenses
 	import away3d.containers.*;
 	import away3d.core.base.*;
 	import away3d.core.geom.*;
-	
+
 	import flash.geom.*;
-	
+
 	use namespace arcane;
-	
+
 	public class OrthogonalLens extends AbstractLens
 	{
 		/** @private */
 		arcane override function setView(val:View3D):void
 		{
 			super.setView(val);
-			
+
 			if (_clipping.minZ == -Infinity)
         		_near = _camera.focus/2;
         	else
         		_near = _clipping.minZ;
-        	
+
 			_projectionMatrix.rawData = Vector.<Number>([_camera.zoom/_camera.focus, 0, 0, 0, 0, _camera.zoom/_camera.focus, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
 		}
 		/** @private */
@@ -28,49 +28,49 @@ package away3d.cameras.lenses
 		{
 			_frustum = _cameraVarsStore.createFrustum(node);
 			_focusOverZoom = _camera.focus/_camera.zoom;
-			
+
 			_plane = _frustum.planes[Frustum.NEAR];
 			_plane.a = 0;
 			_plane.b = 0;
 			_plane.c = 1;
 			_plane.d = -_near;
 			_plane.transform(viewTransform);
-			
+
 			_plane = _frustum.planes[Frustum.FAR];
 			_plane.a = 0;
 			_plane.b = 0;
 			_plane.c = -1;
 			_plane.d = _far;
 			_plane.transform(viewTransform);
-			
+
 			_plane = _frustum.planes[Frustum.LEFT];
 			_plane.a = 1;
 			_plane.b = 0;
 			_plane.c = 0;
 			_plane.d = -_clipLeft*_focusOverZoom;
 			_plane.transform(viewTransform);
-			
+
 			_plane = _frustum.planes[Frustum.RIGHT];
 			_plane.a = -1;
 			_plane.b = 0;
 			_plane.c = 0;
 			_plane.d = _clipRight*_focusOverZoom;
 			_plane.transform(viewTransform);
-			
+
 			_plane = _frustum.planes[Frustum.TOP];
 			_plane.a = 0;
 			_plane.b = 1;
 			_plane.c = 0;
 			_plane.d = _clipTop*_focusOverZoom;
 			_plane.transform(viewTransform);
-			
+
 			_plane = _frustum.planes[Frustum.BOTTOM];
 			_plane.a = 0;
 			_plane.b = -1;
 			_plane.c = 0;
 			_plane.d = -_clipBottom*_focusOverZoom;
 			_plane.transform(viewTransform);
-			
+
 			return _frustum;
 		}
 		/** @private */
@@ -100,7 +100,7 @@ package away3d.cameras.lenses
 			_screenMatrix.prepend(viewTransform);
         	Utils3D.projectVectors(_screenMatrix, verts, screenVerts, uvts);
         }
-		
+
         /**
          * @inheritDoc
          */

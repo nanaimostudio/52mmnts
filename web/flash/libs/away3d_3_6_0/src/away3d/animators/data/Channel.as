@@ -1,7 +1,7 @@
 package away3d.animators.data
 {
     import away3d.core.base.*;
-    
+
     import flash.geom.*;
 	
     public class Channel

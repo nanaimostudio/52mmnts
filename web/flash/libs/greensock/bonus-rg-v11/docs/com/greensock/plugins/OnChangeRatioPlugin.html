@@ -47,27 +47,27 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
  <code>SteppedEase</code>. Also note that the callback should accept one parameter which will refer to the tween itself.
  This is different than most other callback types, like onComplete and onUpdate which don't pass parameters by default
  unless you use their onCompleteParams and onUpdateParams counterparts. The reason onChangeRatio works this unique way
- is to minimize file size (adding an onChangeRatioParams would require either another plugin or adding kb to the 
+ is to minimize file size (adding an onChangeRatioParams would require either another plugin or adding kb to the
  main TweenLite class or changing the syntax altogether to onChangeRatio:{func:myFunction, params:[1,2]} which is
  even more inconsistent) and because it is such a niche plugin (typically only used with SteppedEase which is quite
  niche itself). It can be very useful to reuse a single callback method but it must be able to figure out which tween
  changed its ratio and access its target which is why onChangeRatio passes the tween as the parameter. <br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.OnChangeRatioPlugin; <br />
    TweenPlugin.activate([OnChangeRatioPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 3, {x:500, onChangeRatio:changeHandler, ease:SteppedEase.create(5)}); <br />
    function changeHandler(tween:TweenLite):void {<br />
     trace("ratio: " + tween.ratio);<br />
    }<br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

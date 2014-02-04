@@ -42,37 +42,37 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- LiquidStage allows you to "pin" DisplayObjects to reference points on the stage (or inside other DisplayObjects) 
+ LiquidStage allows you to "pin" DisplayObjects to reference points on the stage (or inside other DisplayObjects)
  so that when the stage is resized, they are repositioned and maintain their relative distance from
  the PinPoint. For example, you could make a logo Sprite stay in the bottom right corner when the stage is resized.
- 
+
  You can also scale or stretch DisplayObjects using the LiquidArea class which allows you to define a rectangular
  area that expands and contracts as the stage resizes, and you attach DisplayObjects so that they
  fill the area, scaling in any of the following modes: <code>STRETCH, PROPORTIONAL_INSIDE, PROPORTIONAL_OUTSIDE, WIDTH_ONLY,</code>
- or <code>HEIGHT_ONLY</code>. For example, you could have a bar snap to the bottom of the screen and 
- stretch horizontally to fill the width of the stage. Or add a background image that proportionally scales 
+ or <code>HEIGHT_ONLY</code>. For example, you could have a bar snap to the bottom of the screen and
+ stretch horizontally to fill the width of the stage. Or add a background image that proportionally scales
  to fill the entire stage.<br /><br />
- 
+
  There are a few things that make LiquidStage particularly useful:
  <ul>
   <li> Your DisplayObjects do not need to be at the root level - LiquidStage will compensate for nesting even if the DisplayObject's
     anscestors are offset and/or scaled. </li>
-  <li> By default, repositioning only factors in the amount of change in the PinPoint's position, meaning 
-    you are free to move the DisplayObject manually and LiquidStage will honor its new position instead of 
+  <li> By default, repositioning only factors in the amount of change in the PinPoint's position, meaning
+    you are free to move the DisplayObject manually and LiquidStage will honor its new position instead of
     forcing it to always remain a certain distance from the PinPoint (although a "strict" mode is available too).</li>
-  <li> Not only can you pin things to the <code>TOP_LEFT, TOP_CENTER, TOP_RIGHT, RIGHT_CENTER, BOTTOM_RIGHT, 
-    BOTTOM_CENTER, BOTTOM_LEFT, LEFT_CENTER,</code> and <code>CENTER</code>, but you can create your own 
+  <li> Not only can you pin things to the <code>TOP_LEFT, TOP_CENTER, TOP_RIGHT, RIGHT_CENTER, BOTTOM_RIGHT,
+    BOTTOM_CENTER, BOTTOM_LEFT, LEFT_CENTER,</code> and <code>CENTER</code>, but you can create your own
     custom PinPoints in any DisplayObject.</li>
-  <li> LiquidStage leverages the TweenLite engine to allow for animated transitions. Simply define the duration 
+  <li> LiquidStage leverages the TweenLite engine to allow for animated transitions. Simply define the duration
     of the tween and optionally pass in a tween vars object to control other aspects of the tween like its
     ease, delay, add an onComplete, onUpdate, etc.</li>
   <li> LiquidStage does NOT force you to align the stage to the upper left corner - it will honor whatever StageAlign you choose.</li>
-  <li> Optionally define a minimum/maximum width and height to prevent objects from repositioning when the stage 
+  <li> Optionally define a minimum/maximum width and height to prevent objects from repositioning when the stage
     gets too small or too big.</li>
   <li> LiquidStage only does its work when the stage resizes, and it is built for maximum performance.</li>
- </ul> 
- 
- 
+ </ul>
+
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -82,7 +82,7 @@ import com.greensock.layout.*;
 //create a LiquidStage instance for the current stage which was built at an original size of 550x400
 //don't allow the stage to collapse smaller than 550x400 either.
 var ls:LiquidStage = new LiquidStage(this.stage, 550, 400, 550, 400);
- 
+
 //attach a "logo" Sprite to the BOTTOM_RIGHT PinPoint
 ls.attach(logo, ls.BOTTOM_RIGHT);
 
@@ -94,7 +94,7 @@ area.attach(myImage, ScaleMode.PROPORTIONAL_INSIDE, AlignMode.CENTER, AlignMode.
 
 //if you'd like to preview the area visually (by default previewColor is red), set preview to true
 area.preview = true;
- 
+
 //attach a RESIZE event listener to the LiquidStage instance (you could do this with the LiquidArea as well)
 ls.addEventListener(Event.RESIZE, onLiquidStageUpdate);
 function onLiquidStageUpdate(event:Event):void {
@@ -102,24 +102,24 @@ function onLiquidStageUpdate(event:Event):void {
 }
 
 </pre></div>
-  
+
  <b>NOTES / LIMITATIONS:</b>
  <ul>
   <li> You need to set up your objects on the stage initially with the desired relative distance between
     them and their PinPoint; LiquidStage doesn't reposition them initially. For example, if you want
     logo_mc to be exactly 20 pixels away from the BOTTOM_RIGHT corner of the stage on both axis (x and y),
     you must put it there before attach()-ing it.</li>
-  <li> If a DisplayObject is not in the display list (has no parent), LiquidStage will ignore it until it 
+  <li> If a DisplayObject is not in the display list (has no parent), LiquidStage will ignore it until it
     is back in the display list.</li>
    <li> If you plan to set the <code>align</code> property of your stage, do so before creating its LiquidStage
     instance.</li>
-   <li> LiquidStage is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit. 
-    You must have a valid membership to use this class without violating the terms of use. Visit 
+   <li> LiquidStage is a <a href="http://www.greensock.com/club/">Club GreenSock</a> membership benefit.
+    You must have a valid membership to use this class without violating the terms of use. Visit
     <a href="http://www.greensock.com/club/">http://www.greensock.com/club/</a> to sign up or get more details.</li>
  </ul>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the license that came with your Club GreenSock membership and is <b>ONLY</b> to be used by corporate or "Shockingly Green" Club GreenSock members. To learn more about Club GreenSock, visit <a href="http://blog.greensock.com/club/">http://blog.greensock.com/club/</a>.
- 
+
  <p></p>
 <br>
 <hr>
@@ -228,7 +228,7 @@ function onLiquidStageUpdate(event:Event):void {
 <a class="signatureLink" href="#LiquidStage()">LiquidStage</a>(stage:Stage, baseWidth:uint, baseHeight:uint, minWidth:uint = 0, minHeight:uint = 0, maxWidth:uint = 99999999, maxHeight:uint = 99999999)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">LiquidStage</td>
 </tr>
@@ -246,7 +246,7 @@ function onLiquidStageUpdate(event:Event):void {
 <div class="summarySignature">
 <a class="signatureLink" href="#attach()">attach</a>(target:DisplayObject, pin:<a href="PinPoint.html">PinPoint</a>, strict:Boolean = false, reconcile:Boolean = true, tweenDuration:Number = 0, tweenVars:Object = null, roundPosition:Boolean = false):void</div>
 <div class="summaryTableDescription">
-   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the 
+   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the
    PinPoint will also affect the relative position of the DisplayObject.</div>
 </td><td class="summaryTableOwnerCol">LiquidStage</td>
 </tr>
@@ -456,7 +456,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function LiquidStage(stage:Stage, baseWidth:uint, baseHeight:uint, minWidth:uint = 0, minHeight:uint = 0, maxWidth:uint = 99999999, maxHeight:uint = 99999999)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -467,14 +467,14 @@ showHideInherited();
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">baseWidth</span>:uint</code> &mdash; The width of the SWF as it was built in the IDE originally (NOT the width that it is stretched to in the browser or standalone player). 
+<td width="20px"></td><td><code><span class="label">baseWidth</span>:uint</code> &mdash; The width of the SWF as it was built in the IDE originally (NOT the width that it is stretched to in the browser or standalone player).
    </td>
 </tr>
 <tr>
 <td class="paramSpacer">&nbsp;</td>
 </tr>
 <tr>
-<td width="20px"></td><td><code><span class="label">baseHeight</span>:uint</code> &mdash; The height of the SWF as it was built in the IDE originally (NOT the height that it is stretched to in the browser or standalone player). 
+<td width="20px"></td><td><code><span class="label">baseHeight</span>:uint</code> &mdash; The height of the SWF as it was built in the IDE originally (NOT the height that it is stretched to in the browser or standalone player).
    </td>
 </tr>
 <tr>
@@ -519,7 +519,7 @@ showHideInherited();
 <code>public override function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void</code><p>
    Use this to add an <code>Event.RESIZE</code> event listener which can be
    particularly handy if you need to run other functions AFTER LiquidStage does all its repositioning.
-    
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -564,23 +564,23 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function attach(target:DisplayObject, pin:<a href="PinPoint.html">PinPoint</a>, strict:Boolean = false, reconcile:Boolean = true, tweenDuration:Number = 0, tweenVars:Object = null, roundPosition:Boolean = false):void</code><p>
-   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the 
+   Attaches a DisplayObject to a particular PinPoint (like <code>TOP_RIGHT</code>) so that any movement of the
    PinPoint will also affect the relative position of the DisplayObject. Attaching the DisplayObject
-   does NOT force it to share the same coordinates as the PinPoint - it simply causes the PinPoint's 
+   does NOT force it to share the same coordinates as the PinPoint - it simply causes the PinPoint's
    movement to proportionally affect the position of the DisplayObject. The relationship is one-way
    so moving the DisplayObject will not move the PinPoint. Unless the <code>strict</code> parameter
-   is <code>true</code>, changes are relative so you are free to move the DisplayObject as you wish and when the 
+   is <code>true</code>, changes are relative so you are free to move the DisplayObject as you wish and when the
    PinPoint's position changes, its proportional movement will honor the DisplayObject's new position
    instead of forcing it back to the same distance from the PinPoint. But again, you can set
-   the <code>strict</code> parameter to <code>true</code> if you want to force the object to always 
+   the <code>strict</code> parameter to <code>true</code> if you want to force the object to always
    maintain a certain distance from the PinPoint<br /><br />
-   
+
    For example, if your object is 100 pixels away from the PinPoint and the PinPoint moves 15 pixels,
    the DisplayObject will move 15 pixels as well (or however many pixels it takes to maintain its relative
    distance to the PinPoint which may be more or less than 15 pixels if it is nested inside a scaled parent).
    Strict mode, however, will force the DisplayObject to maintain its exact distance away from the PinPoint
    (no manual position changes will be honored when LiquidStage updates).
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -640,15 +640,15 @@ showHideInherited();
 <div class="detailBody">
 <code>public static function getByStage(stage:Stage):<a href="../layout/LiquidStage.html">LiquidStage</a></code><p>
    Retrieves the LiquidStage instance associated with a particular stage. For example:<br /><br /><code>
-   
+
    //create the LiquidStage instance<br />
    var ls:LiquidStage = new LiquidStage(this.stage, 550, 400); <br /><br />
-   
+
    //then later, if you need to find the LiquidStage instance for this stage to attach() objects, you could do this:<br />
    var ls:LiquidStage = LiquidStage.getByStage(this.stage);<br />
    ls.attach(mc1, ls.TOP_RIGHT);<br />
    ls.attach(mc2, ls.BOTTOM_CENTER);<br /></code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -660,10 +660,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../layout/LiquidStage.html">LiquidStage</a></code> &mdash; 
+<td width="20"></td><td><code><a href="../layout/LiquidStage.html">LiquidStage</a></code> &mdash;
                         LiquidStage instance associated with the stage
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -676,8 +676,8 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function release(target:DisplayObject):Boolean</code><p>
-   Releases a DisplayObject from being controlled by LiquidStage after having been attached. 
-   
+   Releases a DisplayObject from being controlled by LiquidStage after having been attached.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

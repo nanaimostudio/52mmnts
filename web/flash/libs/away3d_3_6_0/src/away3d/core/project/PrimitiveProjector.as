@@ -13,12 +13,12 @@ package away3d.core.project
 	import away3d.core.vos.*;
 	import away3d.materials.*;
 	import away3d.sprites.*;
-	
+
 	import flash.geom.*;
 	import flash.utils.*;
-	
+
 	use namespace arcane;
-	
+
 	public class PrimitiveProjector
 	{
 		/** @private */
@@ -87,18 +87,18 @@ package away3d.core.project
 		private var _eIndex:uint;
 		private var _pushfront:Boolean;
 		private var _pushback:Boolean;
-		
-		
+
+
         public function getScreenVerts(source:Object3D):Vector.<Number>
 		{
 			return _screenVerticesStore[source] || (_screenVerticesStore[source] = new Vector.<Number>());
 		}
-		
+
 		public function getScreenUVTs(source:Object3D):Vector.<Number>
 		{
 			return _screenUVTsStore[source] || (_screenUVTsStore[source] = new Vector.<Number>());
 		}
-		
+
 		public function getScreenIndices(source:Object3D):Vector.<int>
 		{
 			return _screenIndicesStore[source] || (_screenIndicesStore[source] = new Vector.<int>());
@@ -108,28 +108,28 @@ package away3d.core.project
 		{
 			return _viewSourceObjectStore[source] || (_viewSourceObjectStore[source] = new ViewSourceObject(source));
 		}
-		
+
         public function PrimitiveProjector(view:View3D)
         {
         	_view = view;
         	_cameraVarsStore = _view.cameraVarsStore;
         }
-        
+
 		public function project(source:Object3D, viewTransform:Matrix3D, renderer:Renderer):void
 		{
 			_cameraVarsStore.createVertexClassificationDictionary(source);
-			
+
 			_mesh = source as Mesh;
 			_camera = _view.camera;
 			_clipping = _view.screenClipping;
 			_lens = _camera.lens;
-        	
+
 			_frontmat = _mesh.material;
 			_backmat = _mesh.back || _frontmat;
-			
+
             //check if an element needs clipping
             _clipFlag = _cameraVarsStore.nodeClassificationDictionary[source] == Frustum.INTERSECT && !(_clipping is RectangleClipping);
-            
+
 			if (_clipFlag) {
             	_vertices = _defaultVertices;
 				_vertices.length = 0;
@@ -155,59 +155,59 @@ package away3d.core.project
             	_segmentVOs = _mesh.segmentVOs;
             	_spriteVOs = _mesh.spriteVOs;
             }
-            
+
 			_screenVertices = getScreenVerts(source);
 			_screenVertices.length = 0;
 			_screenUVTs = getScreenUVTs(source);
 			_screenUVTs.length = 0;
             _lens.project(viewTransform, _verts, _screenVertices, _screenUVTs);
-            
+
 			_viewSourceObject = getViewSourceObject(source);
 			_viewSourceObject.screenVertices = _screenVertices;
 			_viewSourceObject.screenIndices = _screenIndices;
 			_viewSourceObject.screenUVTs = _screenUVTs;
-            
+
 			if (_mesh.outline) {
             	_i = _faceVOs.length;
             	while (_i--)
             		_outlineIndices[_faceVOs[_i]] = _i;
             }
-            
+
             _i = 0;
 			//loop through all clipped faces
             for each (_faceVO in _faceVOs) {
-				
+
 				_startIndex = _startIndices[uint(_i++)];
                 _endIndex = _startIndices[uint(_i)];
-                
+
 				if (!_clipFlag) {
 					_index = _startIndex;
-					
+
 					while (_index < _endIndex && _screenUVTs[uint(_screenIndices[_index]*3 + 2)] > 0)
 						_index++;
-					
+
 					if (_index < _endIndex)
 						continue;
 				}
-                
+
 				//determine if _triangle is facing towards or away from camera
                 _backface = (_area = _viewSourceObject.getArea(_startIndex)) < 0;
-            	
-            	
-				
+
+
+
 				//if _triangle facing away, check for backface material
                 if (_backface) {
                     if (!_mesh.bothsides)
                     	continue;
-                    
+
                     _material = _faceVO.back;
-                    
+
                     if (!_material)
                     	_material = _faceVO.material;
                 } else {
                     _material = _faceVO.material;
                 }
-                
+
 				//determine the material of the _triangle
                 if (!_material) {
                     if (_backface)
@@ -215,29 +215,29 @@ package away3d.core.project
                     else
                         _material = _frontmat;
                 }
-                
+
 				//do not draw material if visible is false
                 if (_material && !_material.visible)
                     _material = null;
-				
+
 				//if there is no material and no outline, continue
                 if (!_mesh.outline && !_material)
                 	continue;
-                
-                
+
+
                 if (_mesh.outline && !_backface) {
 	                _pushfront = _mesh.pushfront;
 	                _pushback = _mesh.pushback;
             		_mesh.pushback = false;
             		_mesh.pushfront = true;
                 }
-                
+
                 //check whether screenClipping removes triangle
                 if (!renderer.primitive(renderer.createDrawTriangle(_faceVO, _faceVO.commands, _faceVO.uvs, _material, _startIndex, _endIndex, _viewSourceObject, _area, _faceVO.generated)))
                 	continue;
-				
+
             	_face = _faceVO.face;
-                
+
                 if (_mesh.outline && !_backface) {
             		_mesh.pushback = true;
             		_mesh.pushfront = false;
@@ -250,7 +250,7 @@ package away3d.core.project
                     	_eIndex = _screenIndices.length;
                     	renderer.primitive(renderer.createDrawSegment(_segmentVO, _segmentVO.commands, _mesh.outline, _sIndex, _eIndex, _viewSourceObject, true));
                     }
-					
+
                     _n12 = _mesh.geometry.neighbour12(_face);
                     if (_n12 == null || _viewSourceObject.getArea(_startIndices[uint(_outlineIndices[_n12.faceVO])]) <= 0) {
                     	_segmentVO = _cameraVarsStore.createSegmentVO(_mesh.outline);
@@ -260,7 +260,7 @@ package away3d.core.project
                     	_eIndex = _screenIndices.length;
                     	renderer.primitive(renderer.createDrawSegment(_segmentVO, _segmentVO.commands, _mesh.outline, _sIndex, _eIndex, _viewSourceObject, true));
                     }
-                    
+
                     _n20 = _mesh.geometry.neighbour20(_face);
                     if (_n20 == null || _viewSourceObject.getArea(_startIndices[uint(_outlineIndices[_n20.faceVO])]) <= 0) {
                     	_segmentVO = _cameraVarsStore.createSegmentVO(_mesh.outline);
@@ -273,49 +273,49 @@ package away3d.core.project
 	                _mesh.pushfront = _pushfront;
 	                _mesh.pushback = _pushback;
                 }
-                
+
             }
-            
+
             for each (_segmentVO in _segmentVOs)
             {
 				_startIndex = _startIndices[uint(_i++)];
                 _endIndex = _startIndices[uint(_i)];
-                
+
 				if (!_clipFlag) {
 					_index = _startIndex;
-					
+
 					while (_index < _endIndex && _screenUVTs[uint(_screenIndices[_index]*3 + 2)] > 0)
 						_index++;
-					
+
 					if (_index < _endIndex)
 						continue;
 				}
-				
+
             	_smaterial = _segmentVO.material || _frontmat;
-				
+
                 if (!_smaterial.visible)
                     continue;
-                
+
                 //check whether screenClipping removes segment
                 renderer.primitive(renderer.createDrawSegment(_segmentVO, _segmentVO.commands, _smaterial, _startIndex, _endIndex, _viewSourceObject, _segmentVO.generated));
             }
-            
+
             //loop through all clipped sprites
             for each (_spriteVO in _spriteVOs)
             {
             	_startIndex = _startIndices[uint(_i++)];
 				_endIndex = _startIndices[uint(_i)];
-				
+
 				if (!_clipFlag) {
 					_index = _startIndex;
-					
+
 					while (_index < _endIndex && _screenUVTs[uint(_screenIndices[_index]*3 + 2)] > 0)
 						_index++;
-					
+
 					if (_index < _endIndex)
 						continue;
 				}
-                
+
                 //switch materials for directional sprites
 				if (_spriteVO.materials.length) {
 					var minT:Number = 0;
@@ -323,7 +323,7 @@ package away3d.core.project
 					_index = _endIndex - _startIndex;
 		            while (_index--) {
 		                t = _screenUVTs[uint((_startIndex + _index)*3 + 2)];
-		                
+
 		                if (minT < t) {
 		                    minT = t;
 		                    if (_index)
@@ -335,10 +335,10 @@ package away3d.core.project
 				} else {
 					_spmaterial = _spriteVO.material || _frontmat;
 				}
-				
+
                 if (!_spmaterial.visible)
                     continue;
-		        
+
 		        _index = _screenIndices[_startIndex];
 				_screenT = _screenUVTs[uint(_index*3 + 2)];
 				_screenZ = _lens.getScreenZ(_screenT);
@@ -346,9 +346,9 @@ package away3d.core.project
 		        	_scale = _spriteVO.scaling*_lens.getPerspective(_screenZ);
 		        else
 		        	_scale = _spriteVO.scaling;
-		        
+
 		        _index *= 2;
-		        
+
 		        if (_spriteVO.displayObject) {
 					switch(_spriteVO.align){
 						case SpriteAlign.CENTER:
@@ -378,13 +378,13 @@ package away3d.core.project
 							break;
 						case SpriteAlign.TOP_LEFT:
 							break;
-						case SpriteAlign.BOTTOM_LEFT:				
+						case SpriteAlign.BOTTOM_LEFT:
 							_screenVertices[uint(_index + 1)] -= _spriteVO.displayObject.height;
 							break;
 					}
 		            renderer.primitive(renderer.createDrawDisplayObject(_spriteVO, _startIndex, _viewSourceObject, _scale));
 		        } else {
-		        	
+
 		        	if (_spriteVO.depthOfField && (_bMaterial = _spmaterial as BitmapMaterial)) {
 		        		_dofCache = DofCache.getDofCache(_bMaterial);
 		            	renderer.primitive(renderer.createDrawSprite(_spriteVO, _dofCache.getBitmapMaterial(_screenZ), _startIndex, _viewSourceObject, _scale));
@@ -393,47 +393,47 @@ package away3d.core.project
 		        	}
             	}
 		    }
-		    
+
 		    _container = source as ObjectContainer3D;
-			
+
 			if (!_container)
 				return;
-			
+
 			_cameraViewMatrix = _view.camera.viewMatrix;
 			_viewTransformDictionary = _view.cameraVarsStore.viewTransformDictionary;
-			
+
 			var _container_children:Vector.<Object3D> = _container.children;
 			var child:Object3D;
         	for each (child in _container_children) {
 				if (child.ownCanvas && child.visible) {
-					
+
 					if (child.ownSession is SpriteSession)
 						(child.ownSession as SpriteSession).cacheAsBitmap = true;
-					
+
 					_screenX = child.screenXOffset;
 					_screenY = child.screenYOffset;
-					
+
 					if (!isNaN(child.ownSession.screenZ)) {
 						_screenZ = child.ownSession.screenZ;
 					} else {
 						if (child.scenePivotPoint.length) {
 							_depthPoint = (_viewTransformDictionary[child]as Matrix3D).position.add(_cameraViewMatrix.deltaTransformVector(child.scenePivotPoint));
-							
+
 			             	_screenZ = _depthPoint.length;
-							
+
 						} else {
 							_screenZ = (_viewTransformDictionary[child] as Matrix3D).position.length;
 						}
-			            
+
 		             	if (child.pushback)
 		             		_screenZ += child.parentBoundingRadius;
-		             	
+
 		             	if (child.pushfront)
 		             		_screenZ -= child.parentBoundingRadius;
-		             	
+
 		             	_screenZ += child.screenZOffset;
 	    			}
-	    			
+
 					_screenIndices.push(_index = _screenVertices.length/2);
 					_screenVertices.push(_screenX, _screenY);
 					_screenUVTs.push(0, 0, _lens.getT(_screenZ));

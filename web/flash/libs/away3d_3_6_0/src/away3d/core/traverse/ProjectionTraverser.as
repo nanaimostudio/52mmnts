@@ -9,11 +9,11 @@ package away3d.core.traverse
 	import away3d.core.geom.*;
 	import away3d.graphs.bsp.BSPTree;
 	import away3d.core.utils.*;
-	
+
 	import flash.geom.*;
-	
+
 	use namespace arcane;
-	
+
     /**
     * Traverser that resolves the transform tree in a scene, ready for rendering.
     */
@@ -29,7 +29,7 @@ package away3d.core.traverse
         private var _viewTransform:Matrix3D;
         private var _nodeClassification:int;
         private var _mesh:Mesh;
-		
+
 		/**
 		 * Defines the view being used.
 		 */
@@ -48,14 +48,14 @@ package away3d.core.traverse
 			if (val.statsOpen)
 				val.statsPanel.clearObjects();
 		}
-		    	
+
 		/**
 		 * Creates a new <code>ProjectionTraverser</code> object.
 		 */
         public function ProjectionTraverser()
         {
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -64,12 +64,12 @@ package away3d.core.traverse
         	//check if node is visible
             if (!node.visible)
                 return false;
-            
+
             //compute viewTransform matrix
             _viewTransform = _cameraVarsStore.createViewTransform(node);
             _viewTransform.rawData = _cameraViewMatrix.rawData;
             _viewTransform.prepend(node.sceneTransform);
-            
+
             if (node is BSPTree) {
             	BSPTree(node).update(_camera, _lens.getFrustum(node, _viewTransform), _cameraVarsStore);
             	_cameraVarsStore.nodeClassificationDictionary[node] = Frustum.INTERSECT;
@@ -82,7 +82,7 @@ package away3d.core.traverse
             	}
             	else {
 		        	_frustum = _lens.getFrustum(node, _viewTransform);
-		        	
+
 		            if ((node is Scene3D || _cameraVarsStore.nodeClassificationDictionary[node.parent] == Frustum.INTERSECT)) {
 		            	if (node.pivotZero)
 		            		_nodeClassification = _cameraVarsStore.nodeClassificationDictionary[node] = _frustum.classifyRadius(node.boundingRadius);
@@ -95,15 +95,15 @@ package away3d.core.traverse
 		            	return false;
 		            }
             	}
-            	
+
             	//check which LODObject is visible
 	            if (node is ILODObject)
 	                return (node as ILODObject).matchLOD(_camera);
             }
-            
+
             return true;
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -112,14 +112,14 @@ package away3d.core.traverse
         	if (_view.statsOpen && node is Mesh)
         		_view.statsPanel.addObject(node as Mesh);
         }
-        
+
         public override function apply(node:Object3D):void
-        { 
+        {
         	//add to scene meshes dictionary
             if ((_mesh = node as Mesh))
             	_mesh.updateMesh(_view);
         }
-        
+
         public override function leave(node:Object3D):void
         {
         }

@@ -43,7 +43,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
   TweenProxy essentially "stands in" for a DisplayObject, adding several tweenable properties as well as the
-  ability to set a custom registration point around which all transformations (like rotation, scale, and skew) 
+  ability to set a custom registration point around which all transformations (like rotation, scale, and skew)
   occur. In addition to all the standard DisplayObject properties, TweenProxy adds: <br />
   <ul>
    <li> registration : Point </li>
@@ -58,37 +58,37 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li> skewY2 : Number </li>
    <li> scale : Number </li>
   </ul> <br />
- 
-  Tween the skewX and/or skewY for normal skews (which visually adjust scale to compensate), or skewX2 and/or skewY2 in order to 
-  skew without visually adjusting scale. Either way, the actual scaleX/scaleY/scaleZ values are not altered as far as the proxy 
+
+  Tween the skewX and/or skewY for normal skews (which visually adjust scale to compensate), or skewX2 and/or skewY2 in order to
+  skew without visually adjusting scale. Either way, the actual scaleX/scaleY/scaleZ values are not altered as far as the proxy
   is concerned.<br /><br />
-  
-  The <code>registration</code> point is based on the DisplayObject's parent's coordinate space whereas the <code>localRegistration</code> corresponds 
+
+  The <code>registration</code> point is based on the DisplayObject's parent's coordinate space whereas the <code>localRegistration</code> corresponds
   to the DisplayObject's inner coordinates, so it's very simple to define the registration point whichever way you prefer.<br /><br />
-  
-  Once you create a TweenProxy, it is best to always control your DisplayObject's properties through the 
-  TweenProxy so that the values don't become out of sync. You can set ANY DisplayObject property through the TweenProxy, 
-  and you can call DisplayObject methods as well. If you directly change the properties of the target (without going through the proxy), 
-  you'll need to call the calibrate() method on the proxy. It's usually best to create only ONE proxy for each target, but if 
+
+  Once you create a TweenProxy, it is best to always control your DisplayObject's properties through the
+  TweenProxy so that the values don't become out of sync. You can set ANY DisplayObject property through the TweenProxy,
+  and you can call DisplayObject methods as well. If you directly change the properties of the target (without going through the proxy),
+  you'll need to call the calibrate() method on the proxy. It's usually best to create only ONE proxy for each target, but if
   you create more than one, they will communicate with each other to keep the transformations and registration position in sync
   (unless you set ignoreSiblingUpdates to true).<br /><br />
-  
-  
+
+
  <b>EXAMPLE:</b><br /><br />
- 
-  To set a custom registration piont of x:100, y:100, and tween the skew of a MovieClip named "my_mc" 30 degrees 
+
+  To set a custom registration piont of x:100, y:100, and tween the skew of a MovieClip named "my_mc" 30 degrees
   on the x-axis and scale to half-size over the course of 3 seconds using an Elastic ease, do:<br /><br /><code>
-  
+
   import com.greensock.TweenProxy; <br />
   import com.greensock.easing.Elastic; <br />
   import flash.geom.Point; <br /><br />
-  
+
   var myProxy:TweenProxy = TweenProxy.create(my_mc);<br />
   myProxy.registration = new Point(100, 100);<br />
   TweenLite.to(myProxy, 3, {skewX:30, scale:0.5, ease:Elastic.easeOut});<br /><br /></code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

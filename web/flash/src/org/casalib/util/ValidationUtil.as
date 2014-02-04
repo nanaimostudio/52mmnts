@@ -2,21 +2,21 @@
 	CASA Lib for ActionScript 3.0
 	Copyright (c) 2011, Aaron Clinger & Contributors of CASA Lib
 	All rights reserved.
-	
+
 	Redistribution and use in source and binary forms, with or without
 	modification, are permitted provided that the following conditions are met:
-	
+
 	- Redistributions of source code must retain the above copyright notice,
 	  this list of conditions and the following disclaimer.
-	
+
 	- Redistributions in binary form must reproduce the above copyright notice,
 	  this list of conditions and the following disclaimer in the documentation
 	  and/or other materials provided with the distribution.
-	
+
 	- Neither the name of the CASA Lib nor the names of its contributors
 	  may be used to endorse or promote products derived from this software
 	  without specific prior written permission.
-	
+
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 	AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 	IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,19 +31,19 @@
 */
 package org.casalib.util {
 	import org.casalib.util.ArrayUtil;
-	
+
 	/**
 		Utilities for validating common string formats.
-		
+
 		@author Aaron Clinger
 		@version 05/06/11
 	*/
 	public class ValidationUtil {
-		
-		
+
+
 		/**
 			Determines if String is a valid email address.
-			
+
 			@param email: String to verify as email.
 			@return Returns <code>true</code> if String is a valid email; otherwise <code>false</code>.
 			@see <a href="http://www.regular-expressions.info/email.html">Read more about the regular expression used by this method.</a>
@@ -52,10 +52,10 @@ package org.casalib.util {
 			const pattern:RegExp = /^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
 			return email.match(pattern) != null;
 		}
-		
+
 		/**
 			Determines if String is a valid USA state abbreviation.
-			
+
 			@param state: String to verify as two letter state abbreviation (includes DC).
 			@return Returns <code>true</code> if String is a state abbreviation; otherwise <code>false</code>.
 		*/
@@ -63,10 +63,10 @@ package org.casalib.util {
 			const states:Array = new Array('ak', 'al', 'ar', 'az', 'ca', 'co', 'ct', 'dc', 'de', 'fl', 'ga', 'hi', 'ia', 'id', 'il', 'in', 'ks', 'ky', 'la', 'ma', 'md', 'me', 'mi', 'mn', 'mo', 'ms', 'mt', 'nb', 'nc', 'nd', 'nh', 'nj', 'nm', 'nv', 'ny', 'oh', 'ok', 'or', 'pa', 'ri', 'sc', 'sd', 'tn', 'tx', 'ut', 'va', 'vt', 'wa', 'wi', 'wv', 'wy');
 			return ArrayUtil.contains(states, state.toLowerCase()) == 1;
 		}
-		
+
 		/**
 			Determines if the date provided is equal to or greater than a certain age.
-			
+
 			@param age: The age to validate.
 			@param yearBorn: The year of birth.
 			@param monthBorn: The month of birth, <code>0 </code> for January to <code>11</code> for December.
@@ -75,40 +75,40 @@ package org.casalib.util {
 		*/
 		public static function isAge(age:uint, yearBorn:uint, monthBorn:uint = 0, dateBorn:uint = 1):Boolean {
 			const currentDate:Date = new Date();
-			
+
 			if (yearBorn > currentDate.getFullYear() - age)
 				return false;
-			
+
 			if (yearBorn < currentDate.getFullYear() - age)
 				return true;
-			
+
 			if (monthBorn > currentDate.getMonth())
 				return false;
-			
+
 			if (monthBorn < currentDate.getMonth())
 				return true;
-			
+
 			if (dateBorn <= currentDate.getDate())
 				return true;
-			
+
 			return false;
 		}
-		
+
 		/**
 			Determines if credit card is valid using the Luhn formula.
-			
+
 			@param cardNumber: The credit card number.
 			@return Returns <code>true</code> if String is a valid credit card number; otherwise <code>false</code>.
 		*/
 		public static function isCreditCard(cardNumber:String):Boolean {
 			if (cardNumber.length < 7 || cardNumber.length > 19 || Number(cardNumber) < 1000000)
 				return false;
-			
+
 			var sum:Number  = 0;
 			var alt:Boolean = true;
 			var i:Number    = cardNumber.length;
 			var pre:Number;
-			
+
 			while (--i > -1) {
 				if (alt)
 					sum += Number(cardNumber.substr(i, 1));
@@ -116,23 +116,23 @@ package org.casalib.util {
 					pre =  Number(cardNumber.substr(i, 1)) * 2;
 					sum += (pre > 8) ? pre -= 9 : pre;
 				}
-				
+
 				alt = !alt;
 			}
-			
+
 			return sum % 10 == 0;
 		}
-		
+
 		/**
 			Determines credit card provider by card number.
-			
+
 			@param cardNumber: The credit card number.
 			@return Returns name of the provider; values can be <code>"visa"</code>, <code>"mastercard"</code>, <code>"discover"</code>, <code>"amex"</code>, <code>"diners"</code>, <code>"other"</code> or <code>"invalid"</code>.
 		*/
 		public static function getCreditCardProvider(cardNumber:String):String {
 			if (!ValidationUtil.isCreditCard(cardNumber))
 				return 'invalid';
-			
+
 			if (cardNumber.length == 13 ||
 				cardNumber.length == 16 &&
 				cardNumber.indexOf('4') == 0)

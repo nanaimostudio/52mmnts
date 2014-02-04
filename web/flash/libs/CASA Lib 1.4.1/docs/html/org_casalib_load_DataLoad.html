@@ -13,12 +13,12 @@
 		<script type="text/javascript" src="../js/7_VisDoc.min.js"></script>
 	</head>
 	<body class='isShowingNavigation' id='page_org_casalib_load_DataLoad'>
-	    <div id='page'> 
+	    <div id='page'>
 			<div id='wrapper'>
-				<div id='outer'> 
-					<div id='floatWrap'> 
+				<div id='outer'>
+					<div id='floatWrap'>
 						<div id='main'>
-							<div id='clearHeaderCenter'></div> 
+							<div id='clearHeaderCenter'></div>
 							<div id='mainContent'>
 																<h1>DataLoad</h1>									<div class='classProperties'>
 		<table cellspacing='0'>
@@ -72,21 +72,21 @@
     CASA Lib for ActionScript 3.0
     Copyright (c) 2011, Aaron Clinger & Contributors of CASA Lib
     All rights reserved.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are met:
-    
+
     - Redistributions of source code must retain the above copyright notice,
       this list of conditions and the following disclaimer.
-    
+
     - Redistributions in binary form must reproduce the above copyright notice,
       this list of conditions and the following disclaimer in the documentation
       and/or other materials provided with the distribution.
-    
+
     - Neither the name of the CASA Lib nor the names of its contributors
       may be used to endorse or promote products derived from this software
       without specific prior written permission.
-    
+
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
     AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
     IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -108,13 +108,13 @@ package org.casalib.load {
     import flash.net.URLVariables;
     import org.casalib.load.LoadItem;
     import flash.utils.ByteArray;
-    
+
     [Event(name="httpStatus", type="flash.events.HTTPStatusEvent")]
     [Event(name="securityError", type="flash.events.SecurityErrorEvent")]
-    
+
     /**
         Provides an easy and standardized way to load data.
-        
+
         @author Aaron Clinger
         @version 02/13/10
         @example
@@ -123,20 +123,20 @@ package org.casalib.load {
                     import org.casalib.display.CasaMovieClip;
                     import org.casalib.events.LoadEvent;
                     import org.casalib.load.DataLoad;
-                    
-                    
+
+
                     public class MyExample extends CasaMovieClip {
                         protected var _dataLoad:DataLoad;
-                        
-                        
+
+
                         public function MyExample() {
                             super();
-                            
+
                             this._dataLoad = new DataLoad("data.xml");
                             this._dataLoad.addEventListener(LoadEvent.COMPLETE, this._onComplete);
                             this._dataLoad.start();
                         }
-                        
+
                         protected function _onComplete(e:LoadEvent):void {
                             trace(this._dataLoad.dataAsXml.toXMLString());
                         }
@@ -145,11 +145,11 @@ package org.casalib.load {
             </code>
     */
     public class DataLoad extends LoadItem {
-        
-        
+
+
         /**
             Creates and defines a DataLoad.
-            
+
             @param request: A <code>String</code> or an <code>URLRequest</code> reference to the file you wish to load.
             @param dataFormat: Sets whether the data is received as as text, raw binary data or URL-encoded variables; defaults to text.
             @throws ArguementTypeError if you pass a type other than a <code>String</code> or an <code>URLRequest</code> to parameter <code>request</code>.
@@ -158,110 +158,110 @@ package org.casalib.load {
         public function DataLoad(request:*, dataFormat:String = URLLoaderDataFormat.TEXT) {
             var urlLoader:URLLoader = new URLLoader();
             urlLoader.dataFormat    = dataFormat;
-            
+
             super(urlLoader, request);
-            
+
             this._initListeners(this._loadItem);
         }
-        
+
         /**
             The URLLoader being used to download the data.
         */
         public function get urlLoader():URLLoader {
             return this._loadItem as URLLoader;
         }
-        
+
         /**
             The data received from the DataLoad. Available after load is complete.
-            
+
             @throws <code>Error</code> if method is called before the file has loaded.
         */
         public function get data():* {
             if (!this.loaded)
                 throw new Error('Cannot access an external data until the file has loaded.');
-            
+
             return this._loadItem.data;
         }
-        
+
         /**
             The data type that DataLoad is receiving.
         */
         public function get dataFormat():String {
             return this._loadItem.dataFormat;
         }
-        
+
         /**
             The data received from the DataLoad data typed as String. Available after load is complete.
-            
+
             @throws <code>Error</code> if method is called before the file has loaded.
             @throws <code>Error</code> if method cannot convert data to a String.
         */
         public function get dataAsString():String {
             if (this.dataFormat == URLLoaderDataFormat.BINARY)
                 throw new Error('Cannot convert data to a String.');
-            
+
             if (this.dataFormat == URLLoaderDataFormat.VARIABLES)
                 return this.data.toString();
-            
+
             return this.data;
         }
-        
+
         /**
             The data received from the DataLoad data typed as XML. Available after load is complete.
-            
+
             @throws <code>Error</code> if method is called before the file has loaded.
             @throws <code>Error</code> if method cannot convert data to XML.
         */
         public function get dataAsXml():XML {
             if (this.dataFormat != URLLoaderDataFormat.TEXT)
                 throw new Error('Cannot convert data to XML.');
-            
+
             return new XML(this.data);
         }
-        
+
         /**
             The data received from the DataLoad data typed as URLVariables. Available after load is complete.
-            
+
             @throws <code>Error</code> if method is called before the file has loaded.
             @throws <code>Error</code> if method cannot convert data to URLVariables.
         */
         public function get dataAsUrlVariables():URLVariables {
             if (this.dataFormat == URLLoaderDataFormat.BINARY)
                 throw new Error('Cannot convert data to URLVariables.');
-            
+
             if (this.dataFormat == URLLoaderDataFormat.TEXT)
                 return new URLVariables(this.data);
-            
+
             return this.data;
         }
-        
+
         /**
             The data received from the DataLoad data typed as ByteArray. Available after load is complete.
-            
+
             @throws <code>Error</code> if method is called before the file has loaded.
             @throws <code>Error</code> if method cannot convert data to a ByteArray.
         */
         public function get dataAsByteArray():ByteArray {
             if (this.dataFormat != URLLoaderDataFormat.BINARY)
                 throw new Error('Cannot convert data to a ByteArray.');
-            
+
             return this.data;
         }
-        
+
         override public function destroy():void {
             this._dispatcher.removeEventListener(HTTPStatusEvent.HTTP_STATUS, this._onHttpStatus);
             this._dispatcher.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this.dispatchEvent);
-            
+
             super.destroy();
         }
-        
+
         /**
             @sends HTTPStatusEvent#HTTP_STATUS - Dispatched if class is able to detect and return the status code for the request.
             @sends SecurityErrorEvent#SECURITY_ERROR - Dispatched if load is outside the security sandbox.
         */
         override protected function _initListeners(dispatcher:IEventDispatcher):void {
             super._initListeners(dispatcher);
-            
+
             this._dispatcher.addEventListener(HTTPStatusEvent.HTTP_STATUS, this._onHttpStatus, false, 0, true);
             this._dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this.dispatchEvent, false, 0, true);
         }
@@ -282,20 +282,20 @@ package {
     import org.casalib.display.CasaMovieClip;
     import org.casalib.events.LoadEvent;
     import org.casalib<span class="codeIdentifier">.load</span>.DataLoad;
-    
-    
+
+
     public class MyExample extends CasaMovieClip {
         protected <span class="codeKeyword">var</span> _dataLoad:DataLoad;
-        
-        
+
+
         public <span class="codeKeyword">function</span> MyExample() {
             <span class="codeIdentifier">super</span>();
-            
+
             <span class="codeIdentifier">this</span>._dataLoad = <span class="codeKeyword">new</span> DataLoad(<span class="codeString">&quot;<span class="codeIdentifier">data</span>.xml&quot;</span>);
             <span class="codeIdentifier">this</span>._dataLoad.addEventListener(LoadEvent.COMPLETE, <span class="codeIdentifier">this</span>._onComplete);
             <span class="codeIdentifier">this</span>._dataLoad<span class="codeIdentifier">.start</span>();
         }
-        
+
         protected <span class="codeKeyword">function</span> _onComplete(e:LoadEvent):<span class="codeKeyword">void</span> {
             <span class="codeIdentifier">trace</span>(<span class="codeIdentifier">this</span>._dataLoad.dataAsXml.toXMLString());
         }
@@ -339,7 +339,7 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Constructor</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#DataLoad">DataLoad</a>
 																<span class='typeInfo'>(request = *, dataFormat:String = URLLoaderDataFormat.TEXT)</span>																<ul class='summary'>
 									<li>Creates and defines a DataLoad.</li>
@@ -349,37 +349,37 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance properties</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#urlLoader">urlLoader</a>
 																<span class='typeInfo'> : URLLoader</span>																<ul class='summary'>
 									<li>The URLLoader being used to download the data.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#data">data</a>
 																<span class='typeInfo'> : *</span>																<ul class='summary'>
 									<li>The data received from the DataLoad. </li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#dataFormat">dataFormat</a>
 																<span class='typeInfo'> : String</span>																<ul class='summary'>
 									<li>The data type that DataLoad is receiving.</li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#dataAsString">dataAsString</a>
 																<span class='typeInfo'> : String</span>																<ul class='summary'>
 									<li>The data received from the DataLoad data typed as String. </li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#dataAsXml">dataAsXml</a>
 																<span class='typeInfo'> : XML</span>																<ul class='summary'>
 									<li>The data received from the DataLoad data typed as XML. </li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#dataAsUrlVariables">dataAsUrlVariables</a>
 																<span class='typeInfo'> : URLVariables</span>																<ul class='summary'>
 									<li>The data received from the DataLoad data typed as URLVariables. </li>
 								</ul>							</li>
-													<li class=''>								
+													<li class=''>
 								<a href="#dataAsByteArray">dataAsByteArray</a>
 																<span class='typeInfo'> : ByteArray</span>																<ul class='summary'>
 									<li>The data received from the DataLoad data typed as ByteArray. </li>
@@ -390,7 +390,7 @@ package {
 							<div class='memberSummaryPart'>
 					<span class='title'>Instance methods</span>
 					<ul>
-													<li class=''>								
+													<li class=''>
 								<a href="#destroy">destroy</a>
 																<span class='typeInfo'>() : void</span>																<ul class='summary'>
 									<li><div</li>
@@ -540,7 +540,7 @@ package {
 									<h3>destroy</h3>											<div class='fullMemberString'>
 							<span class='code'>override function <strong>destroy</strong>() : void</span>						</div>											<div class='description'>
 																			<p><div class="inheritDoc"><div class="inheritDoc">Removes any event listeners and stops all internal processes to help allow for prompt garbage collection.
-			
+
 			<strong>Always call  before deleting last object pointer.</strong> <span class="inheritDocLink"></span></div> <span class="inheritDocLink"><a href="org_casalib_events_RemovableEventDispatcher.html#destroy">&rarr;</a></span></div></p>						</div>										<div class='boxWithBorder'>
 														<div class='boxedElem'>
 		<div class='contentHolder'>
@@ -555,11 +555,11 @@ package {
 
 											</div>				</div>
 					</div>
-		
+
 							</div>
 						</div>
 											<div id='sidebar'>
-		<div id='clearHeaderLeft'></div> 
+		<div id='clearHeaderLeft'></div>
 		<div id='sidebarContent'>
 				<div class="list">
 							<ul>
@@ -927,7 +927,7 @@ package {
 	</div>
 
 					</div>
-					<div class='clear'>&nbsp;</div> 
+					<div class='clear'>&nbsp;</div>
 				</div>
 			</div>
 			<div id='header'>

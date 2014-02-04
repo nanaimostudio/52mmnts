@@ -1,4 +1,4 @@
-package away3d.core.utils 
+package away3d.core.utils
 {
 	import away3d.arcane;
 	import away3d.containers.*;
@@ -9,16 +9,16 @@ package away3d.core.utils
 	import away3d.core.vos.*;
 	import away3d.events.*;
 	import away3d.materials.*;
-	
+
 	import flash.display.*;
 	import flash.geom.*;
-	
+
 	use namespace arcane;
-	
+
 	/**
 	 * @author robbateman
 	 */
-	public class HitManager 
+	public class HitManager
 	{
         private var _screenX:Number;
         private var _screenY:Number;
@@ -31,7 +31,7 @@ package away3d.core.utils
         private var _elementVO:ElementVO;
         private var _object:Object3D;
 		private var _uv:UV;
-		
+
         private var _inv:Matrix3D = new Matrix3D();
         private var _persp:Number;
 		private var _renderer:Renderer;
@@ -42,22 +42,22 @@ package away3d.core.utils
         private var _container:DisplayObject;
         private var _hitPointX:Number;
         private var _hitPointY:Number;
-        
+
         private var _focus:Number;
-        
-        
+
+
         private function checkSession(session:AbstractSession):void
         {
-        	
+
         	if (session.getContainer(_view).hitTestPoint(_hitPointX, _hitPointY)) {
 	        	if (session is BitmapSession) {
 	        		_container = (session as BitmapSession).getBitmapContainer(_view);
 	        		_hitPointX += _container.x;
 	        		_hitPointY += _container.y;
 	        	}
-	        	
+
         		_renderer = session.getRenderer(view);
-        		
+
         		var lists:Vector.<uint> = session.getRenderer(_view).list();
         		var priIndex:uint;
 	        	for each (priIndex in lists)
@@ -65,29 +65,29 @@ package away3d.core.utils
 	        	var _sessions:Array = session.sessions;
 	        	for each (session in _sessions)
 	        		checkSession(session);
-	        	
+
 	        	if (session is BitmapSession) {
 	        		_container = (session as BitmapSession).getBitmapContainer(_view);
 	        		_hitPointX -= _container.x;
 	        		_hitPointY -= _container.y;
 	        	}
 	        }
-        	
+
         }
-        
+
         private function checkPrimitive(priIndex:uint):void
         {
             _primitiveType = _renderer.primitiveType[priIndex];
-            
+
         	if (_primitiveType == PrimitiveType.FOG || _primitiveType == PrimitiveType.DISPLAY_OBJECT)
         		return;
-        	
+
         	_hitSourceObject = _renderer.primitiveSource[priIndex];
         	_source = _hitSourceObject.source;
-        	
+
             if (!_source || !_source._mouseEnabled)
                 return;
-            
+
             if (_renderer.primitiveProperties[uint(priIndex*9 + 2)] > _screenX)
                 return;
             if (_renderer.primitiveProperties[uint(priIndex*9 + 3)] < _screenX)
@@ -96,12 +96,12 @@ package away3d.core.utils
                 return;
             if (_renderer.primitiveProperties[uint(priIndex*9 + 5)] < _screenY)
                 return;
-            
+
             _primitiveElement = _renderer.primitiveElements[priIndex];
-            
+
             //if (_primitiveType == PrimitiveType.DISPLAY_OBJECT && !(_primitiveElement as SpriteVO).displayObject.hitTestPoint(_hitPointX, _hitPointY, true))
             //	return;
-			
+
 			if (_hitSourceObject.contains(priIndex, _renderer, _screenX, _screenY)) {
                 var uvt:Vector3D = _hitSourceObject.getUVT(priIndex, _renderer, _screenX, _screenY);
                 var z:Number = _view.camera.lens.getScreenZ(uvt.z);
@@ -116,149 +116,149 @@ package away3d.core.utils
                     } else {
                         _uv = null;
                     }
-                    
+
                 	_screenZ = z;
                 	_material = _renderer.primitiveMaterials[priIndex];
-                    
+
                     //persp = camera.zoom / (1 + screenZ / camera.focus);
 					_persp = _view.camera.lens.getPerspective(_screenZ);
                     _inv = _view.camera.invViewMatrix;
-					
+
                     _sceneX = _screenX / _persp * _inv.rawData[0] + _screenY / _persp * _inv.rawData[4] + _screenZ * _inv.rawData[8] + _inv.rawData[12];
                     _sceneY = _screenX / _persp * _inv.rawData[1] + _screenY / _persp * _inv.rawData[5] + _screenZ * _inv.rawData[9] + _inv.rawData[13];
                     _sceneZ = _screenX / _persp * _inv.rawData[2] + _screenY / _persp * _inv.rawData[6] + _screenZ * _inv.rawData[10] + _inv.rawData[14];
-                    
+
                     _object = _source;
                     _elementVO = _primitiveElement;
 
                 }
             }
-        
+
         }
-                
+
         /**
-         * 
+         *
          */
         public function get screenX():Number
         {
         	return _screenX;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get screenY():Number
         {
         	return _screenY;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get screenZ():Number
         {
         	return _screenZ;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get sceneX():Number
         {
         	return _sceneX;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get sceneY():Number
         {
         	return _sceneY;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get sceneZ():Number
         {
         	return _sceneZ;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get view():View3D
         {
         	return _view;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get material():Material
         {
         	return _material;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get elementVO():ElementVO
         {
         	return _elementVO;
         }
-        
+
         /**
-         * 
+         *
          */
         public function get object():Object3D
         {
         	return _object;
         }
-		
+
         /**
-         * 
+         *
          */
 		public function get uv():UV
         {
         	return _uv;
         }
-        
+
         public function HitManager(view:View3D)
         {
         	_view = view;
         }
-        
-	    /** 
+
+	    /**
 	     * Finds the object that is rendered under a certain view coordinate. Used for mouse click events.
 	     */
         public function findHit(session:AbstractSession, x:Number, y:Number):void
         {
         	_focus = _view.camera.focus;
-        	
+
             _screenX = x;
             _screenY = y;
             _screenZ = Infinity;
             _material = null;
             _object = null;
-            
+
         	if (!session || !_view._mouseIsOverView)
         		return;
-        	
+
             var screenPoint:Point = new Point(x, y);
         	var stagePoint:Point = _view.localToGlobal(screenPoint);
             _hitPointX = stagePoint.x;
             _hitPointY = stagePoint.y;
-            
+
         	if (_view.session is BitmapSession) {
         		_container = _view.session.getContainer(_view);
         		_hitPointX += _container.x;
         		_hitPointY += _container.y;
         	}
-        	
+
             checkSession(session);
         }
-        
+
         /**
          * Returns a 3d mouse event object populated with the properties from the hit point.
          */

@@ -80,7 +80,7 @@ var swfobject = function() {
 	*/
 	onDomLoad = function() {
 		if (!ua.w3) { return; }
-		if ((typeof doc.readyState != UNDEF && doc.readyState == "complete") || (typeof doc.readyState == UNDEF && (doc.getElementsByTagName("body")[0] || doc.body))) { // function is fired after onload, e.g. when script is inserted dynamically 
+		if ((typeof doc.readyState != UNDEF && doc.readyState == "complete") || (typeof doc.readyState == UNDEF && (doc.getElementsByTagName("body")[0] || doc.body))) { // function is fired after onload, e.g. when script is inserted dynamically
 			callDomLoadFunctions();
 		}
 		if (!isDomLoaded) {
@@ -147,7 +147,7 @@ var swfobject = function() {
 
 	/* Cross-browser onload
 		- Based on James Edwards' solution: http://brothercake.com/site/resources/scripts/onload/
-		- Will fire an event as soon as a web page including all of its assets are loaded 
+		- Will fire an event as soon as a web page including all of its assets are loaded
 	 */
 	function addLoadEvent(fn) {
 		if (typeof win.addEventListener != UNDEF) {

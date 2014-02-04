@@ -1,7 +1,7 @@
 package away3d.loaders.data
 {
 	import flash.geom.*;
-	
+
 	/**
 	 * Data class for a generic 3d object
 	 */
@@ -11,12 +11,12 @@ package away3d.loaders.data
 		 * The name of the 3d object used as a unique reference.
 		 */
 		public var name:String;
-		
+
 		/**
 		 * The 3d transformation matrix for the 3d object
 		 */
 		public var transform:Matrix3D = new Matrix3D();
-		
+
 		/**
 		 * Colada animation
 		 */

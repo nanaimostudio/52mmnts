@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 */
 package nochump.util.zip {
-	
+
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.events.ProgressEvent;
@@ -32,12 +32,12 @@ package nochump.util.zip {
 	[Event(name="progress",			type="flash.events.ProgressEvent")]
 
 	/**
-	 * Inflater is used to decompress data that has been compressed according 
+	 * Inflater is used to decompress data that has been compressed according
 	 * to the "deflate" standard described in rfc1950.
 	 *
 	 * The usage is as following.  First you have to set some input with
 	 * <code>setInput()</code>, then inflate() it.
-	 * 
+	 *
 	 * This implementation is a port of Puff by Mark Addler that comes with
 	 * the zlip data compression library.  It is not the fastest routine as
 	 * he intended it for learning purposes, his actual optimized inflater code
@@ -45,7 +45,7 @@ package nochump.util.zip {
 	 * headache looking at the optimized inflater code and porting this
 	 * was a breeze.  The speed should be adequate but there is plenty of room
 	 * for improvements here.
-	 * 
+	 *
 	 * @author dchang
 	 */
 	public class Inflater extends EventDispatcher {
@@ -62,7 +62,7 @@ package nochump.util.zip {
 		private static const DISTS:Array = [1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577];
 		// Extra bits for distance codes 0..29
 		private static const DEXT:Array = [ 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13];
-		
+
 		// Duration between parsing of each chunk of data
 		private const TIMER_INTERVAL:int = 20;
 
@@ -80,7 +80,7 @@ package nochump.util.zip {
 
 		/**
 		 * Sets the input.
-		 * 
+		 *
 		 * @param buf the input.
 		 */
 		public function setInput(buf:ByteArray):void {
@@ -93,10 +93,10 @@ package nochump.util.zip {
 			inflateTimer = new Timer(TIMER_INTERVAL);
             inflateTimer.addEventListener(TimerEvent.TIMER, inflateNextChunk);
 		}
-		
+
 		/**
 		 * Inflates the compressed stream to the output buffer.
-		 * 
+		 *
 		 * @param buf the output buffer.
 		 */
 		public function inflate(buf:ByteArray):uint {
@@ -196,7 +196,7 @@ package nochump.util.zip {
 			// return zero for complete set, positive for incomplete set
 			return left;
 		}
-		
+
 		private function decode(h:Object):int {
 			var code:int = 0; // len bits being decoded
 			var first:int = 0; // first code of length len
@@ -213,7 +213,7 @@ package nochump.util.zip {
 			}
 			return -9; // ran out of codes
 		}
-		
+
 		private function codes(buf:ByteArray):int {
 			// decode literals and length/distance pairs
 			do {
@@ -236,7 +236,7 @@ package nochump.util.zip {
 			} while (symbol != 256); // end of block symbol
 			return 0; // done with a valid fixed or dynamic block
 		}
-		
+
 		private function stored(buf:ByteArray):void {
 			// discard leftover bits from current byte (assumes s->bitcnt < 8)
 			bitbuf = 0;
@@ -250,7 +250,7 @@ package nochump.util.zip {
 			if(incnt + len > inbuf.length) throw new Error('available inflate data did not terminate', 2);
 			while(len--) buf[buf.length] = inbuf[incnt++]; // copy len bytes from in to out
 		}
-		
+
 		private function constructFixedTables():void {
 			var lengths:Array = [];
 			// literal/length table
@@ -263,7 +263,7 @@ package nochump.util.zip {
 			for(symbol = 0; symbol < MAXDCODES; symbol++) lengths[symbol] = 5;
 			construct(distcode, lengths, MAXDCODES);
 		}
-		
+
 		private function constructDynamicTables():int {
 			var lengths:Array = []; // descriptor code lengths
 			// permutation of code length codes
@@ -312,7 +312,7 @@ package nochump.util.zip {
 				throw new Error("dynamic block code description: invalid distance code lengths", -8);
 			return err;
 		}
-		
+
 	}
-	
+
 }

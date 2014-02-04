@@ -2,13 +2,13 @@ package away3d.cameras
 {
 	import away3d.containers.*;
     import away3d.core.base.*;
-    
+
     import flash.geom.*;
-	
-	
+
+
     /**
     * Extended camera used to automatically look at a specified target object.
-    * 
+    *
     * @see away3d.containers.View3D
     */
     public class TargetCamera3D extends Camera3D
@@ -17,10 +17,10 @@ package away3d.cameras
         * The 3d object targeted by the camera.
         */
         public var target:Object3D;
-    	
+
 	    /**
 	    * Creates a new <code>TargetCamera3D</code> object.
-	    * 
+	    *
 	    * @param	init	[optional]	An initialisation object for specifying default instance properties.
 	    */
         public function TargetCamera3D(init:Object = null)
@@ -29,7 +29,7 @@ package away3d.cameras
 
             target = ini.getObject3D("target") || new Object3D();
         }
-        
+
 		/**
 		 * @inheritDoc
 		 */
@@ -37,13 +37,13 @@ package away3d.cameras
         {
             if (target != null)
                 lookAt(target.scene ? target.scenePosition : target.position);
-    
+
             return super.viewMatrix;
         }
-        
+
 		/**
 		 * Cannot parent a <code>TargetCamera3D</code> object.
-		 * 
+		 *
 		 * @throws	Error	TargetCamera can't be parented.
 		 */
         public override function set parent(value:ObjectContainer3D):void
@@ -54,4 +54,4 @@ package away3d.cameras
 
     }
 
-}   
+}

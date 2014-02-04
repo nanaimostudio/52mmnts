@@ -58,10 +58,10 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
    <li><code> remove : Boolean [false] </code> (Set remove to true if you want the filter to be removed when the tween completes.)</li>
  </ul>
  HINT: If you'd like to match the ColorMatrixFilter values you created in the Flash IDE on a particular object, you can get its matrix like this:<br /><br /><code>
- 
+
   import flash.display.DisplayObject; <br />
   import flash.filters.ColorMatrixFilter; <br /><br />
-  
+
   function getColorMatrix(mc:DisplayObject):Array { <br />
      var f:Array = mc.filters, i:uint; <br />
      for (i = 0; i &lt; f.length; i++) { <br />
@@ -71,23 +71,23 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
      } <br />
      return null; <br />
   } <br /><br />
-   
+
   var myOriginalMatrix:Array = getColorMatrix(my_mc); //store it so you can tween back to it anytime like TweenMax.to(my_mc, 1, {colorMatrixFilter:{matrix:myOriginalMatrix}});
  </code>
  <br /><br />
- 
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.ColorMatrixFilterPlugin; <br />
    TweenPlugin.activate([ColorMatrixFilterPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 1, {colorMatrixFilter:{colorize:0xFF0000}}); <br /><br />
  </code>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

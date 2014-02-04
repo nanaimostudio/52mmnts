@@ -2,11 +2,11 @@ package away3d.primitives
 {
 	import away3d.arcane;
     import away3d.core.base.*;
-    
+
     import flash.geom.*;
-    
+
 	use namespace arcane;
-	
+
     /**
 	 * Creates a 3d pq-torus knot primitive (http://en.wikipedia.org/wiki/Torus_knot)
 	 */
@@ -28,7 +28,7 @@ package away3d.primitives
     	protected override function buildPrimitive():void
     	{
     		super.buildPrimitive();
-    		
+
             var i:int;
             var j:int;
 			var tang : Vector3D = new Vector3D();
@@ -46,7 +46,7 @@ package away3d.primitives
 					var cx : Number, cy : Number;
 
 					tang.x = p2.x - p.x; tang.y = p2.y - p.y; tang.z = p2.z - p.z;
-					n.x = p2.x + p.x; n.y = p2.y + p.y; n.z = p2.z + p.z; 
+					n.x = p2.x + p.x; n.y = p2.y + p.y; n.z = p2.z + p.z;
 					bitan = n.crossProduct(tang);
 					n = tang.crossProduct(bitan);
 					bitan.normalize();
@@ -73,9 +73,9 @@ package away3d.primitives
                 for (j = 0; j < _segmentsT; ++j) {
                     var ip:int = (i+1) % _segmentsR;
                     var jp:int = (j+1) % _segmentsT;
-                    var a:Vertex = grid[i ][j]; 
+                    var a:Vertex = grid[i ][j];
                     var b:Vertex = grid[ip][j];
-                    var c:Vertex = grid[i ][jp]; 
+                    var c:Vertex = grid[i ][jp];
                     var d:Vertex = grid[ip][jp];
 
                     var uva:UV = createUV(i     / _segmentsR, j     / _segmentsT);
@@ -121,7 +121,7 @@ package away3d.primitives
     		_radius = val;
     		_primitiveDirty = true;
     	}
-    	
+
     	/**
     	 * Defines the tube radius of the torus knot. Defaults to 40.
     	 */
@@ -129,12 +129,12 @@ package away3d.primitives
     	{
     		return _tube;
     	}
-    	
+
     	public function set tube(val:Number):void
     	{
     		if (_tube == val)
     			return;
-    		
+
     		_tube = val;
     		_primitiveDirty = true;
     	}
@@ -161,12 +161,12 @@ package away3d.primitives
     	{
     		return _segmentsR;
     	}
-    	
+
     	public function set segmentsR(val:Number):void
     	{
     		if (_segmentsR == val)
     			return;
-    		
+
     		_segmentsR = val;
     		_primitiveDirty = true;
     	}
@@ -206,7 +206,7 @@ package away3d.primitives
 		}
 
 		/**
-		 * The q-component of the pq-torus knot (the amount of time the knot winds around a line through the hole in the torus) 
+		 * The q-component of the pq-torus knot (the amount of time the knot winds around a line through the hole in the torus)
 		 * p and q should be coprime (gcd == 1)
 		 */
 		public function get q() : Number
@@ -222,7 +222,7 @@ package away3d.primitives
 			_primitiveDirty = true;
 		}
 
-		
+
 		/**
 		 * Creates a new <code>TorusKnot</code> object.
 		 *
@@ -244,10 +244,10 @@ package away3d.primitives
 			type = "Torus";
         	url = "primitive";
         }
-        
+
 		/**
 		 * Returns the vertex object specified by the grid position of the mesh.
-		 * 
+		 *
 		 * @param	r	The radial position on the primitive mesh.
 		 * @param	t	The tubular position on the primitive mesh.
 		 */
@@ -255,7 +255,7 @@ package away3d.primitives
         {
         	if (_primitiveDirty)
     			updatePrimitive();
-    		
+
             return grid[t][r];
         }
     }

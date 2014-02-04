@@ -43,22 +43,22 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
  A RectanglePath2D defines a rectangular path on which a PathFollower can be placed, making it simple to tween objects
- along a rectangle's perimeter. A PathFollower's position along the path is described using its <code>progress</code> property, 
+ along a rectangle's perimeter. A PathFollower's position along the path is described using its <code>progress</code> property,
  a value between 0 and 1 where 0 is at the beginning of the path (top left corner), and as the value increases, it
- moves clockwise along the path so that 0.5 would be at the lower right corner, and 1 is all the way back at the 
+ moves clockwise along the path so that 0.5 would be at the lower right corner, and 1 is all the way back at the
  upper left corner of the path. So to tween a PathFollower along the path, you can simply tween its
- <code>progress</code> property. To tween ALL of the followers on the path at once, you can tween the 
- RectanglePath2D's <code>progress</code> property. PathFollowers automatically wrap so that if the <code>progress</code> 
+ <code>progress</code> property. To tween ALL of the followers on the path at once, you can tween the
+ RectanglePath2D's <code>progress</code> property. PathFollowers automatically wrap so that if the <code>progress</code>
  value exceeds 1 it continues at the beginning of the path.<br /><br />
-  
+
  Since RectanglePath2D extends the Shape class, you can add an instance to the display list to see a line representation
- of the path drawn which can be helpful especially during the production phase. Use <code>lineStyle()</code> 
- to adjust the color, thickness, and other attributes of the line that is drawn (or set the RectanglePath2D's 
- <code>visible</code> property to false or don't add it to the display list if you don't want to see the line 
- at all). You can also adjust all of its properties like <code>scaleX, scaleY, rotation, width, height, x,</code> 
- and <code>y</code>. That means you can tween those values as well to achieve very dynamic, complex effects 
+ of the path drawn which can be helpful especially during the production phase. Use <code>lineStyle()</code>
+ to adjust the color, thickness, and other attributes of the line that is drawn (or set the RectanglePath2D's
+ <code>visible</code> property to false or don't add it to the display list if you don't want to see the line
+ at all). You can also adjust all of its properties like <code>scaleX, scaleY, rotation, width, height, x,</code>
+ and <code>y</code>. That means you can tween those values as well to achieve very dynamic, complex effects
  with ease.<br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -78,16 +78,16 @@ TweenLite.to(follower, 2, {progress:1});
 //tween the follower counter-clockwise by using a negative progress value
 TweenLite.to(follower, 2, {progress:-1});
 </pre></div>
- 
+
  <b>NOTES</b><br />
  <ul>
    <li>All followers' positions are automatically updated when you alter the MotionPath that they're following.</li>
-   <li>To tween all followers along the path at once, simply tween the MotionPath's <code>progress</code> 
+   <li>To tween all followers along the path at once, simply tween the MotionPath's <code>progress</code>
     property which will provide better performance than tweening each follower independently.</li>
  </ul>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -120,7 +120,7 @@ TweenLite.to(follower, 2, {progress:-1});
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#progress">progress</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#progress">progress</a> : Number<div class="summaryTableDescription">
    A value between 0 and 1 that can be used to move all followers along the path.</div>
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
@@ -129,7 +129,7 @@ TweenLite.to(follower, 2, {progress:-1});
 </td><td class="summaryTableOwnerCol">RectanglePath2D</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription">
    Identical to <code>progress</code> except that the value is not re-interpolated between 0 and 1.</div>
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
@@ -192,7 +192,7 @@ TweenLite.to(follower, 2, {progress:-1});
 <a class="signatureLink" href="#RectanglePath2D()">RectanglePath2D</a>(x:Number, y:Number, rawWidth:Number, rawHeight:Number, centerOrigin:Boolean = false)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">RectanglePath2D</td>
 </tr>
@@ -250,7 +250,7 @@ TweenLite.to(follower, 2, {progress:-1});
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#renderObjectAt()">renderObjectAt</a>(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Positions any object with x and y properties on the path at a specific progress position.</div>
 </td><td class="summaryTableOwnerCol">RectanglePath2D</td>
 </tr>
@@ -258,7 +258,7 @@ TweenLite.to(follower, 2, {progress:-1});
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#update()">update</a>(event:Event = null):void</div>
-<div class="summaryTableDescription">  
+<div class="summaryTableDescription">
    Forces the MotionPath to re-render itself and all of its followers.</div>
 </td><td class="summaryTableOwnerCol">RectanglePath2D</td>
 </tr>
@@ -324,7 +324,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function RectanglePath2D(x:Number, y:Number, rawWidth:Number, rawHeight:Number, centerOrigin:Boolean = false)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -370,20 +370,20 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function renderObjectAt(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</code><p> 
-   Positions any object with x and y properties on the path at a specific progress position. 
+<code>public override function renderObjectAt(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</code><p>
+   Positions any object with x and y properties on the path at a specific progress position.
    For example, to position <code>mc</code> in the middle of the path, you would do:<br /><br /><code>
-   
+
    myPath.renderObjectAt(mc, 0.5);</code><br /><br />
-   
+
    Some paths have methods to translate other meaningful information into a progress value, like
    for a <code>CirclePath2D</code> you can get the progress associated with the 90-degree position with the
    <code>angleToPosition()</code> method like this:<br /><br /><code>
-   
+
    myCircle.renderObjectAt(mc, myCircle.angleToProgress(90));
-   
+
    </code><br />
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -420,9 +420,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function update(event:Event = null):void</code><p>  
+<code>public override function update(event:Event = null):void</code><p>
    Forces the MotionPath to re-render itself and all of its followers.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

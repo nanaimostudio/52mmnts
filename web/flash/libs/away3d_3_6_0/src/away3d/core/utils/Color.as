@@ -2,7 +2,7 @@ package away3d.core.utils
 {
 
     /** Static helper class for color manipulations */
-    public class Color 
+    public class Color
     {
         public static const white:int = 0xFFFFFF;
         public static const black:int = 0x000000;

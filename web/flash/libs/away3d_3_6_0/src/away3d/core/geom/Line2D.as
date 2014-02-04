@@ -1,15 +1,15 @@
 package away3d.core.geom
 {
 	import away3d.core.draw.*;
-	
+
 
     /** Line in 2D space */
     public class Line2D
     {
         public var a:Number;
-    
+
         public var b:Number;
-    
+
         public var c:Number;
 
         public function Line2D(a:Number, b:Number, c:Number)

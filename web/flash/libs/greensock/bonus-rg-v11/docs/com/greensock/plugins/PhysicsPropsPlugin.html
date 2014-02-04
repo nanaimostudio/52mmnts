@@ -43,49 +43,49 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </table>
 <p></p>
  Sometimes you want to tween a property (or several) but you don't have a specific end value in mind - instead,
- you'd rather describe the movement in terms of physics concepts, like velocity, acceleration, 
+ you'd rather describe the movement in terms of physics concepts, like velocity, acceleration,
  and/or friction. PhysicsPropsPlugin allows you to tween any numeric property of any object based
  on these concepts. Keep in mind that any easing equation you define for your tween will be completely
  ignored for these properties. Instead, the physics parameters will determine the movement/easing.
- These parameters, by the way, are not intended to be dynamically updateable, but one unique convenience 
- is that everything is reverseable. So if you create several physics-based tweens, for example, and 
- throw them into a TimelineLite, you could simply call reverse() on the timeline to watch the objects 
- retrace their steps right back to the beginning. Here are the parameters you can define (note that 
+ These parameters, by the way, are not intended to be dynamically updateable, but one unique convenience
+ is that everything is reverseable. So if you create several physics-based tweens, for example, and
+ throw them into a TimelineLite, you could simply call reverse() on the timeline to watch the objects
+ retrace their steps right back to the beginning. Here are the parameters you can define (note that
  friction and acceleration are both completely optional):
   <ul>
-   <li><b>velocity : Number</b> - the initial velocity of the object measured in units per time 
-         unit (usually seconds, but for tweens where useFrames is true, it would 
+   <li><b>velocity : Number</b> - the initial velocity of the object measured in units per time
+         unit (usually seconds, but for tweens where useFrames is true, it would
          be measured in frames). The default is zero.</li>
    <li><b>acceleration : Number</b> [optional] - the amount of acceleration applied to the object, measured
-         in units per time unit (usually seconds, but for tweens where useFrames 
+         in units per time unit (usually seconds, but for tweens where useFrames
          is true, it would be measured in frames). The default is zero.</li>
    <li><b>friction : Number</b> [optional] - a value between 0 and 1 where 0 is no friction, 0.08 is a small amount of
-         friction, and 1 will completely prevent any movement. This is not meant to be precise or 
+         friction, and 1 will completely prevent any movement. This is not meant to be precise or
          scientific in any way, but rather serves as an easy way to apply a friction-like
          physics effect to your tween. Generally it is best to experiment with this number a bit.
          Also note that friction requires more processing than physics tweens without any friction.</li>
   </ul><br />
- 
- 
+
+
  <b>USAGE:</b><br /><br />
  <code>
    import com.greensock.TweenLite; <br />
    import com.greensock.plugins.TweenPlugin; <br />
    import com.greensock.plugins.PhysicsPropsPlugin; <br />
    TweenPlugin.activate([PhysicsPropsPlugin]); //activation is permanent in the SWF, so this line only needs to be run once.<br /><br />
- 
+
    TweenLite.to(mc, 2, {physicsProps:{<br />
            x:{velocity:100, acceleration:200},<br />
            y:{velocity:-200, friction:0.1}<br />
            }<br />
         }); <br /><br />
   </code>
- 
+
  PhysicsPropsPlugin is a Club GreenSock membership benefit. You must have a valid membership to use this class
  without violating the terms of use. Visit http://www.greensock.com/club/ to sign up or get more details.<br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>

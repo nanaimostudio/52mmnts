@@ -1,6 +1,6 @@
 ﻿package away3d.loaders
 {
-	
+
 	import away3d.arcane;
 	import away3d.animators.*;
 	import away3d.animators.data.*;

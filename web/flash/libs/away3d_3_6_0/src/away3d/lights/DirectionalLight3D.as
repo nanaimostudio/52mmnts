@@ -4,14 +4,14 @@ package away3d.lights
 	import away3d.containers.*;
     import away3d.core.base.*;
 	import away3d.events.*;
-    
+
 	import flash.display.*;
 	import flash.geom.*;
 	import flash.filters.*;
 	import flash.utils.*;
-	
+
 	use namespace arcane;
-	
+
     /**
     * Lightsource that colors all shaded materials proportional to the dot product of the offset vector with the normal vector.
     * The scalar value of distance does not affect the resulting light intensity, it is calulated as if the
@@ -19,43 +19,43 @@ package away3d.lights
     */
     public class DirectionalLight3D extends AbstractLight
     {
-    	        
+
         /**
          * @private
          * Transform dictionary for the diffuse lightmap used by shading materials.
          */
         arcane var diffuseTransform:Dictionary = new Dictionary(true);
-        
+
         /**
          * @private
          * Transform dictionary for the specular lightmap used by shading materials.
          */
         arcane var specularTransform:Dictionary = new Dictionary(true);
-        
+
         /**
          * @private
          * Colormatrix transform used in DOT3 materials for resolving normal values in the normal map.
          */
         arcane var normalMatrixDiffuseTransform:Dictionary = new Dictionary(true);
-        
+
         /**
          * @private
          * Colormatrix transform used in DOT3 materials for resolving normal values in the normal map.
          */
         arcane var normalMatrixSpecularTransform:Dictionary = new Dictionary(true);
-        
+
         /**
          * @private
          * Updates the transform matrix for the diffuse lightmap.
-         * 
+         *
          * @see diffuseTransform
          */
         arcane function setDiffuseTransform(source:Object3D):void
         {
-			
+
         	if (!(diffTrans = diffuseTransform[source]))
         		diffTrans = diffuseTransform[source] = new Matrix3D();
-			
+
 			var v3:Vector.<Vector3D>;
 			diffTrans.identity();
 			v3 = _sceneTransform.decompose(Orientation3D.AXIS_ANGLE);
@@ -63,11 +63,11 @@ package away3d.lights
 			v3 = source.sceneTransform.decompose(Orientation3D.AXIS_ANGLE);
 			diffTrans.prependRotation(v3[1].w*180/Math.PI, v3[1]);
         }
-        
+
         /**
          * @private
          * Updates the transform matrix for the specular lightmap.
-         * 
+         *
          * @see specularTransform
          */
         arcane function setSpecularTransform(source:Object3D, view:View3D):void
@@ -84,22 +84,22 @@ package away3d.lights
         	_mod = Math.sqrt(_nx*_nx + _ny*_ny);
         	_halfTransform.identity();
         	_halfTransform.appendRotation(Math.acos(-_halfVector.z)*180/Math.PI, new Vector3D(-_ny/_mod, _nx/_mod, 0));
-        	
+
 			if (!specularTransform[source])
         		specularTransform[source] = new Dictionary(true);
-        	
+
 			if (!(specTrans = specularTransform[source][view]))
 				specTrans = specularTransform[source][view] = new Matrix3D();
-			
+
 			specTrans.rawData = _halfTransform.rawData;
 			var v3:Vector.<Vector3D> = source.sceneTransform.decompose(Orientation3D.AXIS_ANGLE);
 			specTrans.prependRotation(v3[1].w*180/Math.PI, v3[1]);
         }
-        
+
         /**
          * @private
          * Updates the normal transform matrix.
-         * 
+         *
          * @see normalMatrixTransform
          */
         arcane function setNormalMatrixDiffuseTransform(source:Object3D):void
@@ -107,11 +107,11 @@ package away3d.lights
         	_r = _red*2*_diffuse*_brightness;
 			_g = _green*2*_diffuse*_brightness;
 			_b = _blue*2*_diffuse*_brightness;
-			
+
         	_szx = diffuseTransform[source].rawData[2];
 			_szy = -diffuseTransform[source].rawData[6];
 			_szz = diffuseTransform[source].rawData[10];
-			
+
         	//multipication of [_szx, 0, 0, 0, 127 - _szx*127, 0, -_szy, 0, 0, 127 + _szy*127, 0, 0, _szz, 0, 127 - _szz*127, 0, 0, 0, 1, 0]*[_red, _red, _red, 0, -381*_red, _green, _green, _green, 0, -381*_green, _blue, _blue, _blue, 0, -381*_blue, 0, 0, 0, 1, 0]
         	_normalMatrix.matrix = [_r*_szx, _r*_szy, _r*_szz, 0, -_r *127*(_szx + _szy + _szz),
         						    _g*_szx, _g*_szy, _g*_szz, 0, -_g *127*(_szx + _szy + _szz),
@@ -119,46 +119,46 @@ package away3d.lights
         						   0, 0, 0, 1, 0];
         	normalMatrixDiffuseTransform[source] = _normalMatrix.clone();
         }
-        
+
         /**
          * @private
          * Updates the normal transform matrix.
-         * 
+         *
          * @see colorMatrixTransform
          */
         arcane function setNormalMatrixSpecularTransform(source:Object3D, view:View3D, specular:uint, shininess:Number):void
         {
         	if (!normalMatrixSpecularTransform[source])
 				normalMatrixSpecularTransform[source] = new Dictionary(true);
-			
+
 			_sr = _specular*_brightness*((specular & 0xFF0000) >> 16)/255;
             _sg = _specular*_brightness*((specular & 0xFF00) >> 8)/255;
             _sb  = _specular*_brightness*(specular & 0xFF)/255;
-            
+
         	_r = (_red*2 + shininess)*_sr;
 			_g = (_green*2 + shininess)*_sg;
 			_b = (_blue*2 + shininess)*_sb;
-			
+
         	_szx = specularTransform[source][view].rawData[2];
 			_szy = -specularTransform[source][view].rawData[6];
 			_szz = specularTransform[source][view].rawData[10];
-			
+
         	//multipication of [_szx, 0, 0, 0, 127 - _szx*127, 0, -_szy, 0, 0, 127 + _szy*127, 0, 0, _szz, 0, 127 - _szz*127, 0, 0, 0, 1, 0]*[_red, _red, _red, 0, -127*shininess-381*_red, _green, _green, _green, 0, -127*shininess-381*_green, _blue, _blue, _blue, 0, -127*shininess-381*_blue, 0, 0, 0, 1, 0];
         	_normalMatrix.matrix = [_r*_szx, _r*_szy, _r*_szz, 0, -_r *127*(_szx + _szy + _szz) -127*shininess*_sr,
         						    _g*_szx, _g*_szy, _g*_szz, 0, -_g *127*(_szx + _szy + _szz) -127*shininess*_sg,
         						    _b*_szx, _b*_szy, _b*_szz, 0, -_b *127*(_szx + _szy + _szz) -127*shininess*_sb,
         						   0, 0, 0, 1, 0];
-        	
+
         	normalMatrixSpecularTransform[source][view] = _normalMatrix.clone();
         }
-        
+
     	private var _direction:Vector3D = new Vector3D();
         private var _ambient:Number;
         private var _diffuse:Number;
         private var _specular:Number;
         private var _brightness:Number;
     	private var _sceneDirection:Vector3D = new Vector3D();
-		
+
 		private var _normalMatrix:ColorMatrixFilter = new ColorMatrixFilter();
     	private var _matrix:Matrix = new Matrix();
     	private var _shape:Shape = new Shape();
@@ -181,48 +181,48 @@ package away3d.lights
         private var _szx:Number;
         private var _szy:Number;
         private var _szz:Number;
-		
+
 		protected override function onSceneTransformChange(event:Object3DEvent = null):void
         {
         	_sceneDirection = _parent.sceneTransform.deltaTransformVector(_direction);
-        	
+
         	//update direction vector
         	_sceneDirection.scaleBy(-1);
         	_sceneDirection.normalize();
-        	
+
         	_nx = _sceneDirection.x;
         	_ny = _sceneDirection.y;
         	_mod = Math.sqrt(_nx*_nx + _ny*_ny);
         	_sceneTransform.identity();
         	_sceneTransform.appendRotation(-Math.acos(-_sceneDirection.z)*180/Math.PI, new Vector3D(_ny/_mod, -_nx/_mod, 0));
-        	
+
         	diffuseTransform = new Dictionary(true);
         	specularTransform = new Dictionary(true);
         	normalMatrixDiffuseTransform = new Dictionary(true);
         	normalMatrixSpecularTransform = new Dictionary(true);
         }
-        
+
         /**
          * @private
          * Updates the bitmapData object used as the lightmap for ambient light shading.
-         * 
+         *
          * @param	ambient		The coefficient for ambient light intensity.
          */
 		protected override function updateAmbient():void
         {
         	_ambientBitmap = new BitmapData(256, 256, false, int(_ambient*_red*0xFF << 16) | int(_ambient*_green*0xFF << 8) | int(_ambient*_blue*0xFF));
         	_ambientBitmap.lock();
-        	
+
         	//update colortransform
         	_ambientColorTransform = new ColorTransform(1, 1, 1, 1, _ambient*_red*0xFF, _ambient*_green*0xFF, _ambient*_blue*0xFF, 0);
 
 			_ambientDirty = false;
         }
-        
+
         /**
-         * @private 
+         * @private
          * Updates the bitmapData object used as the lightmap for diffuse light shading.
-         * 
+         *
          * @param	diffuse		The coefficient for diffuse light intensity.
          */
         protected override function updateDiffuse():void
@@ -250,16 +250,16 @@ package away3d.lights
     		_shape.graphics.beginGradientFill(GradientType.LINEAR, colArray, alphaArray, pointArray, _matrix);
     		_shape.graphics.drawRect(0, 0, 256, 256);
     		_diffuseBitmap.draw(_shape);
-        	
+
         	//update colortransform
         	_diffuseColorTransform = new ColorTransform(diffbright*_red, diffbright*_green, diffbright*_blue, 1, 0, 0, 0, 0);
 
 			_diffuseDirty = false;
         }
-        
+
         /**
          * Updates the bitmapData object used as the lightmap for the combined ambient and diffue light shading.
-         * 
+         *
          * @param	ambient		The coefficient for ambient light intensity.
          * @param	diffuse		The coefficient for diffuse light intensity.
          */
@@ -291,11 +291,11 @@ package away3d.lights
 
 			_ambientDiffuseDirty = false;
         }
-        
+
         /**
-         * @private 
+         * @private
          * Updates the bitmapData object used as the lightmap for specular light shading.
-         * 
+         *
          * @param	specular		The coefficient for specular light intensity.
          */
         protected override function updateSpecular():void
@@ -321,7 +321,7 @@ package away3d.lights
 			_specularDirty = false;
         }
 
-		        
+
     	/**
     	 * Defines the direction of the light relative to the local coordinates of the parent <code>ObjectContainer3D</code>.
     	 */
@@ -329,17 +329,17 @@ package away3d.lights
         {
             return _direction;
         }
-		
+
         public function set direction(value:Vector3D):void
         {
             _direction.x = value.x;
             _direction.y = value.y;
             _direction.z = value.z;
-            
+
             if (_parent)
 				onSceneTransformChange();
         }
-        
+
 		/**
 		 * Defines a coefficient for the ambient light intensity.
 		 */
@@ -351,13 +351,13 @@ package away3d.lights
 		{
 			if (val < 0)
 				val  = 0;
-			
+
 			_ambient = val;
-			
+
             _ambientDirty = true;
             _ambientDiffuseDirty = true;
 		}
-		
+
 		/**
 		 * Defines a coefficient for the diffuse light intensity.
 		 */
@@ -365,18 +365,18 @@ package away3d.lights
 		{
 			return _diffuse;
 		}
-		
+
 		public function set diffuse(val:Number):void
 		{
 			if (val < 0)
 				val  = 0;
-			
+
 			_diffuse = val;
-			
+
             _diffuseDirty = true;
             _ambientDiffuseDirty = true;
 		}
-		
+
 		/**
 		 * Defines a coefficient for the specular light intensity.
 		 */
@@ -384,17 +384,17 @@ package away3d.lights
 		{
 			return _specular;
 		}
-		
+
 		public function set specular(val:Number):void
 		{
 			if (val < 0)
 				val  = 0;
-			
+
 			_specular = val;
-			
+
             _specularDirty = true;
 		}
-		
+
 		/**
 		 * Defines a coefficient for the overall light intensity.
 		 */
@@ -402,25 +402,25 @@ package away3d.lights
 		{
 			return _brightness;
 		}
-		
+
 		public function set brightness(val:Number):void
 		{
 			_brightness = val;
-            
+
             _ambientDirty = true;
             _diffuseDirty = true;
             _ambientDiffuseDirty = true;
             _specularDirty = true;
 		}
-		
+
 		public function get sceneDirection():Vector3D
 		{
 			return _sceneDirection;
 		}
-		
+
 		/**
 		 * Creates a new <code>DirectionalLight3D</code> object.
-		 * 
+		 *
 		 * @param	init	[optional]	An initialisation object for specifying default instance properties.
 		 */
         public function DirectionalLight3D(init:Object = null)
@@ -433,10 +433,10 @@ package away3d.lights
             brightness = ini.getNumber("brightness", 1);
             debug = ini.getBoolean("debug", false);
         }
-		
+
 		/**
 		 * Duplicates the light object's properties to another <code>DirectionalLight3D</code> object
-		 * 
+		 *
 		 * @param	light	[optional]	The new light instance into which all properties are copied
 		 * @return						The new light instance with duplicated properties applied
 		 */

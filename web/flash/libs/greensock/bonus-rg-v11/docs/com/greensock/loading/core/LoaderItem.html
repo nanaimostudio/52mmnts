@@ -45,13 +45,13 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- Serves as the base class for all individual loaders (not LoaderMax) like <code>ImageLoader, 
- XMLLoader, SWFLoader, MP3Loader</code>, etc. There is no reason to use this class on its own. 
+ Serves as the base class for all individual loaders (not LoaderMax) like <code>ImageLoader,
+ XMLLoader, SWFLoader, MP3Loader</code>, etc. There is no reason to use this class on its own.
  Please see the documentation for the other classes.
  <br /><br />
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -72,7 +72,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined&nbsp;by</th>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LoaderCore.html#auditedSize">auditedSize</a> : Boolean<div class="summaryTableDescription">
    Indicates whether or not the loader's <code>bytesTotal</code> value has been set by any of the following:
    <ul>
      <li>Defining an <code>estimatedBytes</code> in the <code>vars</code> object passed to the constructor</li>
@@ -93,7 +93,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol"><a href="LoaderCore.html">LoaderCore</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LoaderCore.html#content">content</a> : *<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LoaderCore.html#content">content</a> : *<div class="summaryTableDescription">
    The content that was loaded by the loader which varies by the type of loader:
    <ul>
      <li><strong> ImageLoader </strong> - A <code>com.greensock.loading.display.ContentDisplay</code> (a Sprite) which contains the ImageLoader's <code>rawContent</code> (a <code>flash.display.Bitmap</code> unless script access was denied in which case <code>rawContent</code> will be a <code>flash.display.Loader</code> to avoid security errors).</div>
@@ -104,8 +104,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </td><td class="summaryTableOwnerCol">LoaderItem</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription"> 
-   The number of seconds that elapsed between when the loader began and when it either completed, failed, 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="LoaderCore.html#loadTime">loadTime</a> : Number<div class="summaryTableDescription">
+   The number of seconds that elapsed between when the loader began and when it either completed, failed,
    or was canceled.</div>
 </td><td class="summaryTableOwnerCol"><a href="LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -166,7 +166,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <a class="signatureLink" href="#LoaderItem()">LoaderItem</a>(urlOrRequest:*, vars:Object = null)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">LoaderItem</td>
 </tr>
@@ -181,8 +181,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#auditSize()">auditSize</a>():void</div>
-<div class="summaryTableDescription"> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
+<div class="summaryTableDescription">
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
    in order to improve the accuracy of the <code>progress</code> property.</div>
 </td><td class="summaryTableOwnerCol">LoaderItem</td>
 </tr>
@@ -190,8 +190,8 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="LoaderCore.html#cancel()">cancel</a>():void</div>
-<div class="summaryTableDescription"> 
-   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled 
+<div class="summaryTableDescription">
+   If the loader is currently loading (<code>status</code> is <code>LoaderStatus.LOADING</code>), it will be canceled
    immediately and its status will change to <code>LoaderStatus.READY</code>.</div>
 </td><td class="summaryTableOwnerCol"><a href="LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -199,7 +199,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="LoaderCore.html#dispose()">dispose</a>(flushContent:Boolean = false):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Disposes of the loader and releases it internally for garbage collection.</div>
 </td><td class="summaryTableOwnerCol"><a href="LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -222,7 +222,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="LoaderCore.html#prioritize()">prioritize</a>(loadNow:Boolean = true):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Immediately prioritizes the loader inside any LoaderMax instances that contain it,
    forcing it to the top position in their queue and optionally calls <code>load()</code>
    immediately as well.</div>
@@ -246,7 +246,7 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="LoaderCore.html#unload()">unload</a>():void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Removes any content that was loaded and sets <code>bytesLoaded</code> back to zero.</div>
 </td><td class="summaryTableOwnerCol"><a href="LoaderCore.html">LoaderCore</a></td>
 </tr>
@@ -366,8 +366,8 @@ showHideInherited();
 <code>scriptAccessDenied:Boolean</code>&nbsp;&nbsp;[read-only]<p>
    If the loaded content is denied script access (because of security sandbox restrictions,
    a missing crossdomain.xml file, etc.), <code>scriptAccessDenied</code> will be set to <code>true</code>.
-   In the case of loaded images or swf files, this means that you should not attempt to perform 
-   BitmapData operations on the content. An image's <code>smoothing</code> property cannot be set 
+   In the case of loaded images or swf files, this means that you should not attempt to perform
+   BitmapData operations on the content. An image's <code>smoothing</code> property cannot be set
    to <code>true</code> either. Even if script access is denied for particular content, LoaderMax will still
    attempt to load it.
    </p><span class="label">Implementation</span>
@@ -400,7 +400,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function LoaderItem(urlOrRequest:*, vars:Object = null)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -425,12 +425,12 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function auditSize():void</code><p> 
-   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code> 
-   in order to improve the accuracy of the <code>progress</code> property. Once the 
+<code>public override function auditSize():void</code><p>
+   Attempts loading just enough of the content to accurately determine the <code>bytesTotal</code>
+   in order to improve the accuracy of the <code>progress</code> property. Once the
    <code>bytesTotal</code> has been determined or the <code>auditSize()</code> attempt fails due
-   to an error (typically IO_ERROR or SECURITY_ERROR), the <code>auditedSize</code> property will be 
-   set to <code>true</code>. Auditing the size opens a URLStream that will be closed 
+   to an error (typically IO_ERROR or SECURITY_ERROR), the <code>auditedSize</code> property will be
+   set to <code>true</code>. Auditing the size opens a URLStream that will be closed
    as soon as a response is received.
    </p></div>
 <div class="detailSectionHeader">Event detail</div>

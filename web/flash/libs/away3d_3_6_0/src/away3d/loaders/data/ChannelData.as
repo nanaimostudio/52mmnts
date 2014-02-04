@@ -1,7 +1,7 @@
 package away3d.loaders.data
 {
 	import away3d.animators.data.*;
-		
+
 	/**
 	 * Data class for an animation channel
 	 */
@@ -11,14 +11,14 @@ package away3d.loaders.data
 		 * The name of the channel used as a unique reference.
 		 */
 		public var name:String;
-		
+
 		/**
 		 * The channel object.
 		 */
 		public var channel:Channel;
-		
+
 		public var type:String;
-		
+
 		/**
 		 * The xml object
 		 */

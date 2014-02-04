@@ -42,25 +42,25 @@ if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("Cl
 </tr>
 </table>
 <p></p>
- A LinePath2D defines a path (using as many Points as you want) on which a PathFollower can be 
- placed and animated. A PathFollower's position along the path is described using the PathFollower's 
- <code>progress</code> property, a value between 0 and 1 where 0 is at the beginning of the path, 
+ A LinePath2D defines a path (using as many Points as you want) on which a PathFollower can be
+ placed and animated. A PathFollower's position along the path is described using the PathFollower's
+ <code>progress</code> property, a value between 0 and 1 where 0 is at the beginning of the path,
  0.5 is in the middle, and 1 is at the very end. To tween a PathFollower along the path, simply tween its
- <code>progress</code> property. To tween ALL of the followers on the path at once, you can tween the 
- LinePath2D's <code>progress</code> property which performs better than tweening every PathFollower's 
- <code>progress</code> property individually. PathFollowers automatically wrap so that if the 
+ <code>progress</code> property. To tween ALL of the followers on the path at once, you can tween the
+ LinePath2D's <code>progress</code> property which performs better than tweening every PathFollower's
+ <code>progress</code> property individually. PathFollowers automatically wrap so that if the
  <code>progress</code> value exceeds 1 it continues at the beginning of the path, meaning that tweening
- its <code>progress</code> from 0 to 2 would have the same effect as tweening it from 0 to 1 twice 
+ its <code>progress</code> from 0 to 2 would have the same effect as tweening it from 0 to 1 twice
  (it would appear to loop).<br /><br />
-  
+
  Since LinePath2D extends the Shape class, you can add an instance to the display list to see a line representation
- of the path drawn which can be particularly helpful during the production phase. Use <code>lineStyle()</code> 
- to adjust the color, thickness, and other attributes of the line that is drawn (or set the LinePath2D's 
- <code>visible</code> property to false or don't add it to the display list if you don't want to see the line 
- at all). You can also adjust all of its properties like <code>scaleX, scaleY, rotation, width, height, x,</code> 
- and <code>y</code>. That means you can tween those values as well to achieve very dynamic, complex effects 
+ of the path drawn which can be particularly helpful during the production phase. Use <code>lineStyle()</code>
+ to adjust the color, thickness, and other attributes of the line that is drawn (or set the LinePath2D's
+ <code>visible</code> property to false or don't add it to the display list if you don't want to see the line
+ at all). You can also adjust all of its properties like <code>scaleX, scaleY, rotation, width, height, x,</code>
+ and <code>y</code>. That means you can tween those values as well to achieve very dynamic, complex effects
  with ease.<br /><br />
- 
+
  <p></p>
 <br>
 <span class="label">Example</span>
@@ -71,8 +71,8 @@ import com.greensock.motionPaths.*;
 import flash.geom.Point;
 
 //create a LinePath2D with 5 Points
-var path:LinePath2D = new LinePath2D([new Point(0, 0), 
-           new Point(100, 100), 
+var path:LinePath2D = new LinePath2D([new Point(0, 0),
+           new Point(100, 100),
            new Point(350, 150),
            new Point(50, 200),
            new Point(550, 400)]);
@@ -108,16 +108,16 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
  return s;
 }
 </pre></div>
- 
+
  <b>NOTES</b><br />
  <ul>
    <li>All followers' positions are automatically updated when you alter the MotionPath that they're following.</li>
-   <li>To tween all followers along the path at once, simply tween the MotionPath's <code>progress</code> 
+   <li>To tween all followers along the path at once, simply tween the MotionPath's <code>progress</code>
     property which will provide better performance than tweening each follower independently.</li>
  </ul>
- 
+
  <b>Copyright 2011, GreenSock. All rights reserved.</b> This work is subject to the terms in <a href="http://www.greensock.com/terms_of_use.html">http://www.greensock.com/terms_of_use.html</a> or for corporate Club GreenSock members, the software agreement that was issued with the corporate membership.
- 
+
  <p></p>
 <br>
 <hr>
@@ -154,12 +154,12 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#progress">progress</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#progress">progress</a> : Number<div class="summaryTableDescription">
    A value between 0 and 1 that can be used to move all followers along the path.</div>
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
 <tr class="hideInheritedProperty">
-<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription"> 
+<td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img class="inheritedSummaryImage" title="Inherited" alt="Inherited" src="../../../images/inheritedSummary.gif"></td><td class="summaryTableSignatureCol"><a class="signatureLink" href="MotionPath.html#rawProgress">rawProgress</a> : Number<div class="summaryTableDescription">
    Identical to <code>progress</code> except that the value is not re-interpolated between 0 and 1.</div>
 </td><td class="summaryTableOwnerCol"><a href="MotionPath.html">MotionPath</a></td>
 </tr>
@@ -222,7 +222,7 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 <a class="signatureLink" href="#LinePath2D()">LinePath2D</a>(points:Array = null, x:Number = 0, y:Number = 0, autoUpdatePoints:Boolean = false)</div>
 <div class="summaryTableDescription">
    Constructor
-   
+
    </div>
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
@@ -247,7 +247,7 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#appendPoint()">appendPoint</a>(point:Point):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Adds a Point to the end of the current LinePath2D (essentially redefining its end point).</div>
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
@@ -264,7 +264,7 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 <div class="summarySignature">
 <a class="signatureLink" href="#getClosestProgress()">getClosestProgress</a>(target:Object):Number</div>
 <div class="summaryTableDescription">
-   Finds the closest overall <code>progress</code> value on the LinePath2D based on the 
+   Finds the closest overall <code>progress</code> value on the LinePath2D based on the
    target object's current position (<code>x</code> and <code>y</code> properties).</div>
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
@@ -298,7 +298,7 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#insertPoint()">insertPoint</a>(point:Point, index:uint = 0):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Inserts a Point at a particular index value in the <code>points</code> array, similar to splice() in an array.</div>
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
@@ -346,7 +346,7 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#renderObjectAt()">renderObjectAt</a>(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</div>
-<div class="summaryTableDescription"> 
+<div class="summaryTableDescription">
    Positions any object with x and y properties on the path at a specific progress position.</div>
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
@@ -363,7 +363,7 @@ function createSquare(size:Number, color:uint=0xFF0000):Shape {
 <td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol">
 <div class="summarySignature">
 <a class="signatureLink" href="#update()">update</a>(event:Event = null):void</div>
-<div class="summaryTableDescription">  
+<div class="summaryTableDescription">
    Forces the MotionPath to re-render itself and all of its followers.</div>
 </td><td class="summaryTableOwnerCol">LinePath2D</td>
 </tr>
@@ -421,7 +421,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function LinePath2D(points:Array = null, x:Number = 0, y:Number = 0, autoUpdatePoints:Boolean = false)</code><p>
    Constructor
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -461,9 +461,9 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function appendMultiplePoints(points:Array):void</code><p>
-   Appends multiple Points to the end of the <code>points</code> array. Identical to 
+   Appends multiple Points to the end of the <code>points</code> array. Identical to
    the <code>appendPoint()</code> method, but accepts an array of Points instead of just one.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -479,9 +479,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function appendPoint(point:Point):void</code><p> 
+<code>public function appendPoint(point:Point):void</code><p>
    Adds a Point to the end of the current LinePath2D (essentially redefining its end point).
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -498,15 +498,15 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function getClosestProgress(target:Object):Number</code><p>
-   Finds the closest overall <code>progress</code> value on the LinePath2D based on the 
+   Finds the closest overall <code>progress</code> value on the LinePath2D based on the
    target object's current position (<code>x</code> and <code>y</code> properties). For example,
-   to position the mc object on the LinePath2D at the spot that's closest to the Point x:100, y:50, 
+   to position the mc object on the LinePath2D at the spot that's closest to the Point x:100, y:50,
    you could do:<br /><br /><code>
-   
+
    path.addFollower(mc, path.getClosestProgress(new Point(100, 50)));
-   
+
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -534,11 +534,11 @@ showHideInherited();
    Translates the progress along a particular segment of the LinePath2D to an overall <code>progress</code>
    value, making it easy to position an object like "halfway along the 2nd segment of the line". For example:
    <br /><br /><code>
-   
+
    path.addFollower(mc, path.getSegmentProgress(2, 0.5));
-   
+
    </code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -572,7 +572,7 @@ showHideInherited();
 <code>public function insertMultiplePoints(points:Array, index:uint = 0):void</code><p>
    Inserts multiple Points into the <code>points</code> array at a particular index/position.
    Identical to the <code>insertPoint()</code> method, but accepts an array of points instead of just one.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -595,16 +595,16 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public function insertPoint(point:Point, index:uint = 0):void</code><p> 
+<code>public function insertPoint(point:Point, index:uint = 0):void</code><p>
    Inserts a Point at a particular index value in the <code>points</code> array, similar to splice() in an array.
    For example, if a LinePath2D instance has 3 Points already and you want to insert a new Point right after the
    first one, you would do:<br /><br /><code>
-   
+
    var path:LinePath2D = new LinePath2D([new Point(0, 0), <br />
               new Point(100, 50), <br />
               new Point(200, 300)]); <br />
    path.insertPoint(new Point(50, 50), 1); <br /><br /></code>
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -629,7 +629,7 @@ showHideInherited();
 <div class="detailBody">
 <code>public function removePoint(point:Point):void</code><p>
    Removes a particular Point instance from the <code>points</code> array.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -646,10 +646,10 @@ showHideInherited();
 </table>
 <div class="detailBody">
 <code>public function removePointByIndex(index:uint):void</code><p>
-   Removes the Point that resides at a particular index/position in the <code>points</code> array. 
-   Just like in arrays, the index is zero-based. For example, to remove the second Point in the array, 
+   Removes the Point that resides at a particular index/position in the <code>points</code> array.
+   Just like in arrays, the index is zero-based. For example, to remove the second Point in the array,
    do <code>removePointByIndex(1)</code>;
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -665,20 +665,20 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function renderObjectAt(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</code><p> 
-   Positions any object with x and y properties on the path at a specific progress position. 
+<code>public override function renderObjectAt(target:Object, progress:Number, autoRotate:Boolean = false, rotationOffset:Number = 0):void</code><p>
+   Positions any object with x and y properties on the path at a specific progress position.
    For example, to position <code>mc</code> in the middle of the path, you would do:<br /><br /><code>
-   
+
    myPath.renderObjectAt(mc, 0.5);</code><br /><br />
-   
+
    Some paths have methods to translate other meaningful information into a progress value, like
    for a <code>CirclePath2D</code> you can get the progress associated with the 90-degree position with the
    <code>angleToPosition()</code> method like this:<br /><br /><code>
-   
+
    myCircle.renderObjectAt(mc, myCircle.angleToProgress(90));
-   
+
    </code><br />
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -718,8 +718,8 @@ showHideInherited();
 <code>public function snap(target:Object, autoRotate:Boolean = false, rotationOffset:Number = 0):<a href="../motionPaths/PathFollower.html">PathFollower</a></code><p>
    Allows you to snap an object like a Sprite, Point, MovieClip, etc. to the LinePath2D by determining
    the closest position along the line to the current position of the object. It will automatically
-   create a PathFollower instance for the target object and reposition it on the LinePath2D. 
-   
+   create a PathFollower instance for the target object and reposition it on the LinePath2D.
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -745,10 +745,10 @@ showHideInherited();
 <span class="label">Returns</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>
-<td width="20"></td><td><code><a href="../motionPaths/PathFollower.html">PathFollower</a></code> &mdash; 
+<td width="20"></td><td><code><a href="../motionPaths/PathFollower.html">PathFollower</a></code> &mdash;
                         A PathFollower instance that was created for the target.
-   
-                        
+
+
                      </td>
 </tr>
 </table>
@@ -760,9 +760,9 @@ showHideInherited();
 </tr>
 </table>
 <div class="detailBody">
-<code>public override function update(event:Event = null):void</code><p>  
+<code>public override function update(event:Event = null):void</code><p>
    Forces the MotionPath to re-render itself and all of its followers.
-   
+
    </p><span class="label">Parameters</span>
 <table border="0" cellspacing="0" cellpadding="0">
 <tr>

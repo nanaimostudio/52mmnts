@@ -9,10 +9,10 @@ package away3d.loaders.data
 		 * The name of the material used as a unique reference for the mesh.
 		 */
 		public var symbol:String;
-		
+
 		/**
 		* A list of faces which are to be drawn with the material.
-		*/		
+		*/
 		public var faceList:Array = [];
 	}
 }
